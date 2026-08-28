@@ -1,5 +1,6 @@
 import numpy as np
 import sounddevice as sd
+from Musicode.eventos import Observador
 
 SAMPLE_RATE = 44100
 
@@ -83,9 +84,10 @@ class Wave:
         return nuevo_track
 
 #?LA SECUENCIA (Track)
-class Track:
+class Track(Observador):
     def __init__(self):
         # El Track inicia vacío
+        super().__init__()
         self.buffer = np.array([], dtype=np.float32)
 
     def agregar(self, elemento):
@@ -98,5 +100,9 @@ class Track:
         return self
 
     def reproducir(self):
+        #!avisa que va a empezar antes de reproducir
+        self.emitir("reproduccion_iniciada") 
         sd.play(self.buffer, SAMPLE_RATE)
         sd.wait()
+        #!avisa que va a terminar despues de reproducir
+        self.emitir("reproduccion_terminada")

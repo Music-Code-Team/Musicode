@@ -15,7 +15,7 @@ def probar_sintetizador():
     # 4. LA MAGIA DE LA SECUENCIACIÓN (Track)
     # Al usar '>>', Python detecta nuestras funciones mágicas '__rshift__'
     print("Reproduciendo: Do -> (Silencio) -> Re -> Do")
-    melodia = nota_do >> silencio >> nota_re >> nota_do
+    melodia = nota_do >> silencio >> nota_re >> nota_do >> nota_do >> nota_re
     
     # Reproducimos la pista completa
     melodia.reproducir()
