@@ -1,5 +1,6 @@
-from Musicode.oscilador import Wave, Env, Time, Track
-
+from Musicode.wave import Wave
+from Musicode.envolvente import Env
+from Musicode.time import Time
 def probar_sintetizador():
     # 1. Definimos una envolvente suave (10ms ataque, 50ms caída, 50% sustain, 200ms liberación)
     # Esto elimina el clic molesto del inicio y final[cite: 2].
