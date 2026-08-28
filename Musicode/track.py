@@ -1,7 +1,7 @@
 import numpy as np
 import sounddevice as sd
 from Musicode.eventos import Observador
-from Musicode.consola import SAMPLE_RATE
+from Musicode.engine import SAMPLE_RATE
 #?LA SECUENCIA (Track)
 class Track(Observador):
     def __init__(self):

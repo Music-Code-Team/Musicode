@@ -1,7 +1,7 @@
 import numpy as np
 from Musicode.envolvente import Env
 from Musicode.track import Track
-from Musicode.consola import SAMPLE_RATE
+from Musicode.engine import SAMPLE_RATE
 
 #?ACTUALIZACIÓN DE LA ONDA (Wave)
 class Wave:

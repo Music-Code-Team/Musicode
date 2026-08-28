@@ -1,6 +1,6 @@
 import numpy as np
 from Musicode.track import Track
-from Musicode.consola import SAMPLE_RATE
+from Musicode.engine import SAMPLE_RATE
 
 #?EL SILENCIO (Time)
 class Time:
