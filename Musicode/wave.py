@@ -22,9 +22,18 @@ class Wave:
         return onda.astype(np.float32)
         
     def __add__(self, otra_onda):
-        # Suma (Mix) para acordes
-        nueva_onda = Wave(0, self.duracion, 0)
-        nueva_onda.buffer = self.buffer + otra_onda.buffer
+        """Suma (Mix) para acordes, soportando duraciones distintas y Tracks."""
+        max_len = max(len(self.buffer), len(otra_onda.buffer))
+        # Rellenamos con ceros (silencio) la que sea más corta
+        buf1 = np.pad(self.buffer, (0, max_len - len(self.buffer)))
+        buf2 = np.pad(otra_onda.buffer, (0, max_len - len(otra_onda.buffer)))
+        
+        # SOLUCIÓN: Calculamos la duración real basada en los samples 
+        # sin importar si es un Wave o un Track
+        nueva_duracion = max_len / SAMPLE_RATE
+
+        nueva_onda = Wave(0, nueva_duracion, 0)
+        nueva_onda.buffer = buf1 + buf2
         return nueva_onda
 
     def __rshift__(self, otro):

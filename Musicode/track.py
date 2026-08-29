@@ -1,7 +1,6 @@
 import numpy as np
-import sounddevice as sd
 from Musicode.eventos import Observador
-from Musicode.engine import SAMPLE_RATE
+from Musicode.engine import SAMPLE_RATE, reproducir_audio
 #?LA SECUENCIA (Track)
 class Track(Observador):
     def __init__(self):
@@ -12,16 +11,31 @@ class Track(Observador):
     def agregar(self, elemento):
         """Añade el buffer de un Wave o un Time al final del Track."""
         self.buffer = np.concatenate([self.buffer, elemento.buffer])
+    def __add__(self, otro_track):
+        """Mezcla dos tracks completos para que suenen simultáneamente."""
+        nuevo_track = Track()
+        
+        # Buscamos el tamaño máximo y rellenamos el track más corto con silencios
+        max_len = max(len(self.buffer), len(otro_track.buffer))
+        buf1 = np.pad(self.buffer, (0, max_len - len(self.buffer)))
+        buf2 = np.pad(otro_track.buffer, (0, max_len - len(otro_track.buffer)))
+        
+        nuevo_track.buffer = buf1 + buf2
+        return nuevo_track
 
     def __rshift__(self, otro):
         """Permite encadenar (Track >> Wave) o (Track >> Time)."""
         self.agregar(otro)
         return self
 
-    def reproducir(self):
+    def reproducir(self,asincrono=True):
         #!avisa que va a empezar antes de reproducir
-        self.emitir("reproduccion_iniciada") 
-        sd.play(self.buffer, SAMPLE_RATE)
-        sd.wait()
-        #!avisa que va a terminar despues de reproducir
-        self.emitir("reproduccion_terminada")
+        cb_inicio = lambda: self.emitir("reproduccion_iniciada")
+        cb_fin = lambda: self.emitir("reproduccion_terminada")
+        
+        return reproducir_audio(
+            self.buffer, 
+            asincrono=asincrono, 
+            callback_inicio=cb_inicio, 
+            callback_fin=cb_fin
+            )
