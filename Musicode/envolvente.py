@@ -1,6 +1,8 @@
 import numpy as np
-import sounddevice as sd
+
 from Musicode.engine import SAMPLE_RATE
+
+
 #?ENVOLVENTE ADSR (Env)
 class Env:
     def __init__(self, attack_seg: float, decay_seg: float, sustain_vol: float, release_seg: float):

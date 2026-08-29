@@ -1,5 +1,6 @@
 import threading
 
+
 class LightThread:
     def __init__(self, objetivo, *args, **kwargs):
         """

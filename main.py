@@ -1,7 +1,7 @@
-from Musicode.wave import Wave
 from Musicode.envolvente import Env
 from Musicode.time import Time
-from Musicode.track import Track
+from Musicode.wave import Wave
+
 
 def prueba_acordes():
     print("--- INICIANDO PRUEBA DE ACORDES ---")
@@ -32,6 +32,9 @@ def prueba_acordes():
     hilo.esperar()
     
     print("✅ Prueba finalizada.")
+    # Después de reproducir el acorde...
+    print("Exportando el resultado...")
+    pista_final.exportar("acorde_epico.wav")
 
 if __name__ == "__main__":
     prueba_acordes()

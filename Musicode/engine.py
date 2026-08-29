@@ -1,5 +1,8 @@
 import sounddevice as sd
+import soundfile as sf
+
 from Musicode.light_thread import LightThread
+
 SAMPLE_RATE = 44100
 
 def _play_bloqueante(buffer, callback_inicio=None, callback_fin=None):
@@ -26,3 +29,10 @@ def reproducir_audio(buffer, asincrono=True, callback_inicio=None, callback_fin=
     else:
         # Si por alguna razón queremos que bloquee el código (modo clásico)
         _play_bloqueante(buffer, callback_inicio, callback_fin)
+def exportar_wave(buffer, nombre_archivo="salida.wav"):
+    """
+    Toma el arreglo de números y lo guarda en el disco duro como un archivo de audio real.
+    """
+    print(f"Guardando audio en: {nombre_archivo}...")
+    sf.write(nombre_archivo,buffer,SAMPLE_RATE)
+    print("Funcionó :D")

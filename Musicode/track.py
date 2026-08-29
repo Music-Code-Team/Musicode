@@ -1,16 +1,19 @@
 import numpy as np
+
+from Musicode.engine import exportar_wave, reproducir_audio
 from Musicode.eventos import Observador
-from Musicode.engine import SAMPLE_RATE, reproducir_audio
-#?LA SECUENCIA (Track)
+
+
+# ?LA SECUENCIA (Track)
 class Track(Observador):
     def __init__(self):
         # El Track inicia vacío
         super().__init__()
         self.buffer = np.array([], dtype=np.float32)
-
     def agregar(self, elemento):
         """Añade el buffer de un Wave o un Time al final del Track."""
         self.buffer = np.concatenate([self.buffer, elemento.buffer])
+
     def __add__(self, otro_track):
         """Mezcla dos tracks completos para que suenen simultáneamente."""
         nuevo_track = Track()
@@ -29,7 +32,7 @@ class Track(Observador):
         return self
 
     def reproducir(self,asincrono=True):
-        #!avisa que va a empezar antes de reproducir
+        # !avisa que va a empezar antes de reproducir
         cb_inicio = lambda: self.emitir("reproduccion_iniciada")
         cb_fin = lambda: self.emitir("reproduccion_terminada")
         
@@ -39,3 +42,6 @@ class Track(Observador):
             callback_inicio=cb_inicio, 
             callback_fin=cb_fin
             )
+    def exportar(self, nombre_archivo="mi_pista.wav"):
+        """Permite guardar todo el track como un archivo de audio."""
+        exportar_wave(self.buffer, nombre_archivo)
