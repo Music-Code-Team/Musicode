@@ -1,40 +1,68 @@
-from Musicode.envolvente import Env
+from Musicode.light_thread import LightThread
 from Musicode.time import Time
-from Musicode.wave import Wave
+from Musicode.wave import Square
 
+#190 BPM significa 190 negras por minuto. 
+#Para saber cuánto dura un tiempo en segundos, dividimos 60 entre 190.
+BPM = 190
+segundos_por_tiempo = 60 / BPM
 
-def prueba_acordes():
-    print("--- INICIANDO PRUEBA DE ACORDES ---")
-    
-    adsr = Env(attack_seg=0.05, decay_seg=0.1, sustain_vol=0.5, release_seg=0.2)
+# 2. FRECUENCIAS DE LAS NOTAS (En Hercios)
+# Usaremos la 5ta octava para que suene agudo y reconocible.
+t_11_e = 622.25  # Traste 11, cuerda E aguda (Re#)
+t_10_e = 587.33  # Traste 10, cuerda E aguda (Re)
+t_13_B = 523.25  # Traste 13, cuerda B (Do) - Por eso visualmente "sube" de número
+t_10_B = 440.00  # Traste 10, cuerda B (La) - Por eso "baja" de cuerda y número
+t_11_B = 466.16  # Traste 11, cuerda B (La#)
 
-    # 1. Creamos las notas de un Acorde de Do Mayor (Do, Mi, Sol)
-    do = Wave(261.63, 1.0, 0.2, env=adsr)
-    mi = Wave(329.63, 1.0, 0.2, env=adsr)
-    sol = Wave(392.00, 1.0, 0.2, env=adsr)
-    
-    # ¡LA MAGIA DE LA SOBRECARGA!
-    # Sumamos las ondas para crear un acorde
-    acorde_do = do + mi + sol
-    
-    # 2. Creamos una pequeña melodía para acompañar
-    melodia = Wave(523.25, 0.5, 0.2, env=adsr) >> Wave(392.00, 0.5, 0.2, env=adsr)
-    
-    # 3. Armamos la pista final (Track >> Onda >> Track)
-    # Reproducimos el acorde, luego un silencio, y luego el acorde mezclado con la melodía
-    pista_final = acorde_do >> Time(0.5) >> (acorde_do + melodia)
-    
-    print("▶️ Reproduciendo la progresión...")
-    
-    # Ya no necesitamos dos hilos separados, porque las ondas se 
-    # mezclaron matemáticamente en una sola pista maestra.
-    hilo = pista_final.reproducir()
-    hilo.esperar()
-    
-    print("✅ Prueba finalizada.")
-    # Después de reproducir el acorde...
-    print("Exportando el resultado...")
-    pista_final.exportar("acorde_epico.wav")
+# 3. FUNCIONES DE AYUDA
+def nota(frecuencia, tiempos):
+    """Crea una onda cuadrada multiplicando los tiempos por nuestra duración calculada."""
+    # Instanciamos tu clase Square, que elimina el cero central para sonar perfecto[cite: 5]
+    return Square(frecuencia, duracion=(tiempos * segundos_por_tiempo), amplitud=0.4)
 
-if __name__ == "__main__":
-    prueba_acordes()
+def silencio(tiempos):
+    """Crea un arreglo de ceros usando tu clase Time."""
+    # Instanciamos tu clase Time, que asegura que la duración no sea negativa[cite: 3]
+    return Time(duracion=(tiempos * segundos_por_tiempo))
+
+# 4. LA SECUENCIA (Freedom Motif)
+# Aprovechamos el método __rshift__ (>>) que programaste en Time y Wave para encadenar[cite: 3, 5]
+freedom_motive = (
+    # Compás 1
+    nota(t_11_e, 3.0) >>     
+    # Compás 2
+    silencio(0.3)>>
+    nota(t_11_e, 0.5) >> 
+    nota(t_10_e, 0.5) >> 
+    nota(t_11_e, 0.5) >>
+    # Compás 2 final
+    nota(t_13_B, 1.5) >>
+    # Compás 3
+    silencio(0.1) >>
+    
+    # COMPÁS 3 (resto): "Baja a una nota 10 que pasa a una 11"
+    nota(t_10_e, 0.3) >> 
+    nota(t_11_e, 2.0)>>
+    silencio(0.1)>>
+    nota(t_11_e,0.5)>>
+    nota(t_10_e,0.5)>>
+    nota(t_11_B,0.5)>>
+    nota(t_10_B,1)>>
+    nota(t_10_e,1) >> 
+    nota(t_11_e,0.5)>>
+    nota(t_10_e,0.5)>>
+    nota(t_11_e,0.5)>>
+    nota(t_13_B,1.5)>>
+    silencio(0.2)>>
+    nota(t_13_B,0.5)
+)
+
+# 5. EJECUCIÓN
+# Gracias a tu propiedad @buffer.setter en Track, las notas se compilan de forma perezosa al llamar a reproducir
+freedom_motive.reproducir(asincrono=True)
+
+# Guardamos el archivo .wav en el disco[cite: 4]
+hilo = freedom_motive.reproducir()
+hilo.esperar()
+print("✅ ¡Prueba superada!")

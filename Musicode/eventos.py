@@ -9,7 +9,11 @@ class Observador:
         self._suscriptores[evento].append(funcion_callback)
 
     def emitir(self, evento:str, *args, **Kwargs):
-        """Broadcast que el evento ocurrió, ejecutando las funciones"""
+        """Broadcast que el evento ocurrió, ejecutando las funciones de forma segura."""
         if evento in self._suscriptores:
             for funcion in self._suscriptores[evento]:
-                funcion(*args, **Kwargs)
+                # SOLUCIÓN: Aislamos cada ejecución para que un fallo no rompa el ciclo
+                try:
+                    funcion(*args, **Kwargs)
+                except Exception as e:
+                    print(f"⚠️ Error en evento '{evento}': Un suscriptor falló con el error -> {e}")
