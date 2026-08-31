@@ -1,6 +1,6 @@
 from Musicode.light_thread import LightThread
 from Musicode.time import Time
-from Musicode.wave import Square
+from Musicode.wave import Wave
 
 #190 BPM significa 190 negras por minuto. 
 #Para saber cuánto dura un tiempo en segundos, dividimos 60 entre 190.
@@ -19,7 +19,7 @@ t_11_B = 466.16  # Traste 11, cuerda B (La#)
 def nota(frecuencia, tiempos):
     """Crea una onda cuadrada multiplicando los tiempos por nuestra duración calculada."""
     # Instanciamos tu clase Square, que elimina el cero central para sonar perfecto[cite: 5]
-    return Square(frecuencia, duracion=(tiempos * segundos_por_tiempo), amplitud=0.4)
+    return Wave(frecuencia,(tiempos * segundos_por_tiempo),0.4,"square")
 
 def silencio(tiempos):
     """Crea un arreglo de ceros usando tu clase Time."""
