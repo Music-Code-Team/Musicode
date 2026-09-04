@@ -1,25 +1,22 @@
-from CLI.parser import memoria, parser
-from Motor.track import Track
+from CLI.parser import parser
 
-def prueba_ply():
-    # Observa todos los espacios extra, tabulaciones y el comentario
-    codigo_koda = """Wave miPrimerBajo = wave(130hz,500ms,5db,"square"); // Esto es un bajo"""
+def prueba_lenguaje_completo():
+    codigo_koda = """
+    Wave notaFuerte = wave(440hz, 500ms, 0db, "square");
+    Wave notaSuave = wave(659hz, 500ms, -10db, "sin");
     
-    print("Ejecutando script Koda...")
-    # El parser de ply manda a llamar al lexer internamente
-    parser.parse(codigo_koda)
+    // Creamos una pista alternando notas y silencios de 200ms
+    Track miMelodia = [notaFuerte, 200ms, notaSuave, 200ms, notaFuerte * notaSuave];
     
-    print("\nRevisando la memoria de Python:")
-    if 'miPrimerBajo' in memoria:
-        nota = memoria['miPrimerBajo']
-        print(f"Tipo: {nota.tipo}")
-        print(f"Duración en segs: {nota.duracion}")
-        
-        # Opcional: Escuchar el resultado
-        print("Reproduciendo...")
-        pista = nota + nota
-        hilo = pista.reproducir()
-        hilo.esperar()
+    // Le pedimos al motor que lo reproduzca directamente desde el código Koda
+    engine.play(miMelodia);
+    """
+    
+    print("Compilando código Koda...")
+    # Ply ejecutará línea por línea. ¡Ya no necesitas código Python manual!
+    for linea in codigo_koda.strip().split('\n'):
+        if linea.strip() and not linea.strip().startswith('//'):
+            parser.parse(linea.strip())
 
 if __name__ == "__main__":
-    prueba_ply()
+    prueba_lenguaje_completo()
