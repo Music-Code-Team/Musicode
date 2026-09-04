@@ -59,7 +59,7 @@ def t_COMENTARIO(t):
 
 # Manejo de errores
 def t_error(t):
-    print(f"⚠️ Error léxico: Carácter ilegal '{t.value[0]}'")
+    print(f"Error léxico: Carácter ilegal '{t.value[0]}'")
     t.lexer.skip(1)
 
 # Construimos el lexer
