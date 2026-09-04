@@ -1,5 +1,5 @@
 from Musicode.wave import Wave
-from koda_lexer import tokens  # Importamos los tokens del lexer
+from Musicode.lexer import tokens  # Importamos los tokens del lexer
 from ply import yacc 
 
 # Aquí vivirá la memoria de ejecución de Koda
@@ -19,7 +19,7 @@ def p_instruccion_wave(p):
     
     # Inyectamos al motor matemático
     memoria[nombre_var] = Wave(frecuencia, duracion, amplitud, tipo=tipo_onda)
-    print(f"✅ [Intérprete] Se creó la variable '{nombre_var}' ({tipo_onda}, {frecuencia}Hz)")
+    print(f"[Intérprete] Se creó la variable '{nombre_var}' ({tipo_onda}, {frecuencia}Hz)")
 
 # 2. Reglas para leer múltiples argumentos separados por coma
 def p_argumentos_multiple(p):
@@ -60,9 +60,9 @@ def p_argumento(p):
 # 4. Manejo de errores de sintaxis
 def p_error(p):
     if p:
-        print(f"❌ Error de sintaxis cerca de '{p.value}'")
+        print(f"Error de sintaxis cerca de '{p.value}'")
     else:
-        print("❌ Error de sintaxis en el final del archivo")
+        print("Error de sintaxis en el final del archivo")
 
 # Construimos el parser
 parser = yacc.yacc()

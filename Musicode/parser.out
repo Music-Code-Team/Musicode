@@ -1,0 +1,207 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    DIVIDE
+    ENGINE
+    MINUS
+    PLAY
+    PLUS
+    PUNTO
+    TIMES
+    TRACK
+
+Grammar
+
+Rule 0     S' -> instruccion
+Rule 1     instruccion -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA
+Rule 2     argumentos -> argumento COMA argumentos
+Rule 3     argumentos -> argumento
+Rule 4     argumentos -> <empty>
+Rule 5     argumento -> NUMERO
+Rule 6     argumento -> UNIDAD
+Rule 7     argumento -> CADENA
+Rule 8     argumento -> ID
+
+Terminals, with rules where they appear
+
+CADENA               : 7
+COMA                 : 2
+DIVIDE               : 
+ENGINE               : 
+ID                   : 1 8
+IGUAL                : 1
+MINUS                : 
+NUMERO               : 5
+PAREN_DER            : 1
+PAREN_IZQ            : 1
+PLAY                 : 
+PLUS                 : 
+PUNTO                : 
+PUNTOYCOMA           : 1
+TIMES                : 
+TRACK                : 
+UNIDAD               : 6
+WAVE_FUNC            : 1
+WAVE_TYPE            : 1
+error                : 
+
+Nonterminals, with rules where they appear
+
+argumento            : 2 3
+argumentos           : 1 2
+instruccion          : 0
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . instruccion
+    (1) instruccion -> . WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA
+
+    WAVE_TYPE       shift and go to state 2
+
+    instruccion                    shift and go to state 1
+
+state 1
+
+    (0) S' -> instruccion .
+
+
+
+state 2
+
+    (1) instruccion -> WAVE_TYPE . ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA
+
+    ID              shift and go to state 3
+
+
+state 3
+
+    (1) instruccion -> WAVE_TYPE ID . IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA
+
+    IGUAL           shift and go to state 4
+
+
+state 4
+
+    (1) instruccion -> WAVE_TYPE ID IGUAL . WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA
+
+    WAVE_FUNC       shift and go to state 5
+
+
+state 5
+
+    (1) instruccion -> WAVE_TYPE ID IGUAL WAVE_FUNC . PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA
+
+    PAREN_IZQ       shift and go to state 6
+
+
+state 6
+
+    (1) instruccion -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ . argumentos PAREN_DER PUNTOYCOMA
+    (2) argumentos -> . argumento COMA argumentos
+    (3) argumentos -> . argumento
+    (4) argumentos -> .
+    (5) argumento -> . NUMERO
+    (6) argumento -> . UNIDAD
+    (7) argumento -> . CADENA
+    (8) argumento -> . ID
+
+    PAREN_DER       reduce using rule 4 (argumentos -> .)
+    NUMERO          shift and go to state 10
+    UNIDAD          shift and go to state 11
+    CADENA          shift and go to state 12
+    ID              shift and go to state 7
+
+    argumentos                     shift and go to state 8
+    argumento                      shift and go to state 9
+
+state 7
+
+    (8) argumento -> ID .
+
+    COMA            reduce using rule 8 (argumento -> ID .)
+    PAREN_DER       reduce using rule 8 (argumento -> ID .)
+
+
+state 8
+
+    (1) instruccion -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos . PAREN_DER PUNTOYCOMA
+
+    PAREN_DER       shift and go to state 13
+
+
+state 9
+
+    (2) argumentos -> argumento . COMA argumentos
+    (3) argumentos -> argumento .
+
+    COMA            shift and go to state 14
+    PAREN_DER       reduce using rule 3 (argumentos -> argumento .)
+
+
+state 10
+
+    (5) argumento -> NUMERO .
+
+    COMA            reduce using rule 5 (argumento -> NUMERO .)
+    PAREN_DER       reduce using rule 5 (argumento -> NUMERO .)
+
+
+state 11
+
+    (6) argumento -> UNIDAD .
+
+    COMA            reduce using rule 6 (argumento -> UNIDAD .)
+    PAREN_DER       reduce using rule 6 (argumento -> UNIDAD .)
+
+
+state 12
+
+    (7) argumento -> CADENA .
+
+    COMA            reduce using rule 7 (argumento -> CADENA .)
+    PAREN_DER       reduce using rule 7 (argumento -> CADENA .)
+
+
+state 13
+
+    (1) instruccion -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 15
+
+
+state 14
+
+    (2) argumentos -> argumento COMA . argumentos
+    (2) argumentos -> . argumento COMA argumentos
+    (3) argumentos -> . argumento
+    (4) argumentos -> .
+    (5) argumento -> . NUMERO
+    (6) argumento -> . UNIDAD
+    (7) argumento -> . CADENA
+    (8) argumento -> . ID
+
+    PAREN_DER       reduce using rule 4 (argumentos -> .)
+    NUMERO          shift and go to state 10
+    UNIDAD          shift and go to state 11
+    CADENA          shift and go to state 12
+    ID              shift and go to state 7
+
+    argumento                      shift and go to state 9
+    argumentos                     shift and go to state 16
+
+state 15
+
+    (1) instruccion -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA .
+
+    $end            reduce using rule 1 (instruccion -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA .)
+
+
+state 16
+
+    (2) argumentos -> argumento COMA argumentos .
+
+    PAREN_DER       reduce using rule 2 (argumentos -> argumento COMA argumentos .)
+

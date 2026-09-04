@@ -1,10 +1,8 @@
-from koda_parser import parser, memoria
+from Musicode.parser import memoria, parser
 
 def prueba_ply():
     # Observa todos los espacios extra, tabulaciones y el comentario
-    codigo_koda = """
-    Wave    miPrimerBajo =   wave(  130hz, -3db, 500ms, "square"  )   ; // Esto es un bajo
-    """
+    codigo_koda = """Wave miPrimerBajo = wave(130hz,-3db,500ms,"square"); // Esto es un bajo"""
     
     print("Ejecutando script Koda...")
     # El parser de ply manda a llamar al lexer internamente
