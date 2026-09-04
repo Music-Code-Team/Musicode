@@ -1,0 +1,14 @@
+// La envolvente es una modificación que se añade para naturalizar el sonido
+// Envelope.new(Attack, Decay, Sustain_Level, Release)
+Envelope envViolin = Envelope.new(200ms, 50ms, 0.8, 300ms);
+Envelope envPluck  = Envelope.new(10ms, 100ms, 0.0, 50ms);
+
+// Creamos la onda con la envolvente
+Wave notaDo = wave(400hz, 20db, 1seg, "sin").envelope(envViolin);
+
+Track melodiaViolin = [notaDo, 300ms, notaLa]
+melodiaViolin = melodiaViolin.envelope(envViolin)
+Track melodiaViolin = Track.new(partitura).envelope(envViolin)
+
+engine.play(notaDo);
+engine.play(melodiaViolin);
