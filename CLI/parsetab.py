@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'CADENA COMA DIVIDE ENGINE ID IGUAL MINUS NUMERO PAREN_DER PAREN_IZQ PLAY PLUS PUNTO PUNTOYCOMA TIMES TRACK UNIDAD WAVE_FUNC WAVE_TYPEinstruccion : WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMAargumentos : argumento COMA argumentosargumentos : argumentoargumentos : argumento : NUMERO\n| UNIDAD\n| CADENA\n| ID'
+_lr_signature = 'CADENA COMA DIVIDE ENGINE ID IGUAL MINUS NUMERO PAREN_DER PAREN_IZQ PLAY PLUS PUNTO PUNTOYCOMA TIMES TRACK UNIDAD WAVE_FUNC WAVE_TYPEinstruccion : WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMAargumentos : argumento COMA argumentosargumentos : argumentoargumentos : argumento : MINUS NUMERO\n| MINUS UNIDADargumento : NUMERO\n| UNIDAD\n| CADENA\n| ID'
     
-_lr_action_items = {'WAVE_TYPE':([0,],[2,]),'$end':([1,15,],[0,-1,]),'ID':([2,6,14,],[3,7,7,]),'IGUAL':([3,],[4,]),'WAVE_FUNC':([4,],[5,]),'PAREN_IZQ':([5,],[6,]),'PAREN_DER':([6,7,8,9,10,11,12,14,16,],[-4,-8,13,-3,-5,-6,-7,-4,-2,]),'NUMERO':([6,14,],[10,10,]),'UNIDAD':([6,14,],[11,11,]),'CADENA':([6,14,],[12,12,]),'COMA':([7,9,10,11,12,],[-8,14,-5,-6,-7,]),'PUNTOYCOMA':([13,],[15,]),}
+_lr_action_items = {'WAVE_TYPE':([0,],[2,]),'$end':([1,18,],[0,-1,]),'ID':([2,6,15,],[3,7,7,]),'IGUAL':([3,],[4,]),'WAVE_FUNC':([4,],[5,]),'PAREN_IZQ':([5,],[6,]),'PAREN_DER':([6,7,8,9,11,12,13,15,16,17,19,],[-4,-10,14,-3,-7,-8,-9,-4,-5,-6,-2,]),'MINUS':([6,15,],[10,10,]),'NUMERO':([6,10,15,],[11,16,11,]),'UNIDAD':([6,10,15,],[12,17,12,]),'CADENA':([6,15,],[13,13,]),'COMA':([7,9,11,12,13,16,17,],[-10,15,-7,-8,-9,-5,-6,]),'PUNTOYCOMA':([14,],[18,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'instruccion':([0,],[1,]),'argumentos':([6,14,],[8,16,]),'argumento':([6,14,],[9,9,]),}
+_lr_goto_items = {'instruccion':([0,],[1,]),'argumentos':([6,15,],[8,19,]),'argumento':([6,15,],[9,9,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -31,8 +31,10 @@ _lr_productions = [
   ('argumentos -> argumento COMA argumentos','argumentos',3,'p_argumentos_multiple','parser.py',26),
   ('argumentos -> argumento','argumentos',1,'p_argumentos_single','parser.py',30),
   ('argumentos -> <empty>','argumentos',0,'p_argumentos_empty','parser.py',34),
-  ('argumento -> NUMERO','argumento',1,'p_argumento','parser.py',39),
-  ('argumento -> UNIDAD','argumento',1,'p_argumento','parser.py',40),
-  ('argumento -> CADENA','argumento',1,'p_argumento','parser.py',41),
-  ('argumento -> ID','argumento',1,'p_argumento','parser.py',42),
+  ('argumento -> MINUS NUMERO','argumento',2,'p_argumento_negativo','parser.py',38),
+  ('argumento -> MINUS UNIDAD','argumento',2,'p_argumento_negativo','parser.py',39),
+  ('argumento -> NUMERO','argumento',1,'p_argumento','parser.py',55),
+  ('argumento -> UNIDAD','argumento',1,'p_argumento','parser.py',56),
+  ('argumento -> CADENA','argumento',1,'p_argumento','parser.py',57),
+  ('argumento -> ID','argumento',1,'p_argumento','parser.py',58),
 ]

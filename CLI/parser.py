@@ -1,5 +1,5 @@
-from Musicode.wave import Wave
-from Musicode.lexer import tokens  # Importamos los tokens del lexer
+from Motor.wave import Wave
+from CLI.lexer import tokens  # Importamos los tokens del lexer
 from ply import yacc 
 
 # Aquí vivirá la memoria de ejecución de Koda
@@ -10,11 +10,10 @@ def p_instruccion_wave(p):
     'instruccion : WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA'
     nombre_var = p[2]
     args = p[6]
-    
     # Valores por defecto si el usuario no pone todos los argumentos
     frecuencia = args[0] if len(args) > 0 else 440.0
-    amplitud = args[1] if len(args) > 1 else 0.5
-    duracion = args[2] if len(args) > 2 else 1.0
+    duracion = args[1] if len(args) > 1 else 0.5
+    amplitud = args[2] if len(args) > 2 else 1.0
     tipo_onda = args[3] if len(args) > 3 else "sin"
     
     # Inyectamos al motor matemático
@@ -33,7 +32,23 @@ def p_argumentos_single(p):
 def p_argumentos_empty(p):
     'argumentos : '
     p[0] = []
-
+# 3. Traductor de Azúcar Sintáctico (Valores Negativos)
+def p_argumento_negativo(p):
+    '''argumento : MINUS NUMERO
+                 | MINUS UNIDAD'''
+    valor = p[2]
+    if isinstance(valor, str):
+        if 'hz' in valor:
+            p[0] = -float(valor.replace('hz', ''))
+        elif 'ms' in valor:
+            p[0] = -float(valor.replace('ms', '')) / 1000.0
+        elif 'seg' in valor:
+            p[0] = -float(valor.replace('seg', ''))
+        elif 'db' in valor:
+            db = -float(valor.replace('db', ''))
+            p[0] = min(1.0, 10 ** (db / 20.0))
+    else:
+        p[0] = -valor # Es un número flotante normal
 # 3. Traductor de Azúcar Sintáctico
 def p_argumento(p):
     '''argumento : NUMERO

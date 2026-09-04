@@ -1,8 +1,8 @@
 import numpy as np
 
-from Musicode.engine import SAMPLE_RATE
-from Musicode.envolvente import Env
-from Musicode.track import Track
+from Motor.engine import SAMPLE_RATE
+from Motor.envolvente import Env
+from Motor.track import Track
 
 
 class Wave:
@@ -10,6 +10,8 @@ class Wave:
         self.frecuencia = frecuencia
         self.duracion = duracion
         self.amplitud = amplitud
+        print("tipo")
+        print(tipo)
         self.tipo = tipo.lower()
         
         # Si la onda ya viene pre-calculada matemáticamente (ej. por sumar acordes)

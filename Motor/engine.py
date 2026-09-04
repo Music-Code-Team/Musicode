@@ -1,7 +1,7 @@
 import sounddevice as sd
 import soundfile as sf
 
-from Musicode.light_thread import LightThread
+from Motor.light_thread import LightThread
 
 SAMPLE_RATE = 44100
 

@@ -1,6 +1,6 @@
 import numpy as np
 
-from Musicode.engine import SAMPLE_RATE
+from Motor.engine import SAMPLE_RATE
 
 
 #?ENVOLVENTE ADSR (Env)

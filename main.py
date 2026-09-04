@@ -1,8 +1,9 @@
-from Musicode.parser import memoria, parser
+from CLI.parser import memoria, parser
+from Motor.track import Track
 
 def prueba_ply():
     # Observa todos los espacios extra, tabulaciones y el comentario
-    codigo_koda = """Wave miPrimerBajo = wave(130hz,-3db,500ms,"square"); // Esto es un bajo"""
+    codigo_koda = """Wave miPrimerBajo = wave(130hz,500ms,5db,"square"); // Esto es un bajo"""
     
     print("Ejecutando script Koda...")
     # El parser de ply manda a llamar al lexer internamente
@@ -15,8 +16,10 @@ def prueba_ply():
         print(f"Duración en segs: {nota.duracion}")
         
         # Opcional: Escuchar el resultado
-        print("▶️ Reproduciendo...")
-        (nota >> nota).reproducir().esperar()
+        print("Reproduciendo...")
+        pista = nota + nota
+        hilo = pista.reproducir()
+        hilo.esperar()
 
 if __name__ == "__main__":
     prueba_ply()
