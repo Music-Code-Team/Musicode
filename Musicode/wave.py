@@ -53,33 +53,24 @@ class Wave:
         return onda.astype(np.float32)
 
     def __add__(self, otra_onda):
-        """Suma (Mix) para acordes."""
-        max_len = max(len(self.buffer), len(otra_onda.buffer))
-        buf1 = np.pad(self.buffer, (0, max_len - len(self.buffer)))
-        buf2 = np.pad(otra_onda.buffer, (0, max_len - len(otra_onda.buffer)))
-        
-        nueva_duracion = max_len / SAMPLE_RATE
-        suma = buf1 + buf2
-        suma_segura = np.clip(suma, -1.0, 1.0)
-        
-        # Devolvemos una instancia de sí misma, usando el parámetro especial buffer
-        return Wave(duracion=nueva_duracion, tipo="mixed", buffer=suma_segura)
-
-    def __mul__(self, factor: float):
-        """Modula la amplitud (volumen) de la onda."""
-        if not isinstance(factor, (int, float)):
-            raise TypeError("Error: Solo se puede multiplicar la onda por un número.")
-            
-        buffer_modulado = self.buffer * factor
-        buffer_seguro = np.clip(buffer_modulado, -1.0, 1.0)
-        
-        return Wave(duracion=self.duracion, tipo="mixed", buffer=buffer_seguro)
-
-    __rmul__ = __mul__
-
-    def __rshift__(self, otro):
-        """Secuenciación de Tracks."""
+        """Concatena (Secuencia) creando un nuevo Track."""
         nuevo_track = Track()
         nuevo_track.agregar(self)
-        nuevo_track.agregar(otro)
+        nuevo_track.agregar(otra_onda)
         return nuevo_track
+
+    def __mul__(self, otro):
+        """Polifonía/Acorde si es otra onda, o Modulación si es un número."""
+        if isinstance(otro, (int, float)):
+            # Modulación de volumen (por ahora)
+            buffer_modulado = self.buffer * otro
+            return Wave(duracion=self.duracion, tipo="mixed", buffer=np.clip(buffer_modulado, -1.0, 1.0))
+            
+        # Mezcla de audios (Polifonía)
+        max_len = max(len(self.buffer), len(otro.buffer))
+        buf1 = np.pad(self.buffer, (0, max_len - len(self.buffer)))
+        buf2 = np.pad(otro.buffer, (0, max_len - len(otro.buffer)))
+        
+        nueva_duracion = max_len / SAMPLE_RATE
+        suma_segura = np.clip(buf1 + buf2, -1.0, 1.0)
+        return Wave(duracion=nueva_duracion, tipo="mixed", buffer=suma_segura)

@@ -34,30 +34,26 @@ class Track(Observador):
         """Añade el buffer a la lista de espera sin hacer copias de memoria pesadas."""
         self._fragmentos.append(elemento.buffer)
 
-    def __add__(self, otro_track):
-        """Mezcla dos tracks completos para que suenen simultáneamente."""
+    def __add__(self, otro):
+        """Concatena tracks (Secuencia)."""
         nuevo_track = Track()
-        
-        # Al llamar a .buffer aquí, los tracks se compilarán automáticamente si tenían notas pendientes
-        max_len = max(len(self.buffer), len(otro_track.buffer))
-        buf1 = np.pad(self.buffer, (0, max_len - len(self.buffer)))
-        buf2 = np.pad(otro_track.buffer, (0, max_len - len(otro_track.buffer)))
-        
-        # Usamos el @buffer.setter que creamos arriba
-        suma = buf1 + buf2
-        nuevo_track.buffer = np.clip(suma,-1.0,1.0)
+        nuevo_track._fragmentos = list(self._fragmentos)
+        nuevo_track.agregar(otro)
         return nuevo_track
 
-    def __rshift__(self, otro):
-        """Permite encadenar devolviendo un Track NUEVO (Inmutabilidad estricta)."""
+    def __mul__(self, otro):
+        """Acordes/Mezcla si es Track/Wave, Volumen si es número."""
+        if isinstance(otro, (int, float)):
+            nuevo_track = Track()
+            buffer_modulado = self.buffer * otro
+            nuevo_track.buffer = np.clip(buffer_modulado, -1.0, 1.0)
+            return nuevo_track
+            
         nuevo_track = Track()
-        
-        # Copiamos la lista de fragmentos de la pista actual
-        nuevo_track._fragmentos = list(self._fragmentos)
-        
-        # Añadimos el nuevo elemento a la copia
-        nuevo_track.agregar(otro)
-        
+        max_len = max(len(self.buffer), len(otro.buffer))
+        buf1 = np.pad(self.buffer, (0, max_len - len(self.buffer)))
+        buf2 = np.pad(otro.buffer, (0, max_len - len(otro.buffer)))
+        nuevo_track.buffer = np.clip(buf1 + buf2, -1.0, 1.0)
         return nuevo_track
 
     def reproducir(self, asincrono=True):

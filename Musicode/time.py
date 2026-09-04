@@ -14,8 +14,8 @@ class Time:
         # Un silencio no es más que un arreglo de ceros
         self.buffer = np.zeros(total_samples, dtype=np.float32)
 
-    def __rshift__(self, otro):
-        """Sobrecarga del operador >> para iniciar un Track con un Silencio."""
+    def __add__(self, otro):
+        """Sobrecarga del operador de suma para iniciar un Track con un Silencio."""
         nuevo_track = Track()
         nuevo_track.agregar(self)
         nuevo_track.agregar(otro)
