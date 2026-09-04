@@ -1,0 +1,124 @@
+
+Imperativo (Avanzado):
+------------------------------------------[ Hola Mundo ]------------------------------------------
+String mensaje = "Hola Mundo";
+
+print("Hola Mundo");
+engine.print(mensaje); // azúcar sintetico = print();
+
+Wave notaDo = wave(400hz, 20db, 0.3, "sin");
+Wave notaLa = wave(200hz, 20db, 0.3, "sin");
+Wave notaDo = wave(400hz, 20db, 0.3);  // Si no se especifica, se usa sin por defecto
+
+engine.play(notaLa)
+engine.play(notaDo)
+
+engine.play(notaLa + notaDo) // Concatena las melodías (n1.duration = 5seg, n2.duration = 5seg, n1+n2 = 10seg)
+engine.play(notaLa - notaDo) // Ni idea
+engine.play(notaLa * notaDo) // Crea un acorde (Polifonía/Suena al mismo tiempo)
+engine.play(notaLa / notaDo) // Extrae el sonido?
+engine.play(notaLa*2)        // Sube la nota una octava (200hz *2 = 800hz)
+engine.play(notaLa/2)        // Baja la nota una octava (200hz /2 = 400hz)
+
+engine.show(notaLa) // Abre una ventana con una visualización de la nota
+
+------------------------------------------[ Listas ]------------------------------------------
+Array mensajes = ["hola", "como", "estás", " ", "que", "tal", "adios"];
+Array partitura2 = [
+	notaDo,
+	300ms,
+	notaDo,
+	500ms,
+	notaDo,
+	1seg,
+	notaDo
+];
+Track melodia = Track.new(partitura);
+Track melodia2 = [
+	notaDo,
+	300ms,
+	notaDo,
+	500ms,
+	notaDo,
+	1seg,
+	notaDo
+];
+
+engine.play(melodia2+melodia) // Concatena las tracks (t1 = [notaA], t2 = [notaB], t1+t2 = [notaA, notaB], t2+t1 = [notaB, notaA])
+engine.play(melodia2*melodia) // Combina las melodías por indice (t1 = [notaA], t2= [notaB, notaC], t1*t2 = [notaA+notaB, notaC])
+engine.play(melodia2/melodia) // Extrae las melodías por indice (t1 = [notaA], t2= [notaB, notaC], t1/t2 = [notaA+notaB, notaC])
+
+/* WIP
+melodia2.addEffect(); // No me acuerdo que era esto
+melodia2.setBPM(120);
+melodia2.export("alarma.wav");
+*/
+
+------------------------------------------[ Funciones ]------------------------------------------
+// Por ahora manejaremos Scopes estrictos sin variables globales
+
+int global = 10;
+void func(global){ // Correcto
+	print(global)
+}
+
+voif func(){
+	print(global) // Error
+}
+
+int func suma(int num1, int num2){
+	return(num1+num2)
+}
+void func reproducir(){
+	engine.play(melodia2)
+}
+
+Coroutine hiloMelodia2 = Coroutine.new(reproducir);
+Coroutine hiloMelodia2 = Coroutine.new(() => {
+	engine.play(notaDo)	
+});
+
+------------------------------------------[ Bucles ]------------------------------------------
+
+for(i in 1..4){ 
+    engine.play(notaDo)
+}
+for nota in melodia2 { 
+    engine.play(notaDo)
+}
+
+repeat(4){
+	engine.play(notaDo)
+}
+
+int cont = 0;
+bool shouldClose = false
+repeat(){ //reproduce infinitamente si no tiene parametro
+	engine.play(notaDo);
+	cont++
+	if(cont==100){
+		break; // Ejemplo en caso de cierre
+	}
+}
+cont = 0
+while(cont < 100){
+	cont++
+	engine.play(notaDo);
+}
+
+------------------------------------------[ Misc ]------------------------------------------
+// La envolvente es una modificación que se añade para naturalizar el sonido
+// Envelope.new(Attack, Decay, Sustain_Level, Release)
+Envelope envViolin = Envelope.new(200ms, 50ms, 0.8, 300ms);
+Envelope envPluck  = Envelope.new(10ms, 100ms, 0.0, 50ms);
+
+// Creamos la onda con la envolvente
+Wave notaDo = wave(400hz, 20db, 1seg, "sin").envelope(envViolin);
+
+Track melodiaViolin = [notaDo, 300ms, notaLa]
+melodiaViolin = melodiaViolin.envelope(envViolin)
+Track melodiaViolin = Track.new(partitura).envelope(envViolin)
+
+engine.play(notaDo);
+engine.play(melodiaViolin);
+
