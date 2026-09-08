@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'CADENA COMA DIVIDE ENGINE ID IGUAL MINUS NUMERO PAREN_DER PAREN_IZQ PLAY PLUS PUNTO PUNTOYCOMA TIMES TRACK UNIDAD WAVE_FUNC WAVE_TYPEinstruccion : WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMAargumentos : argumento COMA argumentosargumentos : argumentoargumentos : argumento : NUMERO\n| UNIDAD\n| CADENA\n| ID'
+_lr_signature = 'CADENA COMA CORCHETE_DER CORCHETE_IZQ DIVIDE ENGINE ID IGUAL MINUS NUMERO PAREN_DER PAREN_IZQ PLAY PLUS PUNTO PUNTOYCOMA TIMES TRACK UNIDAD WAVE_FUNC WAVE_TYPEinstruccion : instruccion_wave\n| instruccion_track\n| instruccion_playinstruccion_wave : WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMAinstruccion_track : TRACK ID IGUAL CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMAinstruccion_play : ENGINE PUNTO PLAY PAREN_IZQ expresion PAREN_DER PUNTOYCOMAexpresion : ID\n| UNIDAD\n| expresion PLUS expresion\n| expresion TIMES expresionlista_elementos : expresion COMA lista_elementos\n| expresionargumentos : argumento COMA argumentosargumentos : argumentoargumentos : argumento : MINUS NUMERO\n| MINUS UNIDADargumento : NUMERO\n| UNIDAD\n| CADENA\n| ID'
     
-_lr_action_items = {'WAVE_TYPE':([0,],[2,]),'$end':([1,15,],[0,-1,]),'ID':([2,6,14,],[3,7,7,]),'IGUAL':([3,],[4,]),'WAVE_FUNC':([4,],[5,]),'PAREN_IZQ':([5,],[6,]),'PAREN_DER':([6,7,8,9,10,11,12,14,16,],[-4,-8,13,-3,-5,-6,-7,-4,-2,]),'NUMERO':([6,14,],[10,10,]),'UNIDAD':([6,14,],[11,11,]),'CADENA':([6,14,],[12,12,]),'COMA':([7,9,10,11,12,],[-8,14,-5,-6,-7,]),'PUNTOYCOMA':([13,],[15,]),}
+_lr_action_items = {'WAVE_TYPE':([0,],[5,]),'TRACK':([0,],[6,]),'ENGINE':([0,],[7,]),'$end':([1,2,3,4,39,43,44,],[0,-1,-2,-3,-5,-6,-4,]),'ID':([5,6,15,16,17,31,32,33,36,],[8,9,18,18,23,18,18,18,23,]),'PUNTO':([7,],[10,]),'IGUAL':([8,9,],[11,12,]),'PLAY':([10,],[13,]),'WAVE_FUNC':([11,],[14,]),'CORCHETE_IZQ':([12,],[15,]),'PAREN_IZQ':([13,14,],[16,17,]),'UNIDAD':([15,16,17,26,31,32,33,36,],[21,21,28,38,21,21,21,28,]),'PAREN_DER':([17,18,21,22,23,24,25,27,28,29,36,37,38,41,42,45,],[-15,-7,-8,34,-21,35,-14,-18,-19,-20,-15,-16,-17,-9,-10,-13,]),'MINUS':([17,36,],[26,26,]),'NUMERO':([17,26,36,],[27,37,27,]),'CADENA':([17,36,],[29,29,]),'COMA':([18,20,21,23,25,27,28,29,37,38,41,42,],[-7,31,-8,-21,36,-18,-19,-20,-16,-17,-9,-10,]),'PLUS':([18,20,21,22,41,42,],[-7,32,-8,32,32,32,]),'TIMES':([18,20,21,22,41,42,],[-7,33,-8,33,33,33,]),'CORCHETE_DER':([18,19,20,21,40,41,42,],[-7,30,-12,-8,-11,-9,-10,]),'PUNTOYCOMA':([30,34,35,],[39,43,44,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'instruccion':([0,],[1,]),'argumentos':([6,14,],[8,16,]),'argumento':([6,14,],[9,9,]),}
+_lr_goto_items = {'instruccion':([0,],[1,]),'instruccion_wave':([0,],[2,]),'instruccion_track':([0,],[3,]),'instruccion_play':([0,],[4,]),'lista_elementos':([15,31,],[19,40,]),'expresion':([15,16,31,32,33,],[20,22,20,41,42,]),'argumentos':([17,36,],[24,45,]),'argumento':([17,36,],[25,25,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,12 +27,25 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> instruccion","S'",1,None,None,None),
-  ('instruccion -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA','instruccion',8,'p_instruccion_wave','parser.py',10),
-  ('argumentos -> argumento COMA argumentos','argumentos',3,'p_argumentos_multiple','parser.py',26),
-  ('argumentos -> argumento','argumentos',1,'p_argumentos_single','parser.py',30),
-  ('argumentos -> <empty>','argumentos',0,'p_argumentos_empty','parser.py',34),
-  ('argumento -> NUMERO','argumento',1,'p_argumento','parser.py',39),
-  ('argumento -> UNIDAD','argumento',1,'p_argumento','parser.py',40),
-  ('argumento -> CADENA','argumento',1,'p_argumento','parser.py',41),
-  ('argumento -> ID','argumento',1,'p_argumento','parser.py',42),
+  ('instruccion -> instruccion_wave','instruccion',1,'p_instrucciones','parser.py',10),
+  ('instruccion -> instruccion_track','instruccion',1,'p_instrucciones','parser.py',11),
+  ('instruccion -> instruccion_play','instruccion',1,'p_instrucciones','parser.py',12),
+  ('instruccion_wave -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA','instruccion_wave',8,'p_instruccion_wave','parser.py',17),
+  ('instruccion_track -> TRACK ID IGUAL CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMA','instruccion_track',7,'p_instruccion_track','parser.py',29),
+  ('instruccion_play -> ENGINE PUNTO PLAY PAREN_IZQ expresion PAREN_DER PUNTOYCOMA','instruccion_play',7,'p_instruccion_play','parser.py',40),
+  ('expresion -> ID','expresion',1,'p_expresion','parser.py',51),
+  ('expresion -> UNIDAD','expresion',1,'p_expresion','parser.py',52),
+  ('expresion -> expresion PLUS expresion','expresion',3,'p_expresion','parser.py',53),
+  ('expresion -> expresion TIMES expresion','expresion',3,'p_expresion','parser.py',54),
+  ('lista_elementos -> expresion COMA lista_elementos','lista_elementos',3,'p_lista_elementos','parser.py',74),
+  ('lista_elementos -> expresion','lista_elementos',1,'p_lista_elementos','parser.py',75),
+  ('argumentos -> argumento COMA argumentos','argumentos',3,'p_argumentos_multiple','parser.py',82),
+  ('argumentos -> argumento','argumentos',1,'p_argumentos_single','parser.py',86),
+  ('argumentos -> <empty>','argumentos',0,'p_argumentos_empty','parser.py',90),
+  ('argumento -> MINUS NUMERO','argumento',2,'p_argumento_negativo','parser.py',94),
+  ('argumento -> MINUS UNIDAD','argumento',2,'p_argumento_negativo','parser.py',95),
+  ('argumento -> NUMERO','argumento',1,'p_argumento','parser.py',111),
+  ('argumento -> UNIDAD','argumento',1,'p_argumento','parser.py',112),
+  ('argumento -> CADENA','argumento',1,'p_argumento','parser.py',113),
+  ('argumento -> ID','argumento',1,'p_argumento','parser.py',114),
 ]

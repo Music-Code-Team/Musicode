@@ -1,7 +1,7 @@
 import numpy as np
 
-from Musicode.engine import exportar_wave, reproducir_audio
-from Musicode.eventos import Observador
+from Motor.engine import exportar_wave, reproducir_audio
+from Motor.eventos import Observador
 
 
 # ?LA SECUENCIA (Track)

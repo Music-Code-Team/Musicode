@@ -13,10 +13,12 @@ reservadas = {
 tokens = [
     'ID', 'UNIDAD', 'NUMERO', 'CADENA',
     'IGUAL', 'PAREN_IZQ', 'PAREN_DER', 'PUNTOYCOMA', 'COMA', 'PUNTO',
-    'PLUS', 'MINUS', 'TIMES', 'DIVIDE'
+    'PLUS', 'MINUS', 'TIMES', 'DIVIDE','CORCHETE_IZQ','CORCHETE_DER'
 ] + list(reservadas.values())
 
 # 3. Expresiones regulares simples
+t_CORCHETE_IZQ = r'\['
+t_CORCHETE_DER = r'\]'
 t_IGUAL = r'='
 t_PAREN_IZQ = r'\('
 t_PAREN_DER = r'\)'

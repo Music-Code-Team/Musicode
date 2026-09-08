@@ -1,7 +1,7 @@
 import numpy as np
 
-from Musicode.engine import SAMPLE_RATE
-from Musicode.track import Track
+from Motor.engine import SAMPLE_RATE
+from Motor.track import Track
 
 
 #?EL SILENCIO (Time)
