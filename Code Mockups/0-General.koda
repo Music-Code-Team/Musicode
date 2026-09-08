@@ -1,0 +1,239 @@
+------------------------------------------[ Clases Nativas ]------------------------------------------
+-- Clasicas --
+int: // lo dejo en minúscula? me da toc
+String:
+	String mensaje = "Hola Mundo";
+float:
+Array: // requiere definir si los Arrays requieren especificar el tipo de dato y si funcionaran como Listas o como Arrays
+	Array mensajes = ["hola", "como", "estás", " ", "que", "tal", "adios"];
+	Array partitura = [
+		notaDo,
+		300ms,
+		notaDo,
+		500ms,
+		notaDo,
+		1seg,
+		notaDo
+	];
+
+-- Nuevas --
+Time:
+	Un tipo de dato que representa la espera, se puede inicializar con la duración númerica y la magnitud (número:magnitud, 300ms/20s, 0.5h)
+
+Frequency:
+	Un tipo de dato que representa la frecuencia, acepta terminos músicales como "A1, Do2," o matematicos "400hz"
+Volumen:
+	Un tipo de dato que representa el volumen, acepta terminos como decibelios y númericos flotantes (100.43/20db/200)
+Waves:
+	Wave notaA = wave(400hz, 20db, 0.3, "sin");
+	Wave notaB = wave(A1, 30db, 0.3, "saw");
+	Wave notaC = wave(Do4, 20db, 0.5, "sin");
+	Wave notaD = wave(A4, 20db, 0.3);  // Si no se especifica, se usa "sin" por defecto
+	/*
+		"sin" = Onda Senoideal (Tiene una curva parabolica)
+		"saw" = Onda Cierra    (Tiene una pendiente aguda y un corte brusco)
+		"tri" = Onda Triangulo (Tiene una subida y bajada afilada)
+		"sqa" = Onda Cuadrada  (Tiene Subidas y Bajadas abruptas)
+	*/
+
+	// -- [ Sobrecarga de Operadores - WAVES ] --
+		wave(400hz, 2s).duration(newTime:10s, "set/add/remove") = wave(400hz, 10s/12s/-8s) //Tiempo negativo? quizás invertir la onda "-wave"?
+		wave(30hz).frequency(40hz, "set/add/remove") = wave(40/70/-10hz) //Frecuencia Negativa?
+		wave(400hz, 20db).volume(10db, "set/add/remove") = = wave(400hz, 10db/30db/-10db) //Volumen Negativo?
+
+	-- [ Sobrecarga de Operadores - WAVES ] --
+	// Nota visual: 'A & B' significa que las ondas A y B suenan juntas (Acorde/Polifonía).
+		conc:
+		wave(400hz 1s) .. wave(300hz, 1s) = wave(400hz, 300hz, 2s) //Las ondas se concatenan, formando una nota más larga ("s" + "a" = "sa")
+		wave(400hz 1s) .. 400hz = wave(400hz, 400hz, 2s) //Forma una onda "default" y la concatenan
+		
+		unc?:
+		wave(400hz 1s) (?) wave(300hz, 1s) = wave(400hz, 300hz, 2s) //No se¿ ;-;
+		
+		suma:
+		//Junta ambas ondas para causar polifonía o una Onda Compuesta (Ambas frecuencias sonando al mismo tiempo)
+		wave(400hz 1s) + wave(300hz, 1s) = wave(400hz&300hz) 
+
+		resta:
+		wave(400hz) - wave(300hz) //Cancelación de Frecuencias (Util si tienes varias ondas complejas que quieres cancelar)
+
+		multi?:
+		wave(400hz 1s) * wave(300hz, 1s) //Ring Modulation
+		// Modificación de atributos?
+		wave(500hz 10db) * 2 = wave(500hz, 20db)
+		wave(500hz 1s) * 200hz = wave(1000hz 1s)
+		wave(400hz 2s) * 3s = wave(700hz 6s)
+
+		div: // Prohibir
+
+Tracks:
+	Track pistaViolin = Track.new([notaDo, 200ms, 400Hz, Do2]);
+	Track pistaGuitarra = [
+		notaDo,
+		wave(400hz, 20db, 0.3, "sin"),
+		300ms,
+		notaLa,
+		500ms,
+		notaDo,
+		1seg,
+		notaDo
+	];
+	Track pista2 = Track.new(frq:30hz, pattern:"X . . . X . . . X X", beat:30bpm, sync:"loop")
+	Track pista3 = Track.new(A4, "X . . . X . . . X X", 60bpm, "stretch")
+	Track pista3 = Track.new(La2, "X . . . X . . . X X", 20bpm, "stretch")
+
+	-- [ Modificación de Operadores - TRACKS ] --
+	[WIP]
+
+	-- [ Sobrecarga de Operadores - TRACKS ] --
+	// Nota visual: 'A & B' significa que las ondas A y B suenan juntas (Acorde/Polifonía).
+
+	Sum:
+		// 1. Polifonía simple (Mismos BPM, mismo tamaño)
+		pista1(30bpm) + pista2(30bpm) 
+		// [10Hz, 20Hz] + [30Hz, 40Hz] = [10Hz & 30Hz, 20Hz & 40Hz]
+
+		// 2. Colisión de BPM: Lógica "stretch" (El motor estira la pista 2 para que coincida en tamaño)
+		pista1(30bpm) + pista2(60bpm, "stretch") 
+		// [10Hz, 20Hz, 30Hz] + [40Hz, 50Hz] 
+		// = [10Hz & 40Hz, 20Hz & ~45Hz, 30Hz & 50Hz] (Interpola la pista estirada)
+
+		// 3. Colisión de BPM: Lógica "loop" (El motor repite la pista 2 para rellenar)
+		pista1(30bpm) + pista2(60bpm, "loop") 
+		// [10Hz, 20Hz, 30Hz] + [40Hz, 50Hz] 
+		// = [10Hz & 40Hz, 20Hz & 50Hz, 30Hz & 40Hz] (El 40Hz vuelve a empezar)
+
+		pista1(60bpm) + pista2(30bpm, "stretch") 
+		// [10Hz, 20Hz] + [30Hz, 40Hz, 50Hz] 
+		// = [10Hz & ~35Hz, 20Hz & ~45Hz] (Comprime la pista 2 para que quepa)
+
+		pista1(60bpm) + pista2(30bpm, "loop") 
+		// [10Hz, 20Hz] + [30Hz, 40Hz, 50Hz] 
+		// = [10Hz & 30Hz, 20Hz & 40Hz] (La pista 2 se corta porque la pista 1 se acabó)
+
+
+-- [ Alternativas seguras para tipos mixtos (Métodos explícitos) ] --
+
+    // En lugar de: pista1 + Wave(30hz) (Ilegal por Tipos Mixtos)
+    // Usamos concatenación directa convirtiendo la onda a Track:
+    pista1 .. [Wave(30hz)] 
+    
+    // En lugar de: pista1 + 2s (Ilegal por Tipos Mixtos)
+    // Usamos métodos explícitos para mutar el tiempo del Track:
+    pista1.addDuration(2seg)
+
+		
+
+
+Envelope:
+Coroutine:
+/*
+Ocupamos una clase "Config" que funcione como un diccionario que se pueda aplicar y solo tocar notas (Como instrumentos)
+Ejemplo:
+	Config violinConfig = import(violin.koda)
+	Track melod = pattern("X . X . . X").use(violinConfig)
+*/
+
+------------------------------------------[ Objetos ]------------------------------------------
+
+Engine:
+	print("Hola Mundo");
+	engine.play() //Acepta Buffers de Audio que enviará al Dispositivo de Audio
+	engine.print() //Imprime en consola en forma de texto el contenido
+
+	engine.play(notaLa + notaDo) // Concatena las melodías (n1.duration = 5seg, n2.duration = 5seg, n1+n2 = 10seg)
+	engine.play(notaLa - notaDo) // Ni idea
+	engine.play(notaLa * notaDo) // Crea un acorde (Polifonía/Suena al mismo tiempo)
+	engine.play(notaLa / notaDo) // Extrae el sonido?
+	engine.play(notaLa*2)        // Sube la nota una octava (200hz *2 = 800hz)
+	engine.play(notaLa/2)        // Baja la nota una octava (200hz /2 = 400hz)
+
+	engine.show(notaLa) // Abre una ventana con una visualización de la nota
+
+
+
+------------------------------------------[ Listas ]------------------------------------------
+
+
+play(melod2 * melod) // melod acaba primero porque va más rápido, pero se puede usar melod.beat(30bpm, "Mossaic/Stretch")
+
+
+
+engine.play(melodia2+melodia) // Concatena las tracks (t1 = [notaA], t2 = [notaB], t1+t2 = [notaA, notaB], t2+t1 = [notaB, notaA])
+engine.play(melodia2*melodia) // Combina las melodías por indice (t1 = [notaA], t2= [notaB, notaC], t1*t2 = [notaA+notaB, notaC])
+engine.play(melodia2/melodia) // Extrae las melodías por indice (t1 = [notaA], t2= [notaB, notaC], t1/t2 = [notaA+notaB, notaC])
+
+/* WIP
+melodia2.addEffect(); // No me acuerdo que era esto
+melodia2.setBPM(120);
+melodia2.export("alarma.wav");
+*/
+
+------------------------------------------[ Funciones ]------------------------------------------
+// Por ahora manejaremos Scopes estrictos sin variables globales
+
+int global = 10;
+void func(global){ // Correcto
+	print(global)
+}
+
+void func(){
+	print(global) // Error
+}
+
+int func suma(int num1, int num2){
+	return(num1+num2)
+}
+void func reproducir(){
+	engine.play(melodia2)
+}
+
+Coroutine hiloMelodia2 = Coroutine.new(reproducir);
+Coroutine hiloMelodia2 = Coroutine.new(() => {
+	engine.play(notaDo)	
+});
+
+------------------------------------------[ Bucles ]------------------------------------------
+
+for(i in 1..4){ 
+    engine.play(notaDo)
+}
+for nota in melodia2 { 
+    engine.play(notaDo)
+}
+
+repeat(4){
+	engine.play(notaDo)
+}
+
+int cont = 0;
+bool shouldClose = false
+repeat(){ //reproduce infinitamente si no tiene parametro
+	engine.play(notaDo);
+	cont++
+	if(cont==100){
+		break; // Ejemplo en caso de cierre
+	}
+}
+cont = 0
+while(cont < 100){
+	cont++
+	engine.play(notaDo);
+}
+
+------------------------------------------[ Misc ]------------------------------------------
+// La envolvente es una modificación que se añade para naturalizar el sonido
+// Envelope.new(Attack, Decay, Sustain_Level, Release)
+Envelope envViolin = Envelope.new(200ms, 50ms, 0.8, 300ms);
+Envelope envPluck  = Envelope.new(10ms, 100ms, 0.0, 50ms);
+
+// Creamos la onda con la envolvente
+Wave notaDo = wave(400hz, 20db, 1seg, "sin").envelope(envViolin);
+
+Track melodiaViolin = [notaDo, 300ms, notaLa]
+melodiaViolin = melodiaViolin.envelope(envViolin)
+Track melodiaViolin = Track.new(partitura).envelope(envViolin)
+
+engine.play(notaDo);
+engine.play(melodiaViolin);
+
