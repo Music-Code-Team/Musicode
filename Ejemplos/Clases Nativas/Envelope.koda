@@ -1,0 +1,32 @@
+-- [ Creación de Envolventes ] --
+// La envolvente esculpe la amplitud (volumen) del sonido a lo largo de su vida útil para naturalizarlo.
+// Parámetros estrictos: Envelope.new(Attack <Time>, Decay <Time>, Sustain <Float 0.0-1.0>, Release <Time>)
+
+Envelope envViolin = Envelope.new(200ms, 50ms, 0.8, 300ms); // Ataque suave y sostenido al 80% del volumen
+Envelope envPluck  = Envelope.new(10ms, 100ms, 0.0, 50ms);  // Ataque agresivo y decaimiento a 0 (ej. Guitarra)
+
+
+-- [ Aplicación en Ondas (Waves) ] --
+// Se puede encadenar (Fluent Interface) directamente al instanciar la onda primitiva.
+// Esculpe únicamente el comportamiento físico de esta onda específica.
+
+Wave notaDo = wave(400hz, 20db, 1s, "sin").setEnvelope(envViolin);
+
+
+-- [ Aplicación en Colecciones (Tracks) ] --
+// Regla de Motor: Al aplicar una envolvente a un Track completo, el compilador itera internamente
+// y le inyecta la configuración ADSR a TODAS las ondas individuales que componen el arreglo.
+
+// Opción 1: Aplicación post-creación en una lista dinámica
+Track melodiaViolin = [notaDo, 300ms, notaLa];
+melodiaViolin.setEnvelope(envViolin);
+
+// Opción 2: Aplicación en línea usando constructores y variables externas
+Array partitura = [notaDo, 300ms, notaLa];
+Track melodiaArpa = Track.new(partitura).setEnvelope(envPluck);
+
+
+-- [ Ejecución ] --
+// El Engine lee los arreglos matemáticos ya esculpidos y los envía al buffer de audio.
+engine.play(notaDo);
+engine.play(melodiaViolin);

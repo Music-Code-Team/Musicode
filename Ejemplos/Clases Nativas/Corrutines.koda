@@ -1,0 +1,22 @@
+// Las Corrutinas son la base del motor de MusiCode. Permiten ejecutar ciclos o reproducir 
+// pistas largas en segundo plano sin bloquear la ejecución de la siguiente línea de código.
+
+Void reproducirMelodia() {
+	engine.play(melodia2);
+}
+
+// Opción 1: Pasar por referencia (Callbacks)
+// Se inyecta el nombre de una función previamente declarada al constructor de la Corrutina.
+Coroutine hiloMelodia = Coroutine.new(reproducirMelodia);
+
+
+// Opción 2: Funciones Anónimas / Funciones Flecha (Lambdas)
+// Sintaxis '() => {}' ideal para inyectar comportamiento rápido de "usar y tirar" 
+// sin tener que ensuciar el archivo declarando funciones globales enteras.
+Coroutine hiloAcorde = Coroutine.new(() => {
+	engine.play(notaDo);	
+});
+
+
+// Se ejecuta la rutina
+hiloAcorde.start()

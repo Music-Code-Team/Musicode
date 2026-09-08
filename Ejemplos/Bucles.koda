@@ -1,0 +1,50 @@
+// MusiCode soporta estructuras clásicas de programación y estructuras simplificadas
+// diseñadas específicamente para la notación de compases musicales.
+
+// 1. REPEAT (Iteración musical directa)
+// Ideal para compases (ej. 4/4). Evita la carga cognitiva de declarar variables de control (i, j).
+repeat(4) {
+	engine.play(notaDo); // Se reproduce 4 veces seguidas
+}
+
+// Repeat Infinito (Live Looping)
+// Si no recibe parámetros, actúa como un "while(true)". 
+// Es la base para mantener una pista de fondo sonando hasta que ocurra un evento.
+Int cont = 0;
+Bool shouldClose = false;
+
+repeat() { 
+	engine.play(notaDo);
+	cont++;
+	
+	if (cont == 100) {
+		break; // 'break' interrumpe el ciclo inmediatamente (Prevención de cuelgues)
+	}
+}
+
+
+// 2. FOR (Rangos e Iterables)
+
+// Iteración sobre Rangos Numéricos (Start..End):
+// Útil cuando se necesita el índice para hacer cálculos matemáticos por dentro.
+for (Int index in 1..10) {
+    Wave nota Wave(400hz * index) 
+	engine.play(nota);
+}
+
+// Iteración sobre Colecciones (Tracks):
+// Regla de Tipado: Al iterar sobre un Track, el elemento extraído SIEMPRE es de tipo Wave.
+// (Nota: Se declara el tipo 'Wave' en la variable temporal para mantener el tipado estricto).
+for (Wave nota in melodia2) { 
+	engine.play(nota); // Reproduce cada onda de la pista individualmente
+}
+
+
+// 3. WHILE (Iteración Condicional Clásica)
+// Se ejecuta mientras la condición booleana sea verdadera. 
+// Ideal para lógica de la interfaz del motor de audio o tiempos de espera.
+cont = 0;
+while (cont < 100) {
+	cont++;
+	engine.play(notaDo);
+}

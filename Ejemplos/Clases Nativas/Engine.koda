@@ -1,0 +1,31 @@
+-- [ Objeto Global Singleton ] --
+// 'engine' es una instancia reservada del sistema. No necesita ser inicializada con 'new'.
+// Actúa como el puente directo entre la abstracción del lenguaje (MusiCode) y el hardware (Bocinas/Pantalla).
+
+-- [ Salida de Audio ] --
+// engine.play() acepta estrictamente objetos de tipo <Wave> o <Track>.
+// Convierte los arreglos matemáticos internos a Buffers de Audio y los envía al DAC (Convertidor Digital a Analógico).
+
+engine.play(notaDo);         // Reproduce una onda primitiva
+engine.play(melodiaViolin);  // Reproduce una pista completa secuenciada
+
+
+-- [ Salida Estándar (Consola) ] --
+// engine.print() acepta tipos de datos primitivos (<String>, <Int>, <Float>, <Bool>).
+// Imprime en la consola del sistema para fines de depuración de variables.
+
+engine.print("Cargando los sintetizadores...");
+
+// Azúcar Sintáctico (Syntactic Sugar): 
+// Para comodidad del usuario, el Lexer permite usar 'print()' y 'show()' directamente.
+// El motor lo traducirá implícitamente a 'engine.print()' y 'engine.show()' por debajo.
+print("Hola Mundo"); 
+show(Wave(400hz)); 
+
+
+-- [ Visualización Gráfica (UI) ] --
+// engine.show() acepta objetos de tipo <Wave> o <Track>.
+// Abre una ventana emergente que grafica la forma de onda (dominio del tiempo) o el espectro.
+// Es una herramienta analítica invaluable para que el usuario visualice sus matemáticas.
+
+engine.show(notaDo); // Dibuja la curva parabólica de la onda senoidal
