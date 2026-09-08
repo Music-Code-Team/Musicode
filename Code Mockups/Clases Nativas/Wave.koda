@@ -25,7 +25,6 @@ Wave notaD = wave(A4, 20db, 0.3);  // Si no se especifica forma, se usa "sin" po
 
 
 -- [ Sobrecarga de Operadores - WAVES ] --
-// Regla de Oro: Tipado Estricto (Wave operador Wave).
 // Nota visual: 'A & B' significa que las ondas A y B suenan juntas (Polifonía).
 
 Conc:
@@ -33,7 +32,6 @@ Conc:
 	wave(400hz, 1s) .. wave(300hz, 1s) 
 	// = wave(400hz -> 300hz, 2s) (Las ondas se concatenan de forma horizontal)
 
-	// En reemplazo del ilegal wave..400hz (Tipos Mixtos), se obliga a instanciar:
 	wave(400hz, 1s) .. wave(400hz)
 
 
