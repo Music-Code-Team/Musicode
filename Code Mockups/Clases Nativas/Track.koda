@@ -14,12 +14,12 @@ Track pista2 = Track.new(frq:30hz, pattern:"X . . . X . . . X X", beat:30bpm, sy
 Track pista3 = Track.new(A4, "X . . . X . . . X X", 60bpm, "stretch")
 Track pista3 = Track.new(La2, "X . . . X . . . X X", 20bpm, "stretch")
 
-pista1.addEffect(); // No me acuerdo que era esto
-pista1.setBPM(120);
-pista1.export("alarma.wav");
+pista1.addEffect(); // Requiere analisis su implementación
+pista1.setBPM(120)         // Acelera o ralentiza la pista a 120 beats por minuto
+pista1 * 2  //Aumenta el volumen de toda la pista
+pista1.sync("loop")        // Define cómo se comportará al chocar con otras pistas (loop/stretch)
 
--- [ Modificación de Operadores - TRACKS ] --
-[WIP]
+pista1.export("alarma.wav");
 
 -- [ Sobrecarga de Operadores - TRACKS ] --
 // Nota visual: 'A & B' significa que las ondas A y B suenan juntas (Acorde/Polifonía).
