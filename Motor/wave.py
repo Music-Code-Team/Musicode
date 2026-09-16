@@ -87,6 +87,55 @@ class Wave:
     def subFrequency(self, freq: float):
         return self.setFrequency(self.frecuencia - freq)
 
+    def setDuration(self, tiempo_seg: float, modo: str = "stretch"):
+        """Sobrescribe la duración (estira o recorta la onda a un tiempo exacto)."""
+        if tiempo_seg < self.duracion:
+            return self.cut(self.duracion - tiempo_seg)
+            
+        target_samples = int(tiempo_seg * SAMPLE_RATE)
+        if modo == "loop":
+            reps = int(np.ceil(target_samples / len(self.buffer)))
+            self.buffer = np.tile(self.buffer, reps)[:target_samples]
+        else: # Stretch (Interpolación Lineal básica)
+            indices = np.linspace(0, len(self.buffer) - 1, target_samples)
+            self.buffer = np.interp(indices, np.arange(len(self.buffer)), self.buffer).astype(np.float32)
+            
+        self.duracion = tiempo_seg
+        return self
+
+    def addDuration(self, tiempo_seg: float, at: float | None = None):
+        """Le suma silencio en una marca de tiempo específica (o al final)."""
+        silencio = np.zeros(int(tiempo_seg * SAMPLE_RATE), dtype=np.float32)
+        if at is None:
+            self.buffer = np.concatenate((self.buffer, silencio))
+        else:
+            split_idx = int(at * SAMPLE_RATE)
+            self.buffer = np.concatenate((self.buffer[:split_idx], silencio, self.buffer[split_idx:]))
+        self.duracion += tiempo_seg
+        return self
+
+    def remove(self, tiempo_seg: float):
+        """Remueve la cantidad de segundos indicada desde el INICIO de la onda."""
+        remove_samples = int(tiempo_seg * SAMPLE_RATE)
+        if remove_samples < len(self.buffer):
+            self.buffer = self.buffer[remove_samples:]
+            self.duracion -= tiempo_seg
+        else:
+            self.buffer = np.array([], dtype=np.float32)
+            self.duracion = 0.0
+        return self
+
+    # -- [ SOBRECARGA DE OPERADORES ] --
+    def __sub__(self, otro):
+        """Cancelación de Fase Acústica (Resta de frecuencias)."""
+        max_len = max(len(self.buffer), len(otro.buffer))
+        buf1 = np.pad(self.buffer, (0, max_len - len(self.buffer)))
+        buf2 = np.pad(otro.buffer, (0, max_len - len(otro.buffer)))
+        
+        nueva_duracion = max_len / SAMPLE_RATE
+        resta_segura = np.clip(buf1 - buf2, -1.0, 1.0)
+        return Wave(duracion=nueva_duracion, tipo="mixed", buffer=resta_segura)
+    
     def __add__(self, otra_onda):
         """Concatena (Secuencia) creando un nuevo Track."""
         nuevo_track = Track()

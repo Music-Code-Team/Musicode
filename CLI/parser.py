@@ -112,6 +112,10 @@ def p_expresion(p):
                 | expresion TIMES expresion'''
     if len(p) == 2:
         valor = p[1]
+        # Traductor de Literales Musicales a Hercios
+        if p.slice[1].type == 'NOTA_MUSICAL':
+            p[0] = NOTAS_MUSICALES.get(valor, 440.0) # Si falla, devuelve 440Hz por seguridad
+            return
         # Reconocimiento de booleanos
         if p.slice[1].type == 'TRUE':
             p[0] = True

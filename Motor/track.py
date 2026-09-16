@@ -45,7 +45,7 @@ class Track(Observador):
     def setBPM(self, bpm: float):
         """Configuración de metrónomo."""
         self.bpm = bpm
-        print(f"🎵 [Track] BPM ajustado a {self.bpm}")
+        print(f"[Track] BPM ajustado a {self.bpm}")
         return self
 
     def sync(self, modo: str):
@@ -53,8 +53,45 @@ class Track(Observador):
         if modo not in ["stretch", "loop"]:
             raise ValueError("Error: El modo de sync debe ser 'stretch' o 'loop'")
         self.sync_mode = modo
-        print(f"🎵 [Track] Modo de sincronización ajustado a '{self.sync_mode}'")
+        print(f"[Track] Modo de sincronización ajustado a '{self.sync_mode}'")
         return self
+
+# -- [ MÉTODOS EXPLÍCITOS KODA ] --
+    def remove(self, otro):
+        """Busca exactamente el patrón de otra pista y lo elimina (Extracción)."""
+        b_self = self.buffer
+        b_otro = otro.buffer
+        
+        # Truco de bajo nivel: Buscamos coincidencias exactas en la memoria RAM (bytes)
+        str_self = b_self.tobytes()
+        str_otro = b_otro.tobytes()
+        idx_bytes = str_self.find(str_otro)
+        
+        if idx_bytes != -1:
+            # Sabiendo que los float32 pesan 4 bytes, calculamos el índice real del arreglo
+            idx = idx_bytes // 4  
+            n = len(b_otro)
+            self.buffer = np.concatenate((b_self[:idx], b_self[idx + n:]))
+            print("[Track] Patrón encontrado y eliminado con éxito.")
+        else:
+            print("[Track] No se encontró el patrón acústico en la pista principal.")
+        return self
+
+    def export(self, nombre_archivo="mi_pista.wav"):
+        """Exporta la pista. (Renombrado para coincidir con la especificación)"""
+        exportar_wave(self.buffer, nombre_archivo)
+
+    # -- [ SOBRECARGA DE OPERADORES ] --
+    def __sub__(self, otro):
+        """Cancelación de Fase para secuencias completas."""
+        nuevo_track = Track()
+        
+        max_len = max(len(self.buffer), len(otro.buffer))
+        buf1 = np.pad(self.buffer, (0, max_len - len(self.buffer)))
+        buf2 = np.pad(otro.buffer, (0, max_len - len(otro.buffer)))
+        
+        nuevo_track.buffer = np.clip(buf1 - buf2, -1.0, 1.0)
+        return nuevo_track
 
     def __add__(self, otro):
         """Concatena tracks (Secuencia)."""
