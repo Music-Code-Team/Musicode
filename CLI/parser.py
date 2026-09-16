@@ -1,6 +1,6 @@
 from ply import yacc
 
-from CLI.lexer import tokens  # Importamos los tokens del lexer
+from CLI.lexer import tokens  # Importamos los tokens del lexer  # noqa: F401
 from Motor.time import Time
 from Motor.track import Track
 from Motor.wave import Wave
@@ -35,9 +35,15 @@ def p_instrucciones(p):
     '''instruccion : instruccion_asignacion
                    | instruccion_wave
                    | instruccion_track
-                   | instruccion_play'''
-    pass # El trabajo real se hace en cada sub-regla
+                   | instruccion_play
+                   | instruccion_return'''
+    pass # El trabajo real se hace en cada sub-regla  # noqa: PIE790
 # 1. Regla principal: Asignación de un Wave
+def p_instruccion_return(p):
+    'instruccion_return : RETURN PAREN_IZQ expresion PAREN_DER PUNTOYCOMA'
+    # Guardamos el valor devuelto en una variable especial y reservada
+    memoria['__return__'] = p[3] 
+    print("[Módulo] Valor retornado con éxito.")
 
 def p_tipo_dato(p):
     '''tipo_dato : TYPE_INT
@@ -106,6 +112,7 @@ def p_expresion(p):
                 | TRUE
                 | FALSE
                 | NOTA_MUSICAL
+                | IMPORT PAREN_IZQ CADENA PAREN_DER
                 | expresion CONCAT expresion
                 | expresion PLUS expresion
                 | expresion MINUS expresion
@@ -117,29 +124,25 @@ def p_expresion(p):
             p[0] = NOTAS_MUSICALES.get(valor, 440.0) # Si falla, devuelve 440Hz por seguridad
             return
         # Reconocimiento de booleanos
-        if p.slice[1].type == 'TRUE':
-            p[0] = True
-            return
-        elif p.slice[1].type == 'FALSE':
-            p[0] = False
-            return
+        if p.slice[1].type == 'TRUE': p[0] = True; return
+        elif p.slice[1].type == 'FALSE': p[0] = False; return
         
         # Reconocimiento de cadenas de texto (strings)
-        if p.slice[1].type == 'CADENA':
-            p[0] = str(valor)
-            return
-            
-        if isinstance(valor, str) and valor in memoria:
-            p[0] = memoria[valor]
-        elif isinstance(valor, str) and ('ms' in valor or 'seg' in valor):
-            if 'ms' in valor:
-                dur = float(valor.replace('ms', '')) / 1000.0
+        if p.slice[1].type == 'CADENA':p[0] = str(valor);return
+
+        # ANÁLISIS SEMÁNTICO DE VARIABLES (La magia que pediste)
+        if p.slice[1].type == 'ID':
+            if valor in memoria:
+                p[0] = memoria[valor] # Si existe, extraemos su valor
+                return
             else:
-                dur = float(valor.replace('seg', ''))
+                # Si no está declarada, mandamos un error descriptivo con la línea exacta
+                raise NameError(f" Error Semántico (Línea {p.lineno(1)}): La variable '{valor}' se intentó usar antes de ser declarada.")
+        elif isinstance(valor, str) and ('ms' in valor or 'seg' in valor):
+            dur = float(valor.replace('ms', '')) / 1000.0 if 'ms' in valor else float(valor.replace('seg', ''))
             p[0] = Time(dur)
         else:
-            p[0] = valor # Pasan los números puros
-
+            p[0] = valor # Pasan los números crudos
     elif len(p) == 4:
         op = p[2]
         # Traducción Koda -> Motor Python
@@ -151,7 +154,43 @@ def p_expresion(p):
             p[0] = p[1] * p[3] # En el motor, __mul__ también altera el volumen si es numérico
         elif op == '-':
             p[0] = p[1] - p[3] # Llama a __sub__ para cancelar la fase acústica
-
+    elif len(p) == 5 and p.slice[1].type == 'IMPORT':
+        import os
+        ruta = p[3]
+        
+        # 1. Ticket #44: Importación de Audio
+        if ruta.endswith(('.wav', '.mp3')):
+            p[0] = Wave.from_file(ruta)
+            
+        # 2. Ticket #45: Importación de Módulos Koda
+        elif ruta.endswith('.koda'):
+            if not os.path.exists(ruta):
+                raise FileNotFoundError(f" Error Semántico: El módulo '{ruta}' no existe.")
+                
+            print(f" [Sistema] Importando módulo Koda aislado: {ruta}")
+            
+            # MAGIA: Respaldamos la memoria principal y limpiamos para el módulo
+            memoria_backup = memoria.copy()
+            memoria.clear()
+            
+            # Ejecutamos el archivo de forma aislada
+            with open(ruta, 'r', encoding='utf-8') as f:
+                p.parser.parse(f.read())
+                
+            # Capturamos el resultado del return()
+            valor_retorno = memoria.get('__return__', None)
+            
+            # Restauramos el scope global
+            memoria.clear()
+            memoria.update(memoria_backup)
+            
+            if valor_retorno is None:
+                raise ValueError(f" Error Semántico: El módulo '{ruta}' no hizo un return().")
+                
+            p[0] = valor_retorno
+            
+        else:
+            raise ValueError(" Error Semántico: Formato no soportado en import(). Usa .wav, .mp3 o .koda")
 def p_lista_elementos(p):
     '''lista_elementos : expresion COMA lista_elementos
                        | expresion'''
@@ -188,6 +227,8 @@ def p_argumento_negativo(p):
             p[0] = min(1.0, 10 ** (db / 20.0))
     else:
         p[0] = -valor # Es un número flotante normal
+
+
 # 3. Traductor de Azúcar Sintáctico
 def p_argumento(p):
     '''argumento : NUMERO
@@ -207,8 +248,8 @@ def p_argumento(p):
 
 def p_error(p):
     if p:
-        print(f"Error de sintaxis cerca de '{p.value}'")
+        print(f" Error de Sintaxis (Línea {p.lineno}): Código mal estructurado o símbolo inesperado cerca de '{p.value}'")
     else:
-        print("Error de sintaxis en el final del archivo")
+        print(" Error de Sintaxis: El archivo terminó de forma inesperada. ¿Olvidaste un punto y coma (;)?")
 
 parser = yacc.yacc()

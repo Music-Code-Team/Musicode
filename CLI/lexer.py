@@ -25,9 +25,14 @@ reservadas = {
     'print': 'PRINT',
     'show': 'SHOW',
     
+    # Importación y módulos
+    'import': 'IMPORT',
+    'return': 'RETURN',
+    
     # Booleanos
     'true': 'TRUE',
     'false': 'FALSE'
+
 }
 
 # 2. Lista total de Tokens
@@ -55,6 +60,11 @@ t_DIVIDE = r'/'
 
 # ¡LA SOLUCIÓN A TU ERROR! Ply ignorará espacios y tabulaciones automáticamente
 t_ignore = ' \t'
+
+# Regla para rastrear los números de línea (NUEVO PARCHE)
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
 
 # 4. Reglas complejas con funciones
 def t_UNIDAD(t):
@@ -85,12 +95,13 @@ def t_ID(t):
 # Regla para ignorar comentarios como //
 def t_COMENTARIO(t):
     r'//.*'
-    pass
+    pass  # noqa: PIE790
 
 # Manejo de errores
 def t_error(t):
     print(f"Error léxico: Carácter ilegal '{t.value[0]}'")
     t.lexer.skip(1)
+# Regla para rastrear los números de línea
 
 # Construimos el lexer
 lexer = lex.lex()
