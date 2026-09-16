@@ -1,17 +1,68 @@
-from Motor.wave import Wave
-from Motor.track import Track
-from Motor.time import Time
+from ply import yacc
+
 from CLI.lexer import tokens  # Importamos los tokens del lexer
-from ply import yacc 
+from Motor.time import Time
+from Motor.track import Track
+from Motor.wave import Wave
 
 # Aquí vivirá la memoria de ejecución de Koda
 memoria = {}
+# =========================================================
+# GENERADOR DEL DICCIONARIO DE FRECUENCIAS (Azúcar Sintáctico)
+# =========================================================
+NOTAS_MUSICALES = {}
+_anglo =   ['C',  'C#', 'D',  'D#', 'E',  'F',  'F#', 'G',  'G#', 'A',  'A#', 'B']
+_anglo_b = ['C',  'Db', 'D',  'Eb', 'E',  'F',  'Gb', 'G',  'Ab', 'A',  'Bb', 'B']
+_latin =   ['Do', 'Do#','Re', 'Re#','Mi', 'Fa', 'Fa#','Sol','Sol#','La', 'La#','Si']
+_latin_b = ['Do', 'Reb','Re', 'Mib','Mi', 'Fa', 'Solb','Sol','Lab','La', 'Sib','Si']
+
+# Calculamos 9 octavas (0 al 8) relativas a A4 (440.0 Hz)
+for octava in range(9):
+    for i in range(12):
+        # Fórmula acústica para calcular semitonos de distancia desde La4
+        n_semitonos = (octava * 12 + i) - (4 * 12 + 9)
+        freq = round(440.0 * (2.0 ** (n_semitonos / 12.0)), 2)
+        
+        # Mapeamos todas las nomenclaturas posibles a su valor flotante
+        NOTAS_MUSICALES[f"{_anglo[i]}{octava}"] = freq
+        NOTAS_MUSICALES[f"{_anglo_b[i]}{octava}"] = freq
+        NOTAS_MUSICALES[f"{_latin[i]}{octava}"] = freq
+        NOTAS_MUSICALES[f"{_latin_b[i]}{octava}"] = freq
+
+# =========================================================
+
 def p_instrucciones(p):
-    '''instruccion : instruccion_wave
+    '''instruccion : instruccion_asignacion
+                   | instruccion_wave
                    | instruccion_track
                    | instruccion_play'''
     pass # El trabajo real se hace en cada sub-regla
 # 1. Regla principal: Asignación de un Wave
+
+def p_tipo_dato(p):
+    '''tipo_dato : TYPE_INT
+                 | TYPE_FLOAT
+                 | TYPE_BOOL
+                 | TYPE_STRING
+                 | TYPE_ARRAY
+                 | TYPE_TIME
+                 | TYPE_FREQ
+                 | TYPE_VOL
+                 | TYPE_ENV
+                 | TYPE_CORO'''
+    p[0] = p[1] # Devuelve el nombre del tipo (ej. 'Int', 'String')
+
+def p_instruccion_asignacion(p):
+    'instruccion_asignacion : tipo_dato ID IGUAL expresion PUNTOYCOMA'
+    tipo = p[1]
+    nombre_var = p[2]
+    valor = p[4]
+    
+    # Aquí podríamos agregar validación estricta en el futuro 
+    # (ej. verificar que si el tipo es 'Int', el valor no sea un String)
+    
+    memoria[nombre_var] = valor
+    print(f"✅ [Intérprete] Variable '{nombre_var}' guardada como <{tipo}> con valor: {valor}")
 
 def p_instruccion_wave(p):
     'instruccion_wave : WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA'
@@ -49,11 +100,31 @@ def p_instruccion_play(p):
 
 def p_expresion(p):
     '''expresion : ID
-                 | UNIDAD
-                 | expresion PLUS expresion
-                 | expresion TIMES expresion'''
+                | UNIDAD
+                | NUMERO
+                | CADENA
+                | TRUE
+                | FALSE
+                | NOTA_MUSICAL
+                | expresion CONCAT expresion
+                | expresion PLUS expresion
+                | expresion MINUS expresion
+                | expresion TIMES expresion'''
     if len(p) == 2:
         valor = p[1]
+        # Reconocimiento de booleanos
+        if p.slice[1].type == 'TRUE':
+            p[0] = True
+            return
+        elif p.slice[1].type == 'FALSE':
+            p[0] = False
+            return
+        
+        # Reconocimiento de cadenas de texto (strings)
+        if p.slice[1].type == 'CADENA':
+            p[0] = str(valor)
+            return
+            
         if isinstance(valor, str) and valor in memoria:
             p[0] = memoria[valor]
         elif isinstance(valor, str) and ('ms' in valor or 'seg' in valor):
@@ -63,12 +134,19 @@ def p_expresion(p):
                 dur = float(valor.replace('seg', ''))
             p[0] = Time(dur)
         else:
-            raise SyntaxError(f"Error: Variable '{valor}' no definida o unidad incorrecta.")
+            p[0] = valor # Pasan los números puros
+
     elif len(p) == 4:
-        if p[2] == '+':
-            p[0] = p[1] + p[3] # Concatena
-        elif p[2] == '*':
-            p[0] = p[1] * p[3] # Mezcla/Acorde
+        op = p[2]
+        # Traducción Koda -> Motor Python
+        if op == '..':
+            p[0] = p[1] + p[3] # En el motor, __add__ realiza la concatenación
+        elif op == '+':
+            p[0] = p[1] * p[3] # En el motor, __mul__ realiza la polifonía
+        elif op == '*':
+            p[0] = p[1] * p[3] # En el motor, __mul__ también altera el volumen si es numérico
+        elif op == '-':
+            p[0] = p[1] - p[3] # Llama a __sub__ para cancelar la fase acústica
 
 def p_lista_elementos(p):
     '''lista_elementos : expresion COMA lista_elementos

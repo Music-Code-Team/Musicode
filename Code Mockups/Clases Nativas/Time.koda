@@ -1,0 +1,26 @@
+	// Inicialización directa (Azúcar sintáctico detectado por el Parser)
+	Time pausaCorta = 300ms;
+	Time pausaLarga = 1.5seg;
+
+-- [ Sobrecarga de Operadores - TIME ] --
+
+Sum (Concatenación Secuencial):
+	// Regla: Sumar un Time (+) con cualquier otro elemento (Wave, Track u otro Time) 
+	// los concatena de forma horizontal en el tiempo. 
+	// Por debajo, el motor siempre devuelve un objeto Track nuevo.
+
+	// 1. Silencio + Onda (Retrasar el inicio de una nota)
+	300ms + wave(400hz, 20db, 1seg)
+	// Resultado: Un Track de 1.3 segundos (0.3s de silencio puro -> 1.0s de sonido).
+
+	// 2. Onda + Silencio (Dejar espacio después de la nota)
+	wave(400hz, 20db, 1seg) + 500ms
+	// Resultado: La nota suena durante 1s, y luego hay 0.5s de silencio.
+
+	// 3. Suma de silencios (Acumulación)
+	300ms + 200ms
+	// Resultado: Un Track vacío con 500ms de silencio total.
+
+	// 4. Integración directa en Pistas (Tracks)
+	// Los silencios actúan como eslabones entre notas.
+	Track miMelodia = [notaDo, 300ms, notaLa];

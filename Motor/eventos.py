@@ -15,5 +15,5 @@ class Observador:
                 # SOLUCIÓN: Aislamos cada ejecución para que un fallo no rompa el ciclo
                 try:
                     funcion(*args, **Kwargs)
-                except Exception as e:
+                except Exception as e:  # noqa: BLE001
                     print(f"⚠️ Error en evento '{evento}': Un suscriptor falló con el error -> {e}")

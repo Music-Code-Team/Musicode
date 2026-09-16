@@ -1,6 +1,6 @@
 import numpy as np
 
-from Motor.engine import exportar_wave, reproducir_audio
+from Motor.engine import SAMPLE_RATE, exportar_wave, reproducir_audio
 from Motor.eventos import Observador
 
 
@@ -33,6 +33,28 @@ class Track(Observador):
     def agregar(self, elemento):
         """Añade el buffer a la lista de espera sin hacer copias de memoria pesadas."""
         self._fragmentos.append(elemento.buffer)
+
+# -- [ MÉTODOS EXPLÍCITOS KODA ] --
+    def setEnvelope(self, env):
+        """Aplica un ADSR al track completo (después de compilarlo)."""
+        duracion_total = len(self.buffer) / SAMPLE_RATE
+        # Sobrescribimos el buffer usando el setter mágico
+        self.buffer = env.aplicar(self.buffer, duracion_total)
+        return self
+
+    def setBPM(self, bpm: float):
+        """Configuración de metrónomo."""
+        self.bpm = bpm
+        print(f"🎵 [Track] BPM ajustado a {self.bpm}")
+        return self
+
+    def sync(self, modo: str):
+        """Define el comportamiento de colisión (stretch/loop)."""
+        if modo not in ["stretch", "loop"]:
+            raise ValueError("Error: El modo de sync debe ser 'stretch' o 'loop'")
+        self.sync_mode = modo
+        print(f"🎵 [Track] Modo de sincronización ajustado a '{self.sync_mode}'")
+        return self
 
     def __add__(self, otro):
         """Concatena tracks (Secuencia)."""

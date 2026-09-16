@@ -1,12 +1,12 @@
 import numpy as np
 
 from Motor.engine import SAMPLE_RATE
-from Motor.envolvente import Env
+from Motor.envelope import Envelope
 from Motor.track import Track
 
 
 class Wave:
-    def __init__(self, frecuencia: float = 0.0, duracion: float = 0.0, amplitud: float = 0.5, tipo: str = "sin", env: Env = None, buffer: np.ndarray = None):
+    def __init__(self, frecuencia: float = 0.0, duracion: float = 0.0, amplitud: float =  0.5, tipo: str = "sin", env: Envelope = None, buffer: np.ndarray = None):
         self.frecuencia = frecuencia
         self.duracion = duracion
         self.amplitud = amplitud
@@ -53,6 +53,39 @@ class Wave:
             raise ValueError(f"Error en Wave: El tipo '{self.tipo}' no está soportado. Usa 'sin', 'square' o 'saw'.")
             
         return onda.astype(np.float32)
+
+# -- [ MÉTODOS EXPLÍCITOS KODA ] --
+    def setEnvelope(self, env: Envelope):
+        """Esculpe el volumen de la onda a lo largo del tiempo."""
+        self.buffer = env.aplicar(self.buffer, self.duracion)
+        return self # Permite encadenamiento
+
+    def reverse(self):
+        """Invierte el arreglo para que suene al revés."""
+        self.buffer = self.buffer[::-1]
+        return self
+
+    def cut(self, tiempo_seg: float):
+        """Recorta el final de la onda."""
+        recorte_samples = int(tiempo_seg * SAMPLE_RATE)
+        if recorte_samples < len(self.buffer):
+            self.buffer = self.buffer[:-recorte_samples]
+            self.duracion -= tiempo_seg
+        return self
+
+    def setFrequency(self, freq: float):
+        """Modifica el tono y regenera la onda base."""
+        if freq <= 0:
+            raise ValueError("Error Semántico: La frecuencia debe ser mayor a 0.")
+        self.frecuencia = freq
+        self.buffer = self._generar_forma_onda()
+        return self
+
+    def addFrequency(self, freq: float):
+        return self.setFrequency(self.frecuencia + freq)
+
+    def subFrequency(self, freq: float):
+        return self.setFrequency(self.frecuencia - freq)
 
     def __add__(self, otra_onda):
         """Concatena (Secuencia) creando un nuevo Track."""
