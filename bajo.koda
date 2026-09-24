@@ -1,0 +1,4 @@
+// bajo.koda - Modulo secundario
+Wave notaBajo = wave(60hz, 400ms, 20db, "square");
+
+return(notaBajo);

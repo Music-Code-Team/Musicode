@@ -30,7 +30,7 @@ def ejecutar_archivo_koda(ruta_archivo):
             print(f"Detalle: {e}")
                 
     print("-" * 50)
-    print("✅ Ejecución finalizada con éxito.")
+    print("Ejecución finalizada con éxito.")
 
 
 if __name__ == "__main__":

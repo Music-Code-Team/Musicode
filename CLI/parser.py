@@ -4,6 +4,7 @@ from CLI.lexer import tokens  # Importamos los tokens del lexer
 from Motor.time import Time
 from Motor.track import Track
 from Motor.wave import Wave
+from Motor.engine import engine
 
 # Aquí vivirá la memoria de ejecución de Koda
 memoria = {}
@@ -30,6 +31,10 @@ for octava in range(9):
         NOTAS_MUSICALES[f"{_latin_b[i]}{octava}"] = freq
 
 # =========================================================
+def p_programa(p):
+    '''programa : instruccion programa
+                | instruccion'''
+    pass # noqa: PIE790
 
 def p_instrucciones(p):
     '''instruccion : instruccion_asignacion
@@ -82,6 +87,7 @@ def p_instruccion_wave(p):
     memoria[nombre_var] = Wave(frecuencia, duracion, amplitud, tipo=tipo_onda)
     print(f"[Intérprete] Se creó la variable '{nombre_var}' ({tipo_onda}, {frecuencia}Hz)")
 
+
 def p_instruccion_track(p):
     'instruccion_track : TRACK ID IGUAL CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMA'
     nombre_var =p[2]
@@ -97,12 +103,7 @@ def p_instruccion_play(p):
     'instruccion_play : ENGINE PUNTO PLAY PAREN_IZQ expresion PAREN_DER PUNTOYCOMA'
     audio_objeto=p[5]
     print ("[motor] Ejecutando engine.play")
-    if isinstance(audio_objeto,Wave):
-        pista = Track()+audio_objeto
-    else:
-        pista=audio_objeto
-    hilo=pista.reproducir()
-    hilo.esperar()
+    engine.play(audio_objeto,asincrono=False)
 
 def p_expresion(p):
     '''expresion : ID
@@ -164,6 +165,9 @@ def p_expresion(p):
             
         # 2. Ticket #45: Importación de Módulos Koda
         elif ruta.endswith('.koda'):
+            import sys
+
+            import CLI.lexer as lex_mod
             if not os.path.exists(ruta):
                 raise FileNotFoundError(f" Error Semántico: El módulo '{ruta}' no existe.")
                 
@@ -172,14 +176,17 @@ def p_expresion(p):
             # MAGIA: Respaldamos la memoria principal y limpiamos para el módulo
             memoria_backup = memoria.copy()
             memoria.clear()
+            lexer_temp = lex_mod.lexer.clone()
+
+            modulo_actual = sys.modules[__name__]
+            parser_temp = yacc.yacc(module=modulo_actual)
             
             # Ejecutamos el archivo de forma aislada
             with open(ruta, 'r', encoding='utf-8') as f:
-                p.parser.parse(f.read())
-                
+                parser_temp.parse(f.read(), lexer=lexer_temp)                
             # Capturamos el resultado del return()
             valor_retorno = memoria.get('__return__', None)
-            
+
             # Restauramos el scope global
             memoria.clear()
             memoria.update(memoria_backup)
@@ -234,8 +241,12 @@ def p_argumento(p):
     '''argumento : NUMERO
                  | UNIDAD
                  | CADENA
-                 | ID'''
+                 | ID
+                 | NOTA_MUSICAL'''
     valor = p[1]
+    if p.slice[1].type == 'NOTA_MUSICAL':
+        p[0] = NOTAS_MUSICALES.get(valor, 440.0)
+        return
     if isinstance(valor, str):
         if 'hz' in valor: p[0] = float(valor.replace('hz', ''))
         elif 'ms' in valor: p[0] = float(valor.replace('ms', '')) / 1000.0
