@@ -1,9 +1,0 @@
-// master.koda - Script principal
-Wave campanita = wave(Mi4, 200ms, 15db, "sin");
-Time pausa = 200ms;
-
-// Construimos la pista inyectando el modulo externo (Ticket #45)
-// Si tuvieras un audio real, podrias agregar import("kick.wav") aqui mismo (Ticket #44)
-Track pistaFinal = [campanita, pausa, import("bajo.koda"), pausa, campanita];
-
-engine.play(pistaFinal);
