@@ -1,6 +1,6 @@
 import numpy as np
 
-from Motor.engine import SAMPLE_RATE, exportar_wave, reproducir_audio
+from Motor.engine import SAMPLE_RATE, exportar_wave
 from Motor.eventos import Observador
 
 
@@ -115,18 +115,7 @@ class Track(Observador):
         nuevo_track.buffer = np.clip(buf1 + buf2, -1.0, 1.0)
         return nuevo_track
 
-    def reproducir(self, asincrono=True):
-        # !avisa que va a empezar antes de reproducir
-        cb_inicio = lambda: self.emitir("reproduccion_iniciada")
-        cb_fin = lambda: self.emitir("reproduccion_terminada")
-        
-        # Al llamar a self.buffer, compila todo mágicamente
-        return reproducir_audio(
-            self.buffer, 
-            asincrono=asincrono, 
-            callback_inicio=cb_inicio, 
-            callback_fin=cb_fin
-        )
+    
         
     def exportar(self, nombre_archivo="mi_pista.wav"):
         """Permite guardar todo el track como un archivo de audio."""

@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'CADENA COMA CORCHETE_DER CORCHETE_IZQ DIVIDE ENGINE ID IGUAL MINUS NUMERO PAREN_DER PAREN_IZQ PLAY PLUS PUNTO PUNTOYCOMA TIMES TRACK UNIDAD WAVE_FUNC WAVE_TYPEinstruccion : instruccion_wave\n| instruccion_track\n| instruccion_playinstruccion_wave : WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMAinstruccion_track : TRACK ID IGUAL CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMAinstruccion_play : ENGINE PUNTO PLAY PAREN_IZQ expresion PAREN_DER PUNTOYCOMAexpresion : ID\n| UNIDAD\n| expresion PLUS expresion\n| expresion TIMES expresionlista_elementos : expresion COMA lista_elementos\n| expresionargumentos : argumento COMA argumentosargumentos : argumentoargumentos : argumento : MINUS NUMERO\n| MINUS UNIDADargumento : NUMERO\n| UNIDAD\n| CADENA\n| ID'
+_lr_signature = 'CADENA COMA CONCAT CORCHETE_DER CORCHETE_IZQ DIVIDE ENGINE FALSE ID IGUAL IMPORT MINUS NOTA_MUSICAL NUMERO PAREN_DER PAREN_IZQ PLAY PLUS PRINT PUNTO PUNTOYCOMA RETURN SHOW TIMES TRACK TRUE TYPE_ARRAY TYPE_BOOL TYPE_CORO TYPE_ENV TYPE_FLOAT TYPE_FREQ TYPE_INT TYPE_STRING TYPE_TIME TYPE_VOL UNIDAD WAVE_FUNC WAVE_TYPEinstruccion : instruccion_asignacion\n                   | instruccion_wave\n                   | instruccion_track\n                   | instruccion_play\n                   | instruccion_returninstruccion_return : RETURN PAREN_IZQ expresion PAREN_DER PUNTOYCOMAtipo_dato : TYPE_INT\n                 | TYPE_FLOAT\n                 | TYPE_BOOL\n                 | TYPE_STRING\n                 | TYPE_ARRAY\n                 | TYPE_TIME\n                 | TYPE_FREQ\n                 | TYPE_VOL\n                 | TYPE_ENV\n                 | TYPE_COROinstruccion_asignacion : tipo_dato ID IGUAL expresion PUNTOYCOMAinstruccion_wave : WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMAinstruccion_track : TRACK ID IGUAL CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMAinstruccion_play : ENGINE PUNTO PLAY PAREN_IZQ expresion PAREN_DER PUNTOYCOMAexpresion : ID\n                | UNIDAD\n                | NUMERO\n                | CADENA\n                | TRUE\n                | FALSE\n                | NOTA_MUSICAL\n                | IMPORT PAREN_IZQ CADENA PAREN_DER\n                | expresion CONCAT expresion\n                | expresion PLUS expresion\n                | expresion MINUS expresion\n                | expresion TIMES expresionlista_elementos : expresion COMA lista_elementos\n                       | expresionargumentos : argumento COMA argumentosargumentos : argumentoargumentos : argumento : MINUS NUMERO\n                 | MINUS UNIDADargumento : NUMERO\n                 | UNIDAD\n                 | CADENA\n                 | ID'
     
-_lr_action_items = {'WAVE_TYPE':([0,],[5,]),'TRACK':([0,],[6,]),'ENGINE':([0,],[7,]),'$end':([1,2,3,4,39,43,44,],[0,-1,-2,-3,-5,-6,-4,]),'ID':([5,6,15,16,17,31,32,33,36,],[8,9,18,18,23,18,18,18,23,]),'PUNTO':([7,],[10,]),'IGUAL':([8,9,],[11,12,]),'PLAY':([10,],[13,]),'WAVE_FUNC':([11,],[14,]),'CORCHETE_IZQ':([12,],[15,]),'PAREN_IZQ':([13,14,],[16,17,]),'UNIDAD':([15,16,17,26,31,32,33,36,],[21,21,28,38,21,21,21,28,]),'PAREN_DER':([17,18,21,22,23,24,25,27,28,29,36,37,38,41,42,45,],[-15,-7,-8,34,-21,35,-14,-18,-19,-20,-15,-16,-17,-9,-10,-13,]),'MINUS':([17,36,],[26,26,]),'NUMERO':([17,26,36,],[27,37,27,]),'CADENA':([17,36,],[29,29,]),'COMA':([18,20,21,23,25,27,28,29,37,38,41,42,],[-7,31,-8,-21,36,-18,-19,-20,-16,-17,-9,-10,]),'PLUS':([18,20,21,22,41,42,],[-7,32,-8,32,32,32,]),'TIMES':([18,20,21,22,41,42,],[-7,33,-8,33,33,33,]),'CORCHETE_DER':([18,19,20,21,40,41,42,],[-7,30,-12,-8,-11,-9,-10,]),'PUNTOYCOMA':([30,34,35,],[39,43,44,]),}
+_lr_action_items = {'WAVE_TYPE':([0,],[8,]),'TRACK':([0,],[9,]),'ENGINE':([0,],[10,]),'RETURN':([0,],[11,]),'TYPE_INT':([0,],[12,]),'TYPE_FLOAT':([0,],[13,]),'TYPE_BOOL':([0,],[14,]),'TYPE_STRING':([0,],[15,]),'TYPE_ARRAY':([0,],[16,]),'TYPE_TIME':([0,],[17,]),'TYPE_FREQ':([0,],[18,]),'TYPE_VOL':([0,],[19,]),'TYPE_ENV':([0,],[20,]),'TYPE_CORO':([0,],[21,]),'$end':([1,2,3,4,5,6,50,55,76,78,79,],[0,-1,-2,-3,-4,-5,-17,-6,-19,-20,-18,]),'ID':([7,8,9,12,13,14,15,16,17,18,19,20,21,26,27,42,43,45,46,47,48,51,69,73,],[22,23,24,-7,-8,-9,-10,-11,-12,-13,-14,-15,-16,32,32,32,32,32,32,32,32,61,32,61,]),'PUNTO':([10,],[25,]),'PAREN_IZQ':([11,30,39,41,],[26,43,49,51,]),'IGUAL':([22,23,24,],[27,28,29,]),'PLAY':([25,],[30,]),'UNIDAD':([26,27,42,43,45,46,47,48,51,64,69,73,],[33,33,33,33,33,33,33,33,66,75,33,66,]),'NUMERO':([26,27,42,43,45,46,47,48,51,64,69,73,],[34,34,34,34,34,34,34,34,65,74,34,65,]),'CADENA':([26,27,42,43,45,46,47,48,49,51,69,73,],[35,35,35,35,35,35,35,35,60,67,35,67,]),'TRUE':([26,27,42,43,45,46,47,48,69,],[36,36,36,36,36,36,36,36,36,]),'FALSE':([26,27,42,43,45,46,47,48,69,],[37,37,37,37,37,37,37,37,37,]),'NOTA_MUSICAL':([26,27,42,43,45,46,47,48,69,],[38,38,38,38,38,38,38,38,38,]),'IMPORT':([26,27,42,43,45,46,47,48,69,],[39,39,39,39,39,39,39,39,39,]),'WAVE_FUNC':([28,],[41,]),'CORCHETE_IZQ':([29,],[42,]),'PAREN_DER':([31,32,33,34,35,36,37,38,51,54,56,57,58,59,60,61,62,63,65,66,67,71,73,74,75,80,],[44,-21,-22,-23,-24,-25,-26,-27,-37,70,-29,-30,-31,-32,71,-43,72,-36,-40,-41,-42,-28,-37,-38,-39,-35,]),'CONCAT':([31,32,33,34,35,36,37,38,40,53,54,56,57,58,59,71,],[45,-21,-22,-23,-24,-25,-26,-27,45,45,45,45,45,45,45,-28,]),'PLUS':([31,32,33,34,35,36,37,38,40,53,54,56,57,58,59,71,],[46,-21,-22,-23,-24,-25,-26,-27,46,46,46,46,46,46,46,-28,]),'MINUS':([31,32,33,34,35,36,37,38,40,51,53,54,56,57,58,59,71,73,],[47,-21,-22,-23,-24,-25,-26,-27,47,64,47,47,47,47,47,47,-28,64,]),'TIMES':([31,32,33,34,35,36,37,38,40,53,54,56,57,58,59,71,],[48,-21,-22,-23,-24,-25,-26,-27,48,48,48,48,48,48,48,-28,]),'PUNTOYCOMA':([32,33,34,35,36,37,38,40,44,56,57,58,59,68,70,71,72,],[-21,-22,-23,-24,-25,-26,-27,50,55,-29,-30,-31,-32,76,78,-28,79,]),'COMA':([32,33,34,35,36,37,38,53,56,57,58,59,61,63,65,66,67,71,74,75,],[-21,-22,-23,-24,-25,-26,-27,69,-29,-30,-31,-32,-43,73,-40,-41,-42,-28,-38,-39,]),'CORCHETE_DER':([32,33,34,35,36,37,38,52,53,56,57,58,59,71,77,],[-21,-22,-23,-24,-25,-26,-27,68,-34,-29,-30,-31,-32,-28,-33,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'instruccion':([0,],[1,]),'instruccion_wave':([0,],[2,]),'instruccion_track':([0,],[3,]),'instruccion_play':([0,],[4,]),'lista_elementos':([15,31,],[19,40,]),'expresion':([15,16,31,32,33,],[20,22,20,41,42,]),'argumentos':([17,36,],[24,45,]),'argumento':([17,36,],[25,25,]),}
+_lr_goto_items = {'instruccion':([0,],[1,]),'instruccion_asignacion':([0,],[2,]),'instruccion_wave':([0,],[3,]),'instruccion_track':([0,],[4,]),'instruccion_play':([0,],[5,]),'instruccion_return':([0,],[6,]),'tipo_dato':([0,],[7,]),'expresion':([26,27,42,43,45,46,47,48,69,],[31,40,53,54,56,57,58,59,53,]),'lista_elementos':([42,69,],[52,77,]),'argumentos':([51,73,],[62,80,]),'argumento':([51,73,],[63,63,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,25 +27,47 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> instruccion","S'",1,None,None,None),
-  ('instruccion -> instruccion_wave','instruccion',1,'p_instrucciones','parser.py',10),
-  ('instruccion -> instruccion_track','instruccion',1,'p_instrucciones','parser.py',11),
-  ('instruccion -> instruccion_play','instruccion',1,'p_instrucciones','parser.py',12),
-  ('instruccion_wave -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA','instruccion_wave',8,'p_instruccion_wave','parser.py',17),
-  ('instruccion_track -> TRACK ID IGUAL CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMA','instruccion_track',7,'p_instruccion_track','parser.py',29),
-  ('instruccion_play -> ENGINE PUNTO PLAY PAREN_IZQ expresion PAREN_DER PUNTOYCOMA','instruccion_play',7,'p_instruccion_play','parser.py',40),
-  ('expresion -> ID','expresion',1,'p_expresion','parser.py',51),
-  ('expresion -> UNIDAD','expresion',1,'p_expresion','parser.py',52),
-  ('expresion -> expresion PLUS expresion','expresion',3,'p_expresion','parser.py',53),
-  ('expresion -> expresion TIMES expresion','expresion',3,'p_expresion','parser.py',54),
-  ('lista_elementos -> expresion COMA lista_elementos','lista_elementos',3,'p_lista_elementos','parser.py',74),
-  ('lista_elementos -> expresion','lista_elementos',1,'p_lista_elementos','parser.py',75),
-  ('argumentos -> argumento COMA argumentos','argumentos',3,'p_argumentos_multiple','parser.py',82),
-  ('argumentos -> argumento','argumentos',1,'p_argumentos_single','parser.py',86),
-  ('argumentos -> <empty>','argumentos',0,'p_argumentos_empty','parser.py',90),
-  ('argumento -> MINUS NUMERO','argumento',2,'p_argumento_negativo','parser.py',94),
-  ('argumento -> MINUS UNIDAD','argumento',2,'p_argumento_negativo','parser.py',95),
-  ('argumento -> NUMERO','argumento',1,'p_argumento','parser.py',111),
-  ('argumento -> UNIDAD','argumento',1,'p_argumento','parser.py',112),
-  ('argumento -> CADENA','argumento',1,'p_argumento','parser.py',113),
-  ('argumento -> ID','argumento',1,'p_argumento','parser.py',114),
+  ('instruccion -> instruccion_asignacion','instruccion',1,'p_instrucciones','parser.py',35),
+  ('instruccion -> instruccion_wave','instruccion',1,'p_instrucciones','parser.py',36),
+  ('instruccion -> instruccion_track','instruccion',1,'p_instrucciones','parser.py',37),
+  ('instruccion -> instruccion_play','instruccion',1,'p_instrucciones','parser.py',38),
+  ('instruccion -> instruccion_return','instruccion',1,'p_instrucciones','parser.py',39),
+  ('instruccion_return -> RETURN PAREN_IZQ expresion PAREN_DER PUNTOYCOMA','instruccion_return',5,'p_instruccion_return','parser.py',43),
+  ('tipo_dato -> TYPE_INT','tipo_dato',1,'p_tipo_dato','parser.py',49),
+  ('tipo_dato -> TYPE_FLOAT','tipo_dato',1,'p_tipo_dato','parser.py',50),
+  ('tipo_dato -> TYPE_BOOL','tipo_dato',1,'p_tipo_dato','parser.py',51),
+  ('tipo_dato -> TYPE_STRING','tipo_dato',1,'p_tipo_dato','parser.py',52),
+  ('tipo_dato -> TYPE_ARRAY','tipo_dato',1,'p_tipo_dato','parser.py',53),
+  ('tipo_dato -> TYPE_TIME','tipo_dato',1,'p_tipo_dato','parser.py',54),
+  ('tipo_dato -> TYPE_FREQ','tipo_dato',1,'p_tipo_dato','parser.py',55),
+  ('tipo_dato -> TYPE_VOL','tipo_dato',1,'p_tipo_dato','parser.py',56),
+  ('tipo_dato -> TYPE_ENV','tipo_dato',1,'p_tipo_dato','parser.py',57),
+  ('tipo_dato -> TYPE_CORO','tipo_dato',1,'p_tipo_dato','parser.py',58),
+  ('instruccion_asignacion -> tipo_dato ID IGUAL expresion PUNTOYCOMA','instruccion_asignacion',5,'p_instruccion_asignacion','parser.py',62),
+  ('instruccion_wave -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA','instruccion_wave',8,'p_instruccion_wave','parser.py',74),
+  ('instruccion_track -> TRACK ID IGUAL CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMA','instruccion_track',7,'p_instruccion_track','parser.py',86),
+  ('instruccion_play -> ENGINE PUNTO PLAY PAREN_IZQ expresion PAREN_DER PUNTOYCOMA','instruccion_play',7,'p_instruccion_play','parser.py',97),
+  ('expresion -> ID','expresion',1,'p_expresion','parser.py',108),
+  ('expresion -> UNIDAD','expresion',1,'p_expresion','parser.py',109),
+  ('expresion -> NUMERO','expresion',1,'p_expresion','parser.py',110),
+  ('expresion -> CADENA','expresion',1,'p_expresion','parser.py',111),
+  ('expresion -> TRUE','expresion',1,'p_expresion','parser.py',112),
+  ('expresion -> FALSE','expresion',1,'p_expresion','parser.py',113),
+  ('expresion -> NOTA_MUSICAL','expresion',1,'p_expresion','parser.py',114),
+  ('expresion -> IMPORT PAREN_IZQ CADENA PAREN_DER','expresion',4,'p_expresion','parser.py',115),
+  ('expresion -> expresion CONCAT expresion','expresion',3,'p_expresion','parser.py',116),
+  ('expresion -> expresion PLUS expresion','expresion',3,'p_expresion','parser.py',117),
+  ('expresion -> expresion MINUS expresion','expresion',3,'p_expresion','parser.py',118),
+  ('expresion -> expresion TIMES expresion','expresion',3,'p_expresion','parser.py',119),
+  ('lista_elementos -> expresion COMA lista_elementos','lista_elementos',3,'p_lista_elementos','parser.py',195),
+  ('lista_elementos -> expresion','lista_elementos',1,'p_lista_elementos','parser.py',196),
+  ('argumentos -> argumento COMA argumentos','argumentos',3,'p_argumentos_multiple','parser.py',203),
+  ('argumentos -> argumento','argumentos',1,'p_argumentos_single','parser.py',207),
+  ('argumentos -> <empty>','argumentos',0,'p_argumentos_empty','parser.py',211),
+  ('argumento -> MINUS NUMERO','argumento',2,'p_argumento_negativo','parser.py',215),
+  ('argumento -> MINUS UNIDAD','argumento',2,'p_argumento_negativo','parser.py',216),
+  ('argumento -> NUMERO','argumento',1,'p_argumento','parser.py',234),
+  ('argumento -> UNIDAD','argumento',1,'p_argumento','parser.py',235),
+  ('argumento -> CADENA','argumento',1,'p_argumento','parser.py',236),
+  ('argumento -> ID','argumento',1,'p_argumento','parser.py',237),
 ]

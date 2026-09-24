@@ -3,88 +3,161 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Unused terminals:
 
     DIVIDE
+    PRINT
+    SHOW
 
 Grammar
 
 Rule 0     S' -> instruccion
-Rule 1     instruccion -> instruccion_wave
-Rule 2     instruccion -> instruccion_track
-Rule 3     instruccion -> instruccion_play
-Rule 4     instruccion_wave -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA
-Rule 5     instruccion_track -> TRACK ID IGUAL CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMA
-Rule 6     instruccion_play -> ENGINE PUNTO PLAY PAREN_IZQ expresion PAREN_DER PUNTOYCOMA
-Rule 7     expresion -> ID
-Rule 8     expresion -> UNIDAD
-Rule 9     expresion -> expresion PLUS expresion
-Rule 10    expresion -> expresion TIMES expresion
-Rule 11    lista_elementos -> expresion COMA lista_elementos
-Rule 12    lista_elementos -> expresion
-Rule 13    argumentos -> argumento COMA argumentos
-Rule 14    argumentos -> argumento
-Rule 15    argumentos -> <empty>
-Rule 16    argumento -> MINUS NUMERO
-Rule 17    argumento -> MINUS UNIDAD
-Rule 18    argumento -> NUMERO
-Rule 19    argumento -> UNIDAD
-Rule 20    argumento -> CADENA
-Rule 21    argumento -> ID
+Rule 1     instruccion -> instruccion_asignacion
+Rule 2     instruccion -> instruccion_wave
+Rule 3     instruccion -> instruccion_track
+Rule 4     instruccion -> instruccion_play
+Rule 5     instruccion -> instruccion_return
+Rule 6     instruccion_return -> RETURN PAREN_IZQ expresion PAREN_DER PUNTOYCOMA
+Rule 7     tipo_dato -> TYPE_INT
+Rule 8     tipo_dato -> TYPE_FLOAT
+Rule 9     tipo_dato -> TYPE_BOOL
+Rule 10    tipo_dato -> TYPE_STRING
+Rule 11    tipo_dato -> TYPE_ARRAY
+Rule 12    tipo_dato -> TYPE_TIME
+Rule 13    tipo_dato -> TYPE_FREQ
+Rule 14    tipo_dato -> TYPE_VOL
+Rule 15    tipo_dato -> TYPE_ENV
+Rule 16    tipo_dato -> TYPE_CORO
+Rule 17    instruccion_asignacion -> tipo_dato ID IGUAL expresion PUNTOYCOMA
+Rule 18    instruccion_wave -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA
+Rule 19    instruccion_track -> TRACK ID IGUAL CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMA
+Rule 20    instruccion_play -> ENGINE PUNTO PLAY PAREN_IZQ expresion PAREN_DER PUNTOYCOMA
+Rule 21    expresion -> ID
+Rule 22    expresion -> UNIDAD
+Rule 23    expresion -> NUMERO
+Rule 24    expresion -> CADENA
+Rule 25    expresion -> TRUE
+Rule 26    expresion -> FALSE
+Rule 27    expresion -> NOTA_MUSICAL
+Rule 28    expresion -> IMPORT PAREN_IZQ CADENA PAREN_DER
+Rule 29    expresion -> expresion CONCAT expresion
+Rule 30    expresion -> expresion PLUS expresion
+Rule 31    expresion -> expresion MINUS expresion
+Rule 32    expresion -> expresion TIMES expresion
+Rule 33    lista_elementos -> expresion COMA lista_elementos
+Rule 34    lista_elementos -> expresion
+Rule 35    argumentos -> argumento COMA argumentos
+Rule 36    argumentos -> argumento
+Rule 37    argumentos -> <empty>
+Rule 38    argumento -> MINUS NUMERO
+Rule 39    argumento -> MINUS UNIDAD
+Rule 40    argumento -> NUMERO
+Rule 41    argumento -> UNIDAD
+Rule 42    argumento -> CADENA
+Rule 43    argumento -> ID
 
 Terminals, with rules where they appear
 
-CADENA               : 20
-COMA                 : 11 13
-CORCHETE_DER         : 5
-CORCHETE_IZQ         : 5
+CADENA               : 24 28 42
+COMA                 : 33 35
+CONCAT               : 29
+CORCHETE_DER         : 19
+CORCHETE_IZQ         : 19
 DIVIDE               : 
-ENGINE               : 6
-ID                   : 4 5 7 21
-IGUAL                : 4 5
-MINUS                : 16 17
-NUMERO               : 16 18
-PAREN_DER            : 4 6
-PAREN_IZQ            : 4 6
-PLAY                 : 6
-PLUS                 : 9
-PUNTO                : 6
-PUNTOYCOMA           : 4 5 6
-TIMES                : 10
-TRACK                : 5
-UNIDAD               : 8 17 19
-WAVE_FUNC            : 4
-WAVE_TYPE            : 4
+ENGINE               : 20
+FALSE                : 26
+ID                   : 17 18 19 21 43
+IGUAL                : 17 18 19
+IMPORT               : 28
+MINUS                : 31 38 39
+NOTA_MUSICAL         : 27
+NUMERO               : 23 38 40
+PAREN_DER            : 6 18 20 28
+PAREN_IZQ            : 6 18 20 28
+PLAY                 : 20
+PLUS                 : 30
+PRINT                : 
+PUNTO                : 20
+PUNTOYCOMA           : 6 17 18 19 20
+RETURN               : 6
+SHOW                 : 
+TIMES                : 32
+TRACK                : 19
+TRUE                 : 25
+TYPE_ARRAY           : 11
+TYPE_BOOL            : 9
+TYPE_CORO            : 16
+TYPE_ENV             : 15
+TYPE_FLOAT           : 8
+TYPE_FREQ            : 13
+TYPE_INT             : 7
+TYPE_STRING          : 10
+TYPE_TIME            : 12
+TYPE_VOL             : 14
+UNIDAD               : 22 39 41
+WAVE_FUNC            : 18
+WAVE_TYPE            : 18
 error                : 
 
 Nonterminals, with rules where they appear
 
-argumento            : 13 14
-argumentos           : 4 13
-expresion            : 6 9 9 10 10 11 12
+argumento            : 35 36
+argumentos           : 18 35
+expresion            : 6 17 20 29 29 30 30 31 31 32 32 33 34
 instruccion          : 0
-instruccion_play     : 3
-instruccion_track    : 2
-instruccion_wave     : 1
-lista_elementos      : 5 11
+instruccion_asignacion : 1
+instruccion_play     : 4
+instruccion_return   : 5
+instruccion_track    : 3
+instruccion_wave     : 2
+lista_elementos      : 19 33
+tipo_dato            : 17
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . instruccion
-    (1) instruccion -> . instruccion_wave
-    (2) instruccion -> . instruccion_track
-    (3) instruccion -> . instruccion_play
-    (4) instruccion_wave -> . WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA
-    (5) instruccion_track -> . TRACK ID IGUAL CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMA
-    (6) instruccion_play -> . ENGINE PUNTO PLAY PAREN_IZQ expresion PAREN_DER PUNTOYCOMA
+    (1) instruccion -> . instruccion_asignacion
+    (2) instruccion -> . instruccion_wave
+    (3) instruccion -> . instruccion_track
+    (4) instruccion -> . instruccion_play
+    (5) instruccion -> . instruccion_return
+    (17) instruccion_asignacion -> . tipo_dato ID IGUAL expresion PUNTOYCOMA
+    (18) instruccion_wave -> . WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA
+    (19) instruccion_track -> . TRACK ID IGUAL CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMA
+    (20) instruccion_play -> . ENGINE PUNTO PLAY PAREN_IZQ expresion PAREN_DER PUNTOYCOMA
+    (6) instruccion_return -> . RETURN PAREN_IZQ expresion PAREN_DER PUNTOYCOMA
+    (7) tipo_dato -> . TYPE_INT
+    (8) tipo_dato -> . TYPE_FLOAT
+    (9) tipo_dato -> . TYPE_BOOL
+    (10) tipo_dato -> . TYPE_STRING
+    (11) tipo_dato -> . TYPE_ARRAY
+    (12) tipo_dato -> . TYPE_TIME
+    (13) tipo_dato -> . TYPE_FREQ
+    (14) tipo_dato -> . TYPE_VOL
+    (15) tipo_dato -> . TYPE_ENV
+    (16) tipo_dato -> . TYPE_CORO
 
-    WAVE_TYPE       shift and go to state 5
-    TRACK           shift and go to state 6
-    ENGINE          shift and go to state 7
+    WAVE_TYPE       shift and go to state 8
+    TRACK           shift and go to state 9
+    ENGINE          shift and go to state 10
+    RETURN          shift and go to state 11
+    TYPE_INT        shift and go to state 12
+    TYPE_FLOAT      shift and go to state 13
+    TYPE_BOOL       shift and go to state 14
+    TYPE_STRING     shift and go to state 15
+    TYPE_ARRAY      shift and go to state 16
+    TYPE_TIME       shift and go to state 17
+    TYPE_FREQ       shift and go to state 18
+    TYPE_VOL        shift and go to state 19
+    TYPE_ENV        shift and go to state 20
+    TYPE_CORO       shift and go to state 21
 
     instruccion                    shift and go to state 1
-    instruccion_wave               shift and go to state 2
-    instruccion_track              shift and go to state 3
-    instruccion_play               shift and go to state 4
+    instruccion_asignacion         shift and go to state 2
+    instruccion_wave               shift and go to state 3
+    instruccion_track              shift and go to state 4
+    instruccion_play               shift and go to state 5
+    instruccion_return             shift and go to state 6
+    tipo_dato                      shift and go to state 7
 
 state 1
 
@@ -94,433 +167,970 @@ state 1
 
 state 2
 
-    (1) instruccion -> instruccion_wave .
+    (1) instruccion -> instruccion_asignacion .
 
-    $end            reduce using rule 1 (instruccion -> instruccion_wave .)
+    $end            reduce using rule 1 (instruccion -> instruccion_asignacion .)
 
 
 state 3
 
-    (2) instruccion -> instruccion_track .
+    (2) instruccion -> instruccion_wave .
 
-    $end            reduce using rule 2 (instruccion -> instruccion_track .)
+    $end            reduce using rule 2 (instruccion -> instruccion_wave .)
 
 
 state 4
 
-    (3) instruccion -> instruccion_play .
+    (3) instruccion -> instruccion_track .
 
-    $end            reduce using rule 3 (instruccion -> instruccion_play .)
+    $end            reduce using rule 3 (instruccion -> instruccion_track .)
 
 
 state 5
 
-    (4) instruccion_wave -> WAVE_TYPE . ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA
+    (4) instruccion -> instruccion_play .
 
-    ID              shift and go to state 8
+    $end            reduce using rule 4 (instruccion -> instruccion_play .)
 
 
 state 6
 
-    (5) instruccion_track -> TRACK . ID IGUAL CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMA
+    (5) instruccion -> instruccion_return .
 
-    ID              shift and go to state 9
+    $end            reduce using rule 5 (instruccion -> instruccion_return .)
 
 
 state 7
 
-    (6) instruccion_play -> ENGINE . PUNTO PLAY PAREN_IZQ expresion PAREN_DER PUNTOYCOMA
+    (17) instruccion_asignacion -> tipo_dato . ID IGUAL expresion PUNTOYCOMA
 
-    PUNTO           shift and go to state 10
+    ID              shift and go to state 22
 
 
 state 8
 
-    (4) instruccion_wave -> WAVE_TYPE ID . IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA
+    (18) instruccion_wave -> WAVE_TYPE . ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA
 
-    IGUAL           shift and go to state 11
+    ID              shift and go to state 23
 
 
 state 9
 
-    (5) instruccion_track -> TRACK ID . IGUAL CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMA
+    (19) instruccion_track -> TRACK . ID IGUAL CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMA
 
-    IGUAL           shift and go to state 12
+    ID              shift and go to state 24
 
 
 state 10
 
-    (6) instruccion_play -> ENGINE PUNTO . PLAY PAREN_IZQ expresion PAREN_DER PUNTOYCOMA
+    (20) instruccion_play -> ENGINE . PUNTO PLAY PAREN_IZQ expresion PAREN_DER PUNTOYCOMA
 
-    PLAY            shift and go to state 13
+    PUNTO           shift and go to state 25
 
 
 state 11
 
-    (4) instruccion_wave -> WAVE_TYPE ID IGUAL . WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA
+    (6) instruccion_return -> RETURN . PAREN_IZQ expresion PAREN_DER PUNTOYCOMA
 
-    WAVE_FUNC       shift and go to state 14
+    PAREN_IZQ       shift and go to state 26
 
 
 state 12
 
-    (5) instruccion_track -> TRACK ID IGUAL . CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMA
+    (7) tipo_dato -> TYPE_INT .
 
-    CORCHETE_IZQ    shift and go to state 15
+    ID              reduce using rule 7 (tipo_dato -> TYPE_INT .)
 
 
 state 13
 
-    (6) instruccion_play -> ENGINE PUNTO PLAY . PAREN_IZQ expresion PAREN_DER PUNTOYCOMA
+    (8) tipo_dato -> TYPE_FLOAT .
 
-    PAREN_IZQ       shift and go to state 16
+    ID              reduce using rule 8 (tipo_dato -> TYPE_FLOAT .)
 
 
 state 14
 
-    (4) instruccion_wave -> WAVE_TYPE ID IGUAL WAVE_FUNC . PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA
+    (9) tipo_dato -> TYPE_BOOL .
 
-    PAREN_IZQ       shift and go to state 17
+    ID              reduce using rule 9 (tipo_dato -> TYPE_BOOL .)
 
 
 state 15
 
-    (5) instruccion_track -> TRACK ID IGUAL CORCHETE_IZQ . lista_elementos CORCHETE_DER PUNTOYCOMA
-    (11) lista_elementos -> . expresion COMA lista_elementos
-    (12) lista_elementos -> . expresion
-    (7) expresion -> . ID
-    (8) expresion -> . UNIDAD
-    (9) expresion -> . expresion PLUS expresion
-    (10) expresion -> . expresion TIMES expresion
+    (10) tipo_dato -> TYPE_STRING .
 
-    ID              shift and go to state 18
-    UNIDAD          shift and go to state 21
+    ID              reduce using rule 10 (tipo_dato -> TYPE_STRING .)
 
-    lista_elementos                shift and go to state 19
-    expresion                      shift and go to state 20
 
 state 16
 
-    (6) instruccion_play -> ENGINE PUNTO PLAY PAREN_IZQ . expresion PAREN_DER PUNTOYCOMA
-    (7) expresion -> . ID
-    (8) expresion -> . UNIDAD
-    (9) expresion -> . expresion PLUS expresion
-    (10) expresion -> . expresion TIMES expresion
+    (11) tipo_dato -> TYPE_ARRAY .
 
-    ID              shift and go to state 18
-    UNIDAD          shift and go to state 21
+    ID              reduce using rule 11 (tipo_dato -> TYPE_ARRAY .)
 
-    expresion                      shift and go to state 22
 
 state 17
 
-    (4) instruccion_wave -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ . argumentos PAREN_DER PUNTOYCOMA
-    (13) argumentos -> . argumento COMA argumentos
-    (14) argumentos -> . argumento
-    (15) argumentos -> .
-    (16) argumento -> . MINUS NUMERO
-    (17) argumento -> . MINUS UNIDAD
-    (18) argumento -> . NUMERO
-    (19) argumento -> . UNIDAD
-    (20) argumento -> . CADENA
-    (21) argumento -> . ID
+    (12) tipo_dato -> TYPE_TIME .
 
-    PAREN_DER       reduce using rule 15 (argumentos -> .)
-    MINUS           shift and go to state 26
-    NUMERO          shift and go to state 27
-    UNIDAD          shift and go to state 28
-    CADENA          shift and go to state 29
-    ID              shift and go to state 23
+    ID              reduce using rule 12 (tipo_dato -> TYPE_TIME .)
 
-    argumentos                     shift and go to state 24
-    argumento                      shift and go to state 25
 
 state 18
 
-    (7) expresion -> ID .
+    (13) tipo_dato -> TYPE_FREQ .
 
-    COMA            reduce using rule 7 (expresion -> ID .)
-    PLUS            reduce using rule 7 (expresion -> ID .)
-    TIMES           reduce using rule 7 (expresion -> ID .)
-    CORCHETE_DER    reduce using rule 7 (expresion -> ID .)
-    PAREN_DER       reduce using rule 7 (expresion -> ID .)
+    ID              reduce using rule 13 (tipo_dato -> TYPE_FREQ .)
 
 
 state 19
 
-    (5) instruccion_track -> TRACK ID IGUAL CORCHETE_IZQ lista_elementos . CORCHETE_DER PUNTOYCOMA
+    (14) tipo_dato -> TYPE_VOL .
 
-    CORCHETE_DER    shift and go to state 30
+    ID              reduce using rule 14 (tipo_dato -> TYPE_VOL .)
 
 
 state 20
 
-    (11) lista_elementos -> expresion . COMA lista_elementos
-    (12) lista_elementos -> expresion .
-    (9) expresion -> expresion . PLUS expresion
-    (10) expresion -> expresion . TIMES expresion
+    (15) tipo_dato -> TYPE_ENV .
 
-    COMA            shift and go to state 31
-    CORCHETE_DER    reduce using rule 12 (lista_elementos -> expresion .)
-    PLUS            shift and go to state 32
-    TIMES           shift and go to state 33
+    ID              reduce using rule 15 (tipo_dato -> TYPE_ENV .)
 
 
 state 21
 
-    (8) expresion -> UNIDAD .
+    (16) tipo_dato -> TYPE_CORO .
 
-    COMA            reduce using rule 8 (expresion -> UNIDAD .)
-    PLUS            reduce using rule 8 (expresion -> UNIDAD .)
-    TIMES           reduce using rule 8 (expresion -> UNIDAD .)
-    CORCHETE_DER    reduce using rule 8 (expresion -> UNIDAD .)
-    PAREN_DER       reduce using rule 8 (expresion -> UNIDAD .)
+    ID              reduce using rule 16 (tipo_dato -> TYPE_CORO .)
 
 
 state 22
 
-    (6) instruccion_play -> ENGINE PUNTO PLAY PAREN_IZQ expresion . PAREN_DER PUNTOYCOMA
-    (9) expresion -> expresion . PLUS expresion
-    (10) expresion -> expresion . TIMES expresion
+    (17) instruccion_asignacion -> tipo_dato ID . IGUAL expresion PUNTOYCOMA
 
-    PAREN_DER       shift and go to state 34
-    PLUS            shift and go to state 32
-    TIMES           shift and go to state 33
+    IGUAL           shift and go to state 27
 
 
 state 23
 
-    (21) argumento -> ID .
+    (18) instruccion_wave -> WAVE_TYPE ID . IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA
 
-    COMA            reduce using rule 21 (argumento -> ID .)
-    PAREN_DER       reduce using rule 21 (argumento -> ID .)
+    IGUAL           shift and go to state 28
 
 
 state 24
 
-    (4) instruccion_wave -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos . PAREN_DER PUNTOYCOMA
+    (19) instruccion_track -> TRACK ID . IGUAL CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMA
 
-    PAREN_DER       shift and go to state 35
+    IGUAL           shift and go to state 29
 
 
 state 25
 
-    (13) argumentos -> argumento . COMA argumentos
-    (14) argumentos -> argumento .
+    (20) instruccion_play -> ENGINE PUNTO . PLAY PAREN_IZQ expresion PAREN_DER PUNTOYCOMA
 
-    COMA            shift and go to state 36
-    PAREN_DER       reduce using rule 14 (argumentos -> argumento .)
+    PLAY            shift and go to state 30
 
 
 state 26
 
-    (16) argumento -> MINUS . NUMERO
-    (17) argumento -> MINUS . UNIDAD
+    (6) instruccion_return -> RETURN PAREN_IZQ . expresion PAREN_DER PUNTOYCOMA
+    (21) expresion -> . ID
+    (22) expresion -> . UNIDAD
+    (23) expresion -> . NUMERO
+    (24) expresion -> . CADENA
+    (25) expresion -> . TRUE
+    (26) expresion -> . FALSE
+    (27) expresion -> . NOTA_MUSICAL
+    (28) expresion -> . IMPORT PAREN_IZQ CADENA PAREN_DER
+    (29) expresion -> . expresion CONCAT expresion
+    (30) expresion -> . expresion PLUS expresion
+    (31) expresion -> . expresion MINUS expresion
+    (32) expresion -> . expresion TIMES expresion
 
-    NUMERO          shift and go to state 37
-    UNIDAD          shift and go to state 38
+    ID              shift and go to state 32
+    UNIDAD          shift and go to state 33
+    NUMERO          shift and go to state 34
+    CADENA          shift and go to state 35
+    TRUE            shift and go to state 36
+    FALSE           shift and go to state 37
+    NOTA_MUSICAL    shift and go to state 38
+    IMPORT          shift and go to state 39
 
+    expresion                      shift and go to state 31
 
 state 27
 
-    (18) argumento -> NUMERO .
+    (17) instruccion_asignacion -> tipo_dato ID IGUAL . expresion PUNTOYCOMA
+    (21) expresion -> . ID
+    (22) expresion -> . UNIDAD
+    (23) expresion -> . NUMERO
+    (24) expresion -> . CADENA
+    (25) expresion -> . TRUE
+    (26) expresion -> . FALSE
+    (27) expresion -> . NOTA_MUSICAL
+    (28) expresion -> . IMPORT PAREN_IZQ CADENA PAREN_DER
+    (29) expresion -> . expresion CONCAT expresion
+    (30) expresion -> . expresion PLUS expresion
+    (31) expresion -> . expresion MINUS expresion
+    (32) expresion -> . expresion TIMES expresion
 
-    COMA            reduce using rule 18 (argumento -> NUMERO .)
-    PAREN_DER       reduce using rule 18 (argumento -> NUMERO .)
+    ID              shift and go to state 32
+    UNIDAD          shift and go to state 33
+    NUMERO          shift and go to state 34
+    CADENA          shift and go to state 35
+    TRUE            shift and go to state 36
+    FALSE           shift and go to state 37
+    NOTA_MUSICAL    shift and go to state 38
+    IMPORT          shift and go to state 39
 
+    expresion                      shift and go to state 40
 
 state 28
 
-    (19) argumento -> UNIDAD .
+    (18) instruccion_wave -> WAVE_TYPE ID IGUAL . WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA
 
-    COMA            reduce using rule 19 (argumento -> UNIDAD .)
-    PAREN_DER       reduce using rule 19 (argumento -> UNIDAD .)
+    WAVE_FUNC       shift and go to state 41
 
 
 state 29
 
-    (20) argumento -> CADENA .
+    (19) instruccion_track -> TRACK ID IGUAL . CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMA
 
-    COMA            reduce using rule 20 (argumento -> CADENA .)
-    PAREN_DER       reduce using rule 20 (argumento -> CADENA .)
+    CORCHETE_IZQ    shift and go to state 42
 
 
 state 30
 
-    (5) instruccion_track -> TRACK ID IGUAL CORCHETE_IZQ lista_elementos CORCHETE_DER . PUNTOYCOMA
+    (20) instruccion_play -> ENGINE PUNTO PLAY . PAREN_IZQ expresion PAREN_DER PUNTOYCOMA
 
-    PUNTOYCOMA      shift and go to state 39
+    PAREN_IZQ       shift and go to state 43
 
 
 state 31
 
-    (11) lista_elementos -> expresion COMA . lista_elementos
-    (11) lista_elementos -> . expresion COMA lista_elementos
-    (12) lista_elementos -> . expresion
-    (7) expresion -> . ID
-    (8) expresion -> . UNIDAD
-    (9) expresion -> . expresion PLUS expresion
-    (10) expresion -> . expresion TIMES expresion
+    (6) instruccion_return -> RETURN PAREN_IZQ expresion . PAREN_DER PUNTOYCOMA
+    (29) expresion -> expresion . CONCAT expresion
+    (30) expresion -> expresion . PLUS expresion
+    (31) expresion -> expresion . MINUS expresion
+    (32) expresion -> expresion . TIMES expresion
 
-    ID              shift and go to state 18
-    UNIDAD          shift and go to state 21
+    PAREN_DER       shift and go to state 44
+    CONCAT          shift and go to state 45
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
 
-    expresion                      shift and go to state 20
-    lista_elementos                shift and go to state 40
 
 state 32
 
-    (9) expresion -> expresion PLUS . expresion
-    (7) expresion -> . ID
-    (8) expresion -> . UNIDAD
-    (9) expresion -> . expresion PLUS expresion
-    (10) expresion -> . expresion TIMES expresion
+    (21) expresion -> ID .
 
-    ID              shift and go to state 18
-    UNIDAD          shift and go to state 21
+    PAREN_DER       reduce using rule 21 (expresion -> ID .)
+    CONCAT          reduce using rule 21 (expresion -> ID .)
+    PLUS            reduce using rule 21 (expresion -> ID .)
+    MINUS           reduce using rule 21 (expresion -> ID .)
+    TIMES           reduce using rule 21 (expresion -> ID .)
+    PUNTOYCOMA      reduce using rule 21 (expresion -> ID .)
+    COMA            reduce using rule 21 (expresion -> ID .)
+    CORCHETE_DER    reduce using rule 21 (expresion -> ID .)
 
-    expresion                      shift and go to state 41
 
 state 33
 
-    (10) expresion -> expresion TIMES . expresion
-    (7) expresion -> . ID
-    (8) expresion -> . UNIDAD
-    (9) expresion -> . expresion PLUS expresion
-    (10) expresion -> . expresion TIMES expresion
+    (22) expresion -> UNIDAD .
 
-    ID              shift and go to state 18
-    UNIDAD          shift and go to state 21
+    PAREN_DER       reduce using rule 22 (expresion -> UNIDAD .)
+    CONCAT          reduce using rule 22 (expresion -> UNIDAD .)
+    PLUS            reduce using rule 22 (expresion -> UNIDAD .)
+    MINUS           reduce using rule 22 (expresion -> UNIDAD .)
+    TIMES           reduce using rule 22 (expresion -> UNIDAD .)
+    PUNTOYCOMA      reduce using rule 22 (expresion -> UNIDAD .)
+    COMA            reduce using rule 22 (expresion -> UNIDAD .)
+    CORCHETE_DER    reduce using rule 22 (expresion -> UNIDAD .)
 
-    expresion                      shift and go to state 42
 
 state 34
 
-    (6) instruccion_play -> ENGINE PUNTO PLAY PAREN_IZQ expresion PAREN_DER . PUNTOYCOMA
+    (23) expresion -> NUMERO .
 
-    PUNTOYCOMA      shift and go to state 43
+    PAREN_DER       reduce using rule 23 (expresion -> NUMERO .)
+    CONCAT          reduce using rule 23 (expresion -> NUMERO .)
+    PLUS            reduce using rule 23 (expresion -> NUMERO .)
+    MINUS           reduce using rule 23 (expresion -> NUMERO .)
+    TIMES           reduce using rule 23 (expresion -> NUMERO .)
+    PUNTOYCOMA      reduce using rule 23 (expresion -> NUMERO .)
+    COMA            reduce using rule 23 (expresion -> NUMERO .)
+    CORCHETE_DER    reduce using rule 23 (expresion -> NUMERO .)
 
 
 state 35
 
-    (4) instruccion_wave -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER . PUNTOYCOMA
+    (24) expresion -> CADENA .
 
-    PUNTOYCOMA      shift and go to state 44
+    PAREN_DER       reduce using rule 24 (expresion -> CADENA .)
+    CONCAT          reduce using rule 24 (expresion -> CADENA .)
+    PLUS            reduce using rule 24 (expresion -> CADENA .)
+    MINUS           reduce using rule 24 (expresion -> CADENA .)
+    TIMES           reduce using rule 24 (expresion -> CADENA .)
+    PUNTOYCOMA      reduce using rule 24 (expresion -> CADENA .)
+    COMA            reduce using rule 24 (expresion -> CADENA .)
+    CORCHETE_DER    reduce using rule 24 (expresion -> CADENA .)
 
 
 state 36
 
-    (13) argumentos -> argumento COMA . argumentos
-    (13) argumentos -> . argumento COMA argumentos
-    (14) argumentos -> . argumento
-    (15) argumentos -> .
-    (16) argumento -> . MINUS NUMERO
-    (17) argumento -> . MINUS UNIDAD
-    (18) argumento -> . NUMERO
-    (19) argumento -> . UNIDAD
-    (20) argumento -> . CADENA
-    (21) argumento -> . ID
+    (25) expresion -> TRUE .
 
-    PAREN_DER       reduce using rule 15 (argumentos -> .)
-    MINUS           shift and go to state 26
-    NUMERO          shift and go to state 27
-    UNIDAD          shift and go to state 28
-    CADENA          shift and go to state 29
-    ID              shift and go to state 23
+    PAREN_DER       reduce using rule 25 (expresion -> TRUE .)
+    CONCAT          reduce using rule 25 (expresion -> TRUE .)
+    PLUS            reduce using rule 25 (expresion -> TRUE .)
+    MINUS           reduce using rule 25 (expresion -> TRUE .)
+    TIMES           reduce using rule 25 (expresion -> TRUE .)
+    PUNTOYCOMA      reduce using rule 25 (expresion -> TRUE .)
+    COMA            reduce using rule 25 (expresion -> TRUE .)
+    CORCHETE_DER    reduce using rule 25 (expresion -> TRUE .)
 
-    argumento                      shift and go to state 25
-    argumentos                     shift and go to state 45
 
 state 37
 
-    (16) argumento -> MINUS NUMERO .
+    (26) expresion -> FALSE .
 
-    COMA            reduce using rule 16 (argumento -> MINUS NUMERO .)
-    PAREN_DER       reduce using rule 16 (argumento -> MINUS NUMERO .)
+    PAREN_DER       reduce using rule 26 (expresion -> FALSE .)
+    CONCAT          reduce using rule 26 (expresion -> FALSE .)
+    PLUS            reduce using rule 26 (expresion -> FALSE .)
+    MINUS           reduce using rule 26 (expresion -> FALSE .)
+    TIMES           reduce using rule 26 (expresion -> FALSE .)
+    PUNTOYCOMA      reduce using rule 26 (expresion -> FALSE .)
+    COMA            reduce using rule 26 (expresion -> FALSE .)
+    CORCHETE_DER    reduce using rule 26 (expresion -> FALSE .)
 
 
 state 38
 
-    (17) argumento -> MINUS UNIDAD .
+    (27) expresion -> NOTA_MUSICAL .
 
-    COMA            reduce using rule 17 (argumento -> MINUS UNIDAD .)
-    PAREN_DER       reduce using rule 17 (argumento -> MINUS UNIDAD .)
+    PAREN_DER       reduce using rule 27 (expresion -> NOTA_MUSICAL .)
+    CONCAT          reduce using rule 27 (expresion -> NOTA_MUSICAL .)
+    PLUS            reduce using rule 27 (expresion -> NOTA_MUSICAL .)
+    MINUS           reduce using rule 27 (expresion -> NOTA_MUSICAL .)
+    TIMES           reduce using rule 27 (expresion -> NOTA_MUSICAL .)
+    PUNTOYCOMA      reduce using rule 27 (expresion -> NOTA_MUSICAL .)
+    COMA            reduce using rule 27 (expresion -> NOTA_MUSICAL .)
+    CORCHETE_DER    reduce using rule 27 (expresion -> NOTA_MUSICAL .)
 
 
 state 39
 
-    (5) instruccion_track -> TRACK ID IGUAL CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMA .
+    (28) expresion -> IMPORT . PAREN_IZQ CADENA PAREN_DER
 
-    $end            reduce using rule 5 (instruccion_track -> TRACK ID IGUAL CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMA .)
+    PAREN_IZQ       shift and go to state 49
 
 
 state 40
 
-    (11) lista_elementos -> expresion COMA lista_elementos .
+    (17) instruccion_asignacion -> tipo_dato ID IGUAL expresion . PUNTOYCOMA
+    (29) expresion -> expresion . CONCAT expresion
+    (30) expresion -> expresion . PLUS expresion
+    (31) expresion -> expresion . MINUS expresion
+    (32) expresion -> expresion . TIMES expresion
 
-    CORCHETE_DER    reduce using rule 11 (lista_elementos -> expresion COMA lista_elementos .)
+    PUNTOYCOMA      shift and go to state 50
+    CONCAT          shift and go to state 45
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
 
 
 state 41
 
-    (9) expresion -> expresion PLUS expresion .
-    (9) expresion -> expresion . PLUS expresion
-    (10) expresion -> expresion . TIMES expresion
+    (18) instruccion_wave -> WAVE_TYPE ID IGUAL WAVE_FUNC . PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA
 
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for TIMES resolved as shift
-    COMA            reduce using rule 9 (expresion -> expresion PLUS expresion .)
-    CORCHETE_DER    reduce using rule 9 (expresion -> expresion PLUS expresion .)
-    PAREN_DER       reduce using rule 9 (expresion -> expresion PLUS expresion .)
-    PLUS            shift and go to state 32
-    TIMES           shift and go to state 33
-
-  ! PLUS            [ reduce using rule 9 (expresion -> expresion PLUS expresion .) ]
-  ! TIMES           [ reduce using rule 9 (expresion -> expresion PLUS expresion .) ]
+    PAREN_IZQ       shift and go to state 51
 
 
 state 42
 
-    (10) expresion -> expresion TIMES expresion .
-    (9) expresion -> expresion . PLUS expresion
-    (10) expresion -> expresion . TIMES expresion
+    (19) instruccion_track -> TRACK ID IGUAL CORCHETE_IZQ . lista_elementos CORCHETE_DER PUNTOYCOMA
+    (33) lista_elementos -> . expresion COMA lista_elementos
+    (34) lista_elementos -> . expresion
+    (21) expresion -> . ID
+    (22) expresion -> . UNIDAD
+    (23) expresion -> . NUMERO
+    (24) expresion -> . CADENA
+    (25) expresion -> . TRUE
+    (26) expresion -> . FALSE
+    (27) expresion -> . NOTA_MUSICAL
+    (28) expresion -> . IMPORT PAREN_IZQ CADENA PAREN_DER
+    (29) expresion -> . expresion CONCAT expresion
+    (30) expresion -> . expresion PLUS expresion
+    (31) expresion -> . expresion MINUS expresion
+    (32) expresion -> . expresion TIMES expresion
 
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for TIMES resolved as shift
-    COMA            reduce using rule 10 (expresion -> expresion TIMES expresion .)
-    CORCHETE_DER    reduce using rule 10 (expresion -> expresion TIMES expresion .)
-    PAREN_DER       reduce using rule 10 (expresion -> expresion TIMES expresion .)
-    PLUS            shift and go to state 32
-    TIMES           shift and go to state 33
+    ID              shift and go to state 32
+    UNIDAD          shift and go to state 33
+    NUMERO          shift and go to state 34
+    CADENA          shift and go to state 35
+    TRUE            shift and go to state 36
+    FALSE           shift and go to state 37
+    NOTA_MUSICAL    shift and go to state 38
+    IMPORT          shift and go to state 39
 
-  ! PLUS            [ reduce using rule 10 (expresion -> expresion TIMES expresion .) ]
-  ! TIMES           [ reduce using rule 10 (expresion -> expresion TIMES expresion .) ]
-
+    lista_elementos                shift and go to state 52
+    expresion                      shift and go to state 53
 
 state 43
 
-    (6) instruccion_play -> ENGINE PUNTO PLAY PAREN_IZQ expresion PAREN_DER PUNTOYCOMA .
+    (20) instruccion_play -> ENGINE PUNTO PLAY PAREN_IZQ . expresion PAREN_DER PUNTOYCOMA
+    (21) expresion -> . ID
+    (22) expresion -> . UNIDAD
+    (23) expresion -> . NUMERO
+    (24) expresion -> . CADENA
+    (25) expresion -> . TRUE
+    (26) expresion -> . FALSE
+    (27) expresion -> . NOTA_MUSICAL
+    (28) expresion -> . IMPORT PAREN_IZQ CADENA PAREN_DER
+    (29) expresion -> . expresion CONCAT expresion
+    (30) expresion -> . expresion PLUS expresion
+    (31) expresion -> . expresion MINUS expresion
+    (32) expresion -> . expresion TIMES expresion
 
-    $end            reduce using rule 6 (instruccion_play -> ENGINE PUNTO PLAY PAREN_IZQ expresion PAREN_DER PUNTOYCOMA .)
+    ID              shift and go to state 32
+    UNIDAD          shift and go to state 33
+    NUMERO          shift and go to state 34
+    CADENA          shift and go to state 35
+    TRUE            shift and go to state 36
+    FALSE           shift and go to state 37
+    NOTA_MUSICAL    shift and go to state 38
+    IMPORT          shift and go to state 39
 
+    expresion                      shift and go to state 54
 
 state 44
 
-    (4) instruccion_wave -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA .
+    (6) instruccion_return -> RETURN PAREN_IZQ expresion PAREN_DER . PUNTOYCOMA
 
-    $end            reduce using rule 4 (instruccion_wave -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA .)
+    PUNTOYCOMA      shift and go to state 55
 
 
 state 45
 
-    (13) argumentos -> argumento COMA argumentos .
+    (29) expresion -> expresion CONCAT . expresion
+    (21) expresion -> . ID
+    (22) expresion -> . UNIDAD
+    (23) expresion -> . NUMERO
+    (24) expresion -> . CADENA
+    (25) expresion -> . TRUE
+    (26) expresion -> . FALSE
+    (27) expresion -> . NOTA_MUSICAL
+    (28) expresion -> . IMPORT PAREN_IZQ CADENA PAREN_DER
+    (29) expresion -> . expresion CONCAT expresion
+    (30) expresion -> . expresion PLUS expresion
+    (31) expresion -> . expresion MINUS expresion
+    (32) expresion -> . expresion TIMES expresion
 
-    PAREN_DER       reduce using rule 13 (argumentos -> argumento COMA argumentos .)
+    ID              shift and go to state 32
+    UNIDAD          shift and go to state 33
+    NUMERO          shift and go to state 34
+    CADENA          shift and go to state 35
+    TRUE            shift and go to state 36
+    FALSE           shift and go to state 37
+    NOTA_MUSICAL    shift and go to state 38
+    IMPORT          shift and go to state 39
+
+    expresion                      shift and go to state 56
+
+state 46
+
+    (30) expresion -> expresion PLUS . expresion
+    (21) expresion -> . ID
+    (22) expresion -> . UNIDAD
+    (23) expresion -> . NUMERO
+    (24) expresion -> . CADENA
+    (25) expresion -> . TRUE
+    (26) expresion -> . FALSE
+    (27) expresion -> . NOTA_MUSICAL
+    (28) expresion -> . IMPORT PAREN_IZQ CADENA PAREN_DER
+    (29) expresion -> . expresion CONCAT expresion
+    (30) expresion -> . expresion PLUS expresion
+    (31) expresion -> . expresion MINUS expresion
+    (32) expresion -> . expresion TIMES expresion
+
+    ID              shift and go to state 32
+    UNIDAD          shift and go to state 33
+    NUMERO          shift and go to state 34
+    CADENA          shift and go to state 35
+    TRUE            shift and go to state 36
+    FALSE           shift and go to state 37
+    NOTA_MUSICAL    shift and go to state 38
+    IMPORT          shift and go to state 39
+
+    expresion                      shift and go to state 57
+
+state 47
+
+    (31) expresion -> expresion MINUS . expresion
+    (21) expresion -> . ID
+    (22) expresion -> . UNIDAD
+    (23) expresion -> . NUMERO
+    (24) expresion -> . CADENA
+    (25) expresion -> . TRUE
+    (26) expresion -> . FALSE
+    (27) expresion -> . NOTA_MUSICAL
+    (28) expresion -> . IMPORT PAREN_IZQ CADENA PAREN_DER
+    (29) expresion -> . expresion CONCAT expresion
+    (30) expresion -> . expresion PLUS expresion
+    (31) expresion -> . expresion MINUS expresion
+    (32) expresion -> . expresion TIMES expresion
+
+    ID              shift and go to state 32
+    UNIDAD          shift and go to state 33
+    NUMERO          shift and go to state 34
+    CADENA          shift and go to state 35
+    TRUE            shift and go to state 36
+    FALSE           shift and go to state 37
+    NOTA_MUSICAL    shift and go to state 38
+    IMPORT          shift and go to state 39
+
+    expresion                      shift and go to state 58
+
+state 48
+
+    (32) expresion -> expresion TIMES . expresion
+    (21) expresion -> . ID
+    (22) expresion -> . UNIDAD
+    (23) expresion -> . NUMERO
+    (24) expresion -> . CADENA
+    (25) expresion -> . TRUE
+    (26) expresion -> . FALSE
+    (27) expresion -> . NOTA_MUSICAL
+    (28) expresion -> . IMPORT PAREN_IZQ CADENA PAREN_DER
+    (29) expresion -> . expresion CONCAT expresion
+    (30) expresion -> . expresion PLUS expresion
+    (31) expresion -> . expresion MINUS expresion
+    (32) expresion -> . expresion TIMES expresion
+
+    ID              shift and go to state 32
+    UNIDAD          shift and go to state 33
+    NUMERO          shift and go to state 34
+    CADENA          shift and go to state 35
+    TRUE            shift and go to state 36
+    FALSE           shift and go to state 37
+    NOTA_MUSICAL    shift and go to state 38
+    IMPORT          shift and go to state 39
+
+    expresion                      shift and go to state 59
+
+state 49
+
+    (28) expresion -> IMPORT PAREN_IZQ . CADENA PAREN_DER
+
+    CADENA          shift and go to state 60
+
+
+state 50
+
+    (17) instruccion_asignacion -> tipo_dato ID IGUAL expresion PUNTOYCOMA .
+
+    $end            reduce using rule 17 (instruccion_asignacion -> tipo_dato ID IGUAL expresion PUNTOYCOMA .)
+
+
+state 51
+
+    (18) instruccion_wave -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ . argumentos PAREN_DER PUNTOYCOMA
+    (35) argumentos -> . argumento COMA argumentos
+    (36) argumentos -> . argumento
+    (37) argumentos -> .
+    (38) argumento -> . MINUS NUMERO
+    (39) argumento -> . MINUS UNIDAD
+    (40) argumento -> . NUMERO
+    (41) argumento -> . UNIDAD
+    (42) argumento -> . CADENA
+    (43) argumento -> . ID
+
+    PAREN_DER       reduce using rule 37 (argumentos -> .)
+    MINUS           shift and go to state 64
+    NUMERO          shift and go to state 65
+    UNIDAD          shift and go to state 66
+    CADENA          shift and go to state 67
+    ID              shift and go to state 61
+
+    argumentos                     shift and go to state 62
+    argumento                      shift and go to state 63
+
+state 52
+
+    (19) instruccion_track -> TRACK ID IGUAL CORCHETE_IZQ lista_elementos . CORCHETE_DER PUNTOYCOMA
+
+    CORCHETE_DER    shift and go to state 68
+
+
+state 53
+
+    (33) lista_elementos -> expresion . COMA lista_elementos
+    (34) lista_elementos -> expresion .
+    (29) expresion -> expresion . CONCAT expresion
+    (30) expresion -> expresion . PLUS expresion
+    (31) expresion -> expresion . MINUS expresion
+    (32) expresion -> expresion . TIMES expresion
+
+    COMA            shift and go to state 69
+    CORCHETE_DER    reduce using rule 34 (lista_elementos -> expresion .)
+    CONCAT          shift and go to state 45
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
+
+
+state 54
+
+    (20) instruccion_play -> ENGINE PUNTO PLAY PAREN_IZQ expresion . PAREN_DER PUNTOYCOMA
+    (29) expresion -> expresion . CONCAT expresion
+    (30) expresion -> expresion . PLUS expresion
+    (31) expresion -> expresion . MINUS expresion
+    (32) expresion -> expresion . TIMES expresion
+
+    PAREN_DER       shift and go to state 70
+    CONCAT          shift and go to state 45
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
+
+
+state 55
+
+    (6) instruccion_return -> RETURN PAREN_IZQ expresion PAREN_DER PUNTOYCOMA .
+
+    $end            reduce using rule 6 (instruccion_return -> RETURN PAREN_IZQ expresion PAREN_DER PUNTOYCOMA .)
+
+
+state 56
+
+    (29) expresion -> expresion CONCAT expresion .
+    (29) expresion -> expresion . CONCAT expresion
+    (30) expresion -> expresion . PLUS expresion
+    (31) expresion -> expresion . MINUS expresion
+    (32) expresion -> expresion . TIMES expresion
+
+  ! shift/reduce conflict for CONCAT resolved as shift
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+    PAREN_DER       reduce using rule 29 (expresion -> expresion CONCAT expresion .)
+    PUNTOYCOMA      reduce using rule 29 (expresion -> expresion CONCAT expresion .)
+    COMA            reduce using rule 29 (expresion -> expresion CONCAT expresion .)
+    CORCHETE_DER    reduce using rule 29 (expresion -> expresion CONCAT expresion .)
+    CONCAT          shift and go to state 45
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
+
+  ! CONCAT          [ reduce using rule 29 (expresion -> expresion CONCAT expresion .) ]
+  ! PLUS            [ reduce using rule 29 (expresion -> expresion CONCAT expresion .) ]
+  ! MINUS           [ reduce using rule 29 (expresion -> expresion CONCAT expresion .) ]
+  ! TIMES           [ reduce using rule 29 (expresion -> expresion CONCAT expresion .) ]
+
+
+state 57
+
+    (30) expresion -> expresion PLUS expresion .
+    (29) expresion -> expresion . CONCAT expresion
+    (30) expresion -> expresion . PLUS expresion
+    (31) expresion -> expresion . MINUS expresion
+    (32) expresion -> expresion . TIMES expresion
+
+  ! shift/reduce conflict for CONCAT resolved as shift
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+    PAREN_DER       reduce using rule 30 (expresion -> expresion PLUS expresion .)
+    PUNTOYCOMA      reduce using rule 30 (expresion -> expresion PLUS expresion .)
+    COMA            reduce using rule 30 (expresion -> expresion PLUS expresion .)
+    CORCHETE_DER    reduce using rule 30 (expresion -> expresion PLUS expresion .)
+    CONCAT          shift and go to state 45
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
+
+  ! CONCAT          [ reduce using rule 30 (expresion -> expresion PLUS expresion .) ]
+  ! PLUS            [ reduce using rule 30 (expresion -> expresion PLUS expresion .) ]
+  ! MINUS           [ reduce using rule 30 (expresion -> expresion PLUS expresion .) ]
+  ! TIMES           [ reduce using rule 30 (expresion -> expresion PLUS expresion .) ]
+
+
+state 58
+
+    (31) expresion -> expresion MINUS expresion .
+    (29) expresion -> expresion . CONCAT expresion
+    (30) expresion -> expresion . PLUS expresion
+    (31) expresion -> expresion . MINUS expresion
+    (32) expresion -> expresion . TIMES expresion
+
+  ! shift/reduce conflict for CONCAT resolved as shift
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+    PAREN_DER       reduce using rule 31 (expresion -> expresion MINUS expresion .)
+    PUNTOYCOMA      reduce using rule 31 (expresion -> expresion MINUS expresion .)
+    COMA            reduce using rule 31 (expresion -> expresion MINUS expresion .)
+    CORCHETE_DER    reduce using rule 31 (expresion -> expresion MINUS expresion .)
+    CONCAT          shift and go to state 45
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
+
+  ! CONCAT          [ reduce using rule 31 (expresion -> expresion MINUS expresion .) ]
+  ! PLUS            [ reduce using rule 31 (expresion -> expresion MINUS expresion .) ]
+  ! MINUS           [ reduce using rule 31 (expresion -> expresion MINUS expresion .) ]
+  ! TIMES           [ reduce using rule 31 (expresion -> expresion MINUS expresion .) ]
+
+
+state 59
+
+    (32) expresion -> expresion TIMES expresion .
+    (29) expresion -> expresion . CONCAT expresion
+    (30) expresion -> expresion . PLUS expresion
+    (31) expresion -> expresion . MINUS expresion
+    (32) expresion -> expresion . TIMES expresion
+
+  ! shift/reduce conflict for CONCAT resolved as shift
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+    PAREN_DER       reduce using rule 32 (expresion -> expresion TIMES expresion .)
+    PUNTOYCOMA      reduce using rule 32 (expresion -> expresion TIMES expresion .)
+    COMA            reduce using rule 32 (expresion -> expresion TIMES expresion .)
+    CORCHETE_DER    reduce using rule 32 (expresion -> expresion TIMES expresion .)
+    CONCAT          shift and go to state 45
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
+
+  ! CONCAT          [ reduce using rule 32 (expresion -> expresion TIMES expresion .) ]
+  ! PLUS            [ reduce using rule 32 (expresion -> expresion TIMES expresion .) ]
+  ! MINUS           [ reduce using rule 32 (expresion -> expresion TIMES expresion .) ]
+  ! TIMES           [ reduce using rule 32 (expresion -> expresion TIMES expresion .) ]
+
+
+state 60
+
+    (28) expresion -> IMPORT PAREN_IZQ CADENA . PAREN_DER
+
+    PAREN_DER       shift and go to state 71
+
+
+state 61
+
+    (43) argumento -> ID .
+
+    COMA            reduce using rule 43 (argumento -> ID .)
+    PAREN_DER       reduce using rule 43 (argumento -> ID .)
+
+
+state 62
+
+    (18) instruccion_wave -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos . PAREN_DER PUNTOYCOMA
+
+    PAREN_DER       shift and go to state 72
+
+
+state 63
+
+    (35) argumentos -> argumento . COMA argumentos
+    (36) argumentos -> argumento .
+
+    COMA            shift and go to state 73
+    PAREN_DER       reduce using rule 36 (argumentos -> argumento .)
+
+
+state 64
+
+    (38) argumento -> MINUS . NUMERO
+    (39) argumento -> MINUS . UNIDAD
+
+    NUMERO          shift and go to state 74
+    UNIDAD          shift and go to state 75
+
+
+state 65
+
+    (40) argumento -> NUMERO .
+
+    COMA            reduce using rule 40 (argumento -> NUMERO .)
+    PAREN_DER       reduce using rule 40 (argumento -> NUMERO .)
+
+
+state 66
+
+    (41) argumento -> UNIDAD .
+
+    COMA            reduce using rule 41 (argumento -> UNIDAD .)
+    PAREN_DER       reduce using rule 41 (argumento -> UNIDAD .)
+
+
+state 67
+
+    (42) argumento -> CADENA .
+
+    COMA            reduce using rule 42 (argumento -> CADENA .)
+    PAREN_DER       reduce using rule 42 (argumento -> CADENA .)
+
+
+state 68
+
+    (19) instruccion_track -> TRACK ID IGUAL CORCHETE_IZQ lista_elementos CORCHETE_DER . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 76
+
+
+state 69
+
+    (33) lista_elementos -> expresion COMA . lista_elementos
+    (33) lista_elementos -> . expresion COMA lista_elementos
+    (34) lista_elementos -> . expresion
+    (21) expresion -> . ID
+    (22) expresion -> . UNIDAD
+    (23) expresion -> . NUMERO
+    (24) expresion -> . CADENA
+    (25) expresion -> . TRUE
+    (26) expresion -> . FALSE
+    (27) expresion -> . NOTA_MUSICAL
+    (28) expresion -> . IMPORT PAREN_IZQ CADENA PAREN_DER
+    (29) expresion -> . expresion CONCAT expresion
+    (30) expresion -> . expresion PLUS expresion
+    (31) expresion -> . expresion MINUS expresion
+    (32) expresion -> . expresion TIMES expresion
+
+    ID              shift and go to state 32
+    UNIDAD          shift and go to state 33
+    NUMERO          shift and go to state 34
+    CADENA          shift and go to state 35
+    TRUE            shift and go to state 36
+    FALSE           shift and go to state 37
+    NOTA_MUSICAL    shift and go to state 38
+    IMPORT          shift and go to state 39
+
+    expresion                      shift and go to state 53
+    lista_elementos                shift and go to state 77
+
+state 70
+
+    (20) instruccion_play -> ENGINE PUNTO PLAY PAREN_IZQ expresion PAREN_DER . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 78
+
+
+state 71
+
+    (28) expresion -> IMPORT PAREN_IZQ CADENA PAREN_DER .
+
+    PAREN_DER       reduce using rule 28 (expresion -> IMPORT PAREN_IZQ CADENA PAREN_DER .)
+    CONCAT          reduce using rule 28 (expresion -> IMPORT PAREN_IZQ CADENA PAREN_DER .)
+    PLUS            reduce using rule 28 (expresion -> IMPORT PAREN_IZQ CADENA PAREN_DER .)
+    MINUS           reduce using rule 28 (expresion -> IMPORT PAREN_IZQ CADENA PAREN_DER .)
+    TIMES           reduce using rule 28 (expresion -> IMPORT PAREN_IZQ CADENA PAREN_DER .)
+    PUNTOYCOMA      reduce using rule 28 (expresion -> IMPORT PAREN_IZQ CADENA PAREN_DER .)
+    COMA            reduce using rule 28 (expresion -> IMPORT PAREN_IZQ CADENA PAREN_DER .)
+    CORCHETE_DER    reduce using rule 28 (expresion -> IMPORT PAREN_IZQ CADENA PAREN_DER .)
+
+
+state 72
+
+    (18) instruccion_wave -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER . PUNTOYCOMA
+
+    PUNTOYCOMA      shift and go to state 79
+
+
+state 73
+
+    (35) argumentos -> argumento COMA . argumentos
+    (35) argumentos -> . argumento COMA argumentos
+    (36) argumentos -> . argumento
+    (37) argumentos -> .
+    (38) argumento -> . MINUS NUMERO
+    (39) argumento -> . MINUS UNIDAD
+    (40) argumento -> . NUMERO
+    (41) argumento -> . UNIDAD
+    (42) argumento -> . CADENA
+    (43) argumento -> . ID
+
+    PAREN_DER       reduce using rule 37 (argumentos -> .)
+    MINUS           shift and go to state 64
+    NUMERO          shift and go to state 65
+    UNIDAD          shift and go to state 66
+    CADENA          shift and go to state 67
+    ID              shift and go to state 61
+
+    argumento                      shift and go to state 63
+    argumentos                     shift and go to state 80
+
+state 74
+
+    (38) argumento -> MINUS NUMERO .
+
+    COMA            reduce using rule 38 (argumento -> MINUS NUMERO .)
+    PAREN_DER       reduce using rule 38 (argumento -> MINUS NUMERO .)
+
+
+state 75
+
+    (39) argumento -> MINUS UNIDAD .
+
+    COMA            reduce using rule 39 (argumento -> MINUS UNIDAD .)
+    PAREN_DER       reduce using rule 39 (argumento -> MINUS UNIDAD .)
+
+
+state 76
+
+    (19) instruccion_track -> TRACK ID IGUAL CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMA .
+
+    $end            reduce using rule 19 (instruccion_track -> TRACK ID IGUAL CORCHETE_IZQ lista_elementos CORCHETE_DER PUNTOYCOMA .)
+
+
+state 77
+
+    (33) lista_elementos -> expresion COMA lista_elementos .
+
+    CORCHETE_DER    reduce using rule 33 (lista_elementos -> expresion COMA lista_elementos .)
+
+
+state 78
+
+    (20) instruccion_play -> ENGINE PUNTO PLAY PAREN_IZQ expresion PAREN_DER PUNTOYCOMA .
+
+    $end            reduce using rule 20 (instruccion_play -> ENGINE PUNTO PLAY PAREN_IZQ expresion PAREN_DER PUNTOYCOMA .)
+
+
+state 79
+
+    (18) instruccion_wave -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA .
+
+    $end            reduce using rule 18 (instruccion_wave -> WAVE_TYPE ID IGUAL WAVE_FUNC PAREN_IZQ argumentos PAREN_DER PUNTOYCOMA .)
+
+
+state 80
+
+    (35) argumentos -> argumento COMA argumentos .
+
+    PAREN_DER       reduce using rule 35 (argumentos -> argumento COMA argumentos .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for PLUS in state 41 resolved as shift
-WARNING: shift/reduce conflict for TIMES in state 41 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 42 resolved as shift
-WARNING: shift/reduce conflict for TIMES in state 42 resolved as shift
+WARNING: shift/reduce conflict for CONCAT in state 56 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 56 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 56 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 56 resolved as shift
+WARNING: shift/reduce conflict for CONCAT in state 57 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 57 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 57 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 57 resolved as shift
+WARNING: shift/reduce conflict for CONCAT in state 58 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 58 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 58 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 58 resolved as shift
+WARNING: shift/reduce conflict for CONCAT in state 59 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 59 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 59 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 59 resolved as shift
