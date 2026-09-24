@@ -1,6 +1,6 @@
 from ply import yacc
 
-from CLI.lexer import tokens  # Importamos los tokens del lexer  # noqa: F401
+from CLI.lexer import tokens  # Importamos los tokens del lexer 
 from Motor.time import Time
 from Motor.track import Track
 from Motor.wave import Wave

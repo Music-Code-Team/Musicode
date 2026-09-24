@@ -1,0 +1,13 @@
+// Iteración sobre Rangos Numéricos (Start..End):
+// Útil cuando se necesita el índice para hacer cálculos matemáticos por dentro.
+for (Int index in 1..10) {
+    Wave nota Wave(400hz * index) 
+	engine.play(nota);
+}
+
+// Iteración sobre Colecciones (Tracks):
+// Regla de Tipado: Al iterar sobre un Track, el elemento extraído SIEMPRE es de tipo Wave.
+// (Nota: Se declara el tipo 'Wave' en la variable temporal para mantener el tipado estricto).
+for (Wave nota in melodia2) { 
+	engine.play(nota); // Reproduce cada onda de la pista individualmente
+}
