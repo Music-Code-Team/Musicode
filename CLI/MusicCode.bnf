@@ -1,0 +1,45 @@
+<program> ::= <actionList> | <actionList> <program> | <actionList> "\n" <program>
+<actionList> ::= <definition>
+
+<definition> ::= <varName>"=" <expression> | <varName>"=" <term>";"
+
+<functionCall> ::= <varName>"("<functionArgs>")"
+    <functionArgs>  ::= <args> "," <functionArgs> | <args> | <empty>
+        <args>  ::= <term> | <expression> | <varName>
+        <expression> ::= <term> <operator> <term> | <term> <operator> <expression> 
+            <operator> ::= "+" | "-" | "/" | "*" 
+            <term> ::= <float> | <int> | <varName> | <functionCall> | string
+
+
+
+<varName>   ::= <text>  | <text> <basicNumber> | <text> <varName> 
+                | <varName> <txtSeparator> <basicNumber>
+                | <varName> <txtSeparator> <varName>
+<string>    ::=  '"'<spacedText>'"' | "'"<spacedText>"'"
+<float>     ::= <int> "." <basicNumber>
+
+<spacedText>    ::= <text> | <space> | spacedText
+
+<int> ::= "-" <basicNumber> | <basicNumber>
+<txtSeparator> ::= "_" | "-"
+<text> ::= <letter> | <letter> <text> 
+
+
+<letter>        ::= <minChar> | mayChar
+<basicNumber>   ::= <digit> | <digit> <basicNumber> 
+
+
+<minChar>   ::= "a" | "b" | "c" | "d" | "e" | "f" 
+                    | "g" | "h" | "i" | "j" | "k" 
+                    | "l" | "m" | "n" | "o" | "p" 
+                    | "q" | "r" | "s" | "t" | "u" 
+                    | "v" | "w" | "x" | "y" | "z"
+<mayChar>   ::= "A" | "B" | "C" | "D" | "E" | "F" 
+                    | "G" | "H" | "I" | "J" | "K" 
+                    | "L" | "M" | "N" | "O" | "P" 
+                    | "Q" | "R" | "S" | "T" | "U" 
+                    | "V" | "W" | "X" | "Y" | "Z"
+<digit>     ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+<space>     ::= " " | " " <space>
+<newline>   ::= "\n"
+<empty>     ::= 

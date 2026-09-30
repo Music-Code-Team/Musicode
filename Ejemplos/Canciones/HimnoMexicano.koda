@@ -1,0 +1,80 @@
+// master.koda - Himno Nacional Mexicano (Coro)
+
+// 1. Definimos la pausa entre notas para dar articulación
+Time pause = 50ms;
+
+// 2. Definimos las notas (ondas) en la escala de Do Mayor
+// Usaremos 200ms (breve), 400ms (corta) y 800ms (larga)
+Wave sol3_breve = wave(Sol3, 200ms, 15db, "sin");
+Wave si3_breve  = wave(Si3, 200ms, 15db, "sin");
+
+Wave do4_breve  = wave(Do4, 200ms, 15db, "sin");
+Wave do4_corta  = wave(Do4, 400ms, 15db, "sin");
+Wave do4_larga  = wave(Do4, 800ms, 15db, "sin");
+
+Wave re4_breve  = wave(Re4, 200ms, 15db, "sin");
+
+Wave mi4_breve  = wave(Mi4, 200ms, 15db, "sin");
+Wave mi4_corta  = wave(Mi4, 400ms, 15db, "sin");
+
+Wave fa4_breve  = wave(Fa4, 200ms, 15db, "sin");
+Wave fa4_corta  = wave(Fa4, 400ms, 15db, "sin");
+
+Wave sol4_breve = wave(Sol4, 200ms, 15db, "sin");
+Wave sol4_corta = wave(Sol4, 400ms, 15db, "sin");
+Wave sol4_larga = wave(Sol4, 800ms, 15db, "sin");
+
+// 3. Armamos la pista siguiendo la partitura del coro
+Track pistaHimno = [
+    
+    // Me-xi-ca-nos al gri-to de gue-rra
+    sol3_breve, pause,
+    do4_corta, pause,
+    mi4_breve, pause,
+    sol4_corta, pause,
+    sol4_breve, pause,
+    sol4_corta, pause,
+    fa4_breve, pause,
+    mi4_breve, pause,
+    fa4_corta, pause,
+    sol4_larga, pause,
+
+    // el a-ce-ro a-pres-tad y el bri-dón
+    sol3_breve, pause,
+    do4_corta, pause,
+    do4_breve, pause,
+    do4_corta, pause,
+    si3_breve, pause,
+    do4_corta, pause,
+    re4_breve, pause,
+    mi4_corta, pause,
+    re4_breve, pause,
+    do4_larga, pause,
+
+    // y re-tiem-ble en sus cen-tros la tie-rra
+    sol3_breve, pause,
+    do4_corta, pause,
+    mi4_breve, pause,
+    sol4_corta, pause,
+    sol4_breve, pause,
+    sol4_corta, pause,
+    fa4_breve, pause,
+    mi4_breve, pause,
+    fa4_corta, pause,
+    sol4_larga, pause,
+
+    // al so-no-ro ru-gir del ca-ñón
+    sol3_breve, pause,
+    do4_corta, pause,
+    do4_breve, pause,
+    do4_corta, pause,
+    si3_breve, pause,
+    do4_corta, pause,
+    re4_breve, pause,
+    mi4_corta, pause,
+    re4_breve, pause,
+    do4_larga
+];
+
+// 4. Reproducimos el resultado final
+engine.play(pistaHimno);

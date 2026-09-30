@@ -1,0 +1,39 @@
+
+// 1. Definimos la pausa entre notas para dar articulación
+Time pause = 50ms;
+
+// 2. Definimos las notas (ondas) que vamos a utilizar
+// Usaremos 400ms para las notas cortas y 800ms para las largas
+Wave do_corta = wave(Do4, 400ms, 15db, "sin");
+Wave do_larga = wave(Do4, 800ms, 15db, "sin");
+Wave re_corta = wave(Re4, 400ms, 15db, "sin");
+Wave mi_corta = wave(Mi4, 400ms, 15db, "sin");
+Wave fa_corta = wave(Fa4, 400ms, 15db, "sin");
+Wave sol_corta = wave(Sol4, 400ms, 15db, "sin");
+Wave sol_larga = wave(Sol4, 800ms, 15db, "sin");
+Wave la_corta = wave(La4, 400ms, 15db, "sin");
+
+// 3. Armamos la pista siguiendo la partitura
+Track pistaEstrellita = [
+
+    // Estrellita dónde estás (Do Do Sol Sol La La Sol)
+    do_corta, pause, 
+    do_corta, pause, 
+    sol_corta, pause, 
+    sol_corta, pause, 
+    la_corta, pause, 
+    la_corta, pause, 
+    sol_larga, pause,
+    
+    // Quiero verte cintilar (Fa Fa Mi Mi Re Re Do)
+    fa_corta, pause, 
+    fa_corta, pause, 
+    mi_corta, pause, 
+    mi_corta, pause, 
+    re_corta, pause, 
+    re_corta, pause, 
+    do_larga
+];
+
+// 4. Reproducimos el resultado final
+engine.play(pistaEstrellita);

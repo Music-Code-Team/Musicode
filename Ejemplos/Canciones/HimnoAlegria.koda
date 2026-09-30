@@ -1,0 +1,54 @@
+// 1. Pausa de articulación entre notas
+Time pause = 50ms;
+
+// 2. Definición de notas (Octava 4 y Sol3 grave)
+Wave sol3_larga = wave(Sol3, 800ms, 15db, "sin"); // "Sol" azul (grave)
+
+Wave do_corta  = wave(Do4, 400ms, 15db, "sin");
+Wave do_larga  = wave(Do4, 800ms, 15db, "sin");
+Wave re_corta  = wave(Re4, 400ms, 15db, "sin");
+Wave re_larga  = wave(Re4, 800ms, 15db, "sin");
+Wave mi_corta  = wave(Mi4, 400ms, 15db, "sin");
+Wave fa_corta  = wave(Fa4, 400ms, 15db, "sin");
+Wave sol_corta = wave(Sol4, 400ms, 15db, "sin");
+
+// 3. Pista del Himno a la Alegría
+Track himnoALaAlegria = [
+
+    // --- Estrofa 1 ---
+    // Mi Fa Sol Sol Fa
+    mi_corta, pause, fa_corta, pause, sol_corta, pause, sol_corta, pause, fa_corta, pause,
+    // Re Do Do
+    re_corta, pause, do_corta, pause, do_larga, pause,
+    // Re Mi Mi Re Re
+    re_corta, pause, mi_corta, pause, mi_corta, pause, re_corta, pause, re_larga, pause,
+
+    // --- Estrofa 2 ---
+    // Mi Fa Sol Sol Fa
+    mi_corta, pause, fa_corta, pause, sol_corta, pause, sol_corta, pause, fa_corta, pause,
+    // Re Do Do
+    re_corta, pause, do_corta, pause, do_larga, pause,
+    // Re Mi Re Do Do
+    re_corta, pause, mi_corta, pause, re_corta, pause, do_corta, pause, do_larga, pause,
+
+    // --- Estrofa 3 ---
+    // Re Re Mi Do
+    re_corta, pause, re_corta, pause, mi_corta, pause, do_corta, pause,
+    // Re Mi Fa Mi Do
+    re_corta, pause, mi_corta, pause, fa_corta, pause, mi_corta, pause, do_corta, pause,
+    // Re Mi Fa Mi Re
+    re_corta, pause, mi_corta, pause, fa_corta, pause, mi_corta, pause, re_corta, pause,
+    // Do Re Sol (Sol grave en azul)
+    do_corta, pause, re_corta, pause, sol3_larga, pause,
+
+    // --- Estrofa 4 ---
+    // Mi Fa Sol Sol Fa
+    mi_corta, pause, fa_corta, pause, sol_corta, pause, sol_corta, pause, fa_corta, pause,
+    // Re Do Do
+    re_corta, pause, do_corta, pause, do_larga, pause,
+    // Re Mi Re Do Do
+    re_corta, pause, mi_corta, pause, re_corta, pause, do_corta, pause, do_larga
+];
+
+// 4. Reproducción final
+engine.play(himnoALaAlegria);

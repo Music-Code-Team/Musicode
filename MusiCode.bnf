@@ -1,0 +1,149 @@
+<programa> ::= <lista_instrucciones>
+
+<lista_instrucciones> ::= <instruccion> <lista_instrucciones>
+                        | <empty>
+
+<instruccion> ::= <declaracion_variable>
+                | <expresion> ";"
+                | <declaracion_funcion>
+                | <bucle_for>
+                | <bucle_while>
+                | <instruccion_si>
+                | <instruccion_retorno>
+
+<declaracion_variable> ::= <tipo_dato> <ID> "=" <expresion> ";"
+
+<tipo_dato> ::= "Int" | "Float" | "Bool" | "String" | "Array"
+              | "Time" | "Frequency" | "Volumen" | "Envelope"
+              | "Wave" | "Track" | "Coroutine" | "Void"
+
+<declaracion_funcion> ::= <tipo_dato> <ID> "(" <lista_parametros> ")" "{" <lista_instrucciones> "}"
+
+<lista_parametros> ::= <empty>
+                     | <parametros_no_vacios>
+
+<parametros_no_vacios> ::= <parametro> "," <parametros_no_vacios>
+                         | <parametro>
+
+<parametro> ::= <tipo_dato> <ID>
+
+<bucle_for> ::= "for" "(" <tipo_dato> <ID> "in" <iterable> ")" "{" <lista_instrucciones> "}"
+
+<iterable> ::= <expresion> ".." <expresion>
+             | <expresion>
+
+<bucle_while> ::= "while" "(" <expresion> ")" "{" <lista_instrucciones> "}"
+
+<instruccion_si> ::= "if" "(" <expresion> ")" "{" <lista_instrucciones> "}" <parte_sino>
+
+<parte_sino> ::= "else" "{" <lista_instrucciones> "}"
+              | <empty>
+
+<instruccion_retorno> ::= "return" "(" <expresion> ")" ";"
+
+
+<expresion> ::= <expresion_asignacion>
+
+<expresion_asignacion> ::= <ID> "=" <expresion_asignacion>
+                         | <expresion_or>
+
+<expresion_or> ::= <expresion_and> <expresion_or_resto>
+<expresion_or_resto> ::= "||" <expresion_and> <expresion_or_resto>
+                       | <empty>
+
+<expresion_and> ::= <expresion_not> <expresion_and_resto>
+<expresion_and_resto> ::= "&&" <expresion_not> <expresion_and_resto>
+                        | <empty>
+
+<expresion_not> ::= "!" <expresion_not>
+                  | <expresion_comparacion>
+
+<expresion_comparacion> ::= <expresion_matematica> <operador_comparacion> <expresion_matematica>
+                          | <expresion_matematica>
+
+<operador_comparacion> ::= "==" | "!=" | ">" | "<" | ">=" | "<="
+
+<expresion_matematica> ::= <termino> <expresion_matematica_resto>
+<expresion_matematica_resto> ::= "+" <termino> <expresion_matematica_resto>
+                               | "-" <termino> <expresion_matematica_resto>
+                               | <empty>
+
+<termino> ::= <factor> <termino_resto>
+<termino_resto> ::= "*" <factor> <termino_resto>
+                  | "/" <factor> <termino_resto>
+                  | <empty>
+
+<factor> ::= "-" <factor>
+           | <valor_complejo>
+
+<valor_complejo> ::= <valor_base> <cadena_accesos>
+                   | <valor_base>
+
+<cadena_accesos> ::= <acceso> <cadena_accesos>
+                   | <acceso>
+
+<acceso> ::= "." <ID> "(" <argumentos> ")"
+           | "." <ID>
+
+<valor_base> ::= <ID> <llamada_opcional>
+               | <NUMERO>
+               | <UNIDAD>
+               | <CADENA>
+               | <BOOLEANO>
+               | <NOTA_MUSICAL>
+               | <arreglo>
+               | <instanciacion_objeto>
+               | <importacion>
+               | <lambda>
+               | "(" <expresion> ")"
+
+<llamada_opcional> ::= "(" <argumentos> ")"
+                     | <empty>
+
+<instanciacion_objeto> ::= <tipo_dato> ".new" "(" <argumentos> ")"
+
+<importacion> ::= "import" "(" <CADENA> ")"
+
+<lambda> ::= "(" <lista_parametros> ")" "=>" "{" <lista_instrucciones> "}"
+
+<arreglo> ::= "[" <lista_elementos> "]"
+
+<lista_elementos> ::= <empty>
+                    | <elementos_no_vacios>
+
+<elementos_no_vacios> ::= <expresion> "," <elementos_no_vacios>
+                        | <expresion>
+
+<argumentos> ::= <empty>
+               | <argumentos_no_vacios>
+
+<argumentos_no_vacios> ::= <argumento_item> "," <argumentos_no_vacios>
+                         | <argumento_item>
+
+<argumento_item> ::= <argumento_nombrado>
+                   | <expresion>
+
+<argumento_nombrado> ::= <ID> ":" <expresion>
+
+<NUMERO>       ::= [0-9]+ ("." [0-9]+)?
+<UNIDAD>       ::= <NUMERO> ("hz" | "db" | "ms" | "seg" | "s" | "m" | "h" | "bpm")
+
+<CADENA>       ::= "\"" <CARACTER_CADENA>* "\""
+<CARACTER_CADENA> ::= "\\\"" | [^"\n]
+
+<BOOLEANO>     ::= "true" | "false"
+
+<NOTA_MUSICAL> ::= (Do|Re|Mi|Fa|Sol|La|Si|C|D|E|F|G|A|B) [#b]? [0-8]
+
+<ID> ::= [a-zA-Z_] [a-zA-Z0-9_]*    
+
+<PALABRAS_RESERVADAS> ::= "Int" | "Float" | "Bool" | "String" | "Array"
+                        | "Time" | "Frequency" | "Volumen" | "Envelope"
+                        | "Wave" | "Track" | "Coroutine" | "Void"
+                        | "true" | "false" | "for" | "while" | "in"
+                        | "if" | "else" | "return" | "import"
+
+<COMENTARIO> ::= "//" [^\n]* "\n"
+              | "/*" .* "*/"
+
+<empty> ::=
