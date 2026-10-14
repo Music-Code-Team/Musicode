@@ -3,7 +3,7 @@ from ply import yacc
 from CLI.lexer import tokens  # Importamos los tokens del lexer 
 from Motor.time import Time
 from Motor.track import Track
-from Motor.wave import Wave
+from Motor.domain.entities.wave import Wave
 from Motor.engine import engine
 
 # Aquí vivirá la memoria de ejecución de Koda

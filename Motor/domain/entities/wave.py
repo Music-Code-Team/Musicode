@@ -1,7 +1,4 @@
-import os
-
 import numpy as np
-import soundfile as sf
 
 from Motor.engine import SAMPLE_RATE
 from Motor.envelope import Envelope
@@ -57,22 +54,26 @@ class Wave:
             
         return onda.astype(np.float32)
 
-    @classmethod
-    def from_file(cls, ruta_archivo: str):
-        """Decodificador de Media (Ticket #44). Convierte un .wav o .mp3 en un Wave."""
-        if not os.path.exists(ruta_archivo):
-            raise FileNotFoundError(f"Error: El archivo de audio '{ruta_archivo}' no existe.")
+    # @classmethod
+    # ! Esto se supone que fue quitado pero lo dejo para referencia por si no hago bien la ingenieria para tirar un jeje aca no paso nada
+    # ? muy bien pensado Jhony.
+    # ! Gracias Carlos.
+    # * Realmente estoy perdiendo la cordura al forzar a que esto salga hoy 13/10/2026 22:56
+    # def from_file(cls, ruta_archivo: str):
+    #     """Decodificador de Media (Ticket #44). Convierte un .wav o .mp3 en un Wave."""
+    #     if not os.path.exists(ruta_archivo):
+    #         raise FileNotFoundError(f"Error: El archivo de audio '{ruta_archivo}' no existe.")
             
-        print(f"[Motor] Decodificando media: {ruta_archivo}...")
-        buffer, original_sr = sf.read(ruta_archivo, dtype='float32')
+    #     print(f"[Motor] Decodificando media: {ruta_archivo}...")
+    #     buffer, original_sr = sf.read(ruta_archivo, dtype='float32')
         
-        # Si el audio es estéreo (2 canales), lo promediamos a mono matemáticamente
-        if len(buffer.shape) > 1:
-            buffer = buffer.mean(axis=1)
+    #     # Si el audio es estéreo (2 canales), lo promediamos a mono matemáticamente
+    #     if len(buffer.shape) > 1:
+    #         buffer = buffer.mean(axis=1)
             
-        # Calculamos la duración física real
-        duracion_real = len(buffer) / original_sr
-        return cls(frecuencia=0.0, duracion=duracion_real, tipo="sample", buffer=buffer)
+    #     # Calculamos la duración física real
+    #     duracion_real = len(buffer) / original_sr
+    #     return cls(frecuencia=0.0, duracion=duracion_real, tipo="sample", buffer=buffer)
 
 # -- [ MÉTODOS EXPLÍCITOS KODA ] --
     def setEnvelope(self, env: Envelope):

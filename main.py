@@ -1,8 +1,41 @@
 import os
 import sys
 
-from CLI.parser import memoria, parser  # noqa: F401
+# Importamos el parser original
+from CLI.parser import memoria, parser
+from Motor.application.use_cases.alter_wave_frequency import AlterWaveFrequencyUseCase
+from Motor.application.use_cases.import_audio import ImportAudioUseCase
 
+# Importamos las piezas de Clean Architecture
+from Motor.infraestructure.adapters.in_memory_wave_repository import (
+    InMemoryWaveRepository,
+)
+from Motor.infraestructure.adapters.soundfile_adapter import SoundfileDecoderAdapter
+
+
+def configurar_arquitectura_limpia():
+    """
+    Inyecta y configura los adaptadores y casos de uso antes 
+    de que el lenguaje empiece a ejecutarse.
+    """
+    # 1. Instanciamos la Infraestructura
+    repo_memoria = InMemoryWaveRepository()
+    decodificador = SoundfileDecoderAdapter()
+    
+    # 2. Instanciamos los Casos de Uso
+    use_cases = {
+        "alterar_frecuencia": AlterWaveFrequencyUseCase(repository=repo_memoria),
+        "importar_audio": ImportAudioUseCase(decoder=decodificador, repository=repo_memoria)
+    }
+    
+    # 3. Exponemos el repositorio y los casos de uso al Parser
+    # Guardamos estas instancias dentro del diccionario `memoria` 
+    # (o en una variable global del parser) para que los comandos Koda 
+    # tengan acceso a los Use Cases cuando evalúen la sintaxis.
+    memoria["_repository"] = repo_memoria
+    memoria["_use_cases"] = use_cases
+    
+    return use_cases
 
 def ejecutar_archivo_koda(ruta_archivo):
     """Lee un archivo .koda del disco duro y lo compila línea por línea."""
@@ -18,12 +51,17 @@ def ejecutar_archivo_koda(ruta_archivo):
     print(f" Iniciando compilación de: {ruta_archivo}")
     print("-" * 50)
     
-    # 2. Lectura y ejecución
+    # 2. Configurar la Arquitectura Limpia antes de leer
+    configurar_arquitectura_limpia()
+    
+    # 3. Lectura y ejecución
     with open(ruta_archivo, 'r', encoding='utf-8') as archivo:
         texto_completo = archivo.read()
         
         try:
-            # PLY procesará todo el archivo, contando las líneas internamente
+            # PLY procesará todo el archivo, y cuando necesite restar una 
+            # frecuencia, llamará a: 
+            # memoria["_use_cases"]["alterar_frecuencia"].execute(...)
             parser.parse(texto_completo)
         except Exception as e:  # noqa: BLE001
             print("Error crítico durante la compilación.")
@@ -31,7 +69,6 @@ def ejecutar_archivo_koda(ruta_archivo):
                 
     print("-" * 50)
     print("Ejecución finalizada con éxito.")
-
 
 if __name__ == "__main__":
     # Si el usuario ejecuta: python main.py mi_cancion.koda
