@@ -79,6 +79,9 @@ graph TD
     class Wave,UC,IRepo core;
 
 ```
+<p align="center">
+  <img src="Musicode_diagram.png" width="500" alt="Diagrama de Capas">
+</p>
 
 ---
 
