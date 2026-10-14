@@ -8,8 +8,9 @@ from Motor.application.use_cases.import_audio import ImportAudioUseCase
 
 # Importamos las piezas de Clean Architecture
 from Motor.infraestructure.adapters.in_memory_wave_repository import (
-    InMemoryWaveRepository,
+    InMemoryWaveRepository,  # noqa: F401
 )
+from Motor.infraestructure.adapters.json_wave_repository import JsonWaveRepository
 from Motor.infraestructure.adapters.soundfile_adapter import SoundfileDecoderAdapter
 
 
@@ -19,20 +20,30 @@ def configurar_arquitectura_limpia():
     de que el lenguaje empiece a ejecutarse.
     """
     # 1. Instanciamos la Infraestructura
-    repo_memoria = InMemoryWaveRepository()
+    # repo_memoria = InMemoryWaveRepository()
+    # decodificador = SoundfileDecoderAdapter()
+    
+    # # 2. Instanciamos los Casos de Uso
+    # use_cases = {
+    #     "alterar_frecuencia": AlterWaveFrequencyUseCase(repository=repo_memoria),
+    #     "importar_audio": ImportAudioUseCase(decoder=decodificador, repository=repo_memoria)
+    # }
+    # ====== ¡AQUÍ OCURRE EL SWAP! ======
+    # ANTES (Parte 3): repo = InMemoryWaveRepository()
+    # AHORA (Parte 4): 
+    repo_activo = JsonWaveRepository("estado_ondas.json")
+    
     decodificador = SoundfileDecoderAdapter()
-    
-    # 2. Instanciamos los Casos de Uso
+    # El Use Case recibe el repo_activo (JSON) sin darse cuenta del cambio
     use_cases = {
-        "alterar_frecuencia": AlterWaveFrequencyUseCase(repository=repo_memoria),
-        "importar_audio": ImportAudioUseCase(decoder=decodificador, repository=repo_memoria)
+        "alterar_frecuencia": AlterWaveFrequencyUseCase(repository=repo_activo),
+        "importar_audio": ImportAudioUseCase(decoder=decodificador, repository=repo_activo)
     }
-    
     # 3. Exponemos el repositorio y los casos de uso al Parser
     # Guardamos estas instancias dentro del diccionario `memoria` 
     # (o en una variable global del parser) para que los comandos Koda 
     # tengan acceso a los Use Cases cuando evalúen la sintaxis.
-    memoria["_repository"] = repo_memoria
+    memoria["_repository"] = repo_activo
     memoria["_use_cases"] = use_cases
     
     return use_cases

@@ -1,0 +1,38 @@
+{
+    "261.63": {
+        "frecuencia": 261.63,
+        "duracion": 0.8,
+        "amplitud": 1.0,
+        "tipo": "sin"
+    },
+    "293.66": {
+        "frecuencia": 293.66,
+        "duracion": 0.4,
+        "amplitud": 1.0,
+        "tipo": "sin"
+    },
+    "329.63": {
+        "frecuencia": 329.63,
+        "duracion": 0.4,
+        "amplitud": 1.0,
+        "tipo": "sin"
+    },
+    "349.23": {
+        "frecuencia": 349.23,
+        "duracion": 0.4,
+        "amplitud": 1.0,
+        "tipo": "sin"
+    },
+    "392.0": {
+        "frecuencia": 392.0,
+        "duracion": 0.8,
+        "amplitud": 1.0,
+        "tipo": "sin"
+    },
+    "440.0": {
+        "frecuencia": 440.0,
+        "duracion": 0.4,
+        "amplitud": 1.0,
+        "tipo": "sin"
+    }
+}

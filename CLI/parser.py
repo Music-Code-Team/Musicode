@@ -1,10 +1,10 @@
 from ply import yacc
 
-from CLI.lexer import tokens  # Importamos los tokens del lexer 
-from Motor.time import Time
-from Motor.track import Track
+from CLI.lexer import tokens  # Importamos los tokens del lexer  # noqa: F401
 from Motor.domain.entities.wave import Wave
 from Motor.engine import engine
+from Motor.time import Time
+from Motor.track import Track
 
 # Aquí vivirá la memoria de ejecución de Koda
 memoria = {}
@@ -83,8 +83,14 @@ def p_instruccion_wave(p):
     duracion = args[1] if len(args) > 1 else 0.5
     amplitud = args[2] if len(args) > 2 else 1.0
     tipo_onda = args[3] if len(args) > 3 else "sin"
-    
-    memoria[nombre_var] = Wave(frecuencia, duracion, amplitud, tipo=tipo_onda)
+
+    nueva_onda = Wave(frecuencia, duracion, amplitud, tipo=tipo_onda)
+    nueva_onda.id = nombre_var
+    # Si la Clean Architecture está inyectada, lo guardamos en el JSON/Repo
+    if "_repository" in memoria:
+        memoria["_repository"].save(nueva_onda)
+    # Guardamos en la tabla de símbolos normal del intérprete
+    memoria[nombre_var] = nueva_onda
     print(f"[Intérprete] Se creó la variable '{nombre_var}' ({tipo_onda}, {frecuencia}Hz)")
 
 
@@ -159,11 +165,19 @@ def p_expresion(p):
         import os
         ruta = p[3]
         
-        # 1. Ticket #44: Importación de Audio
+        # !Ticket #44: Importación de Audio
         if ruta.endswith(('.wav', '.mp3')):
-            p[0] = Wave.from_file(ruta)
-            
-        # 2. Ticket #45: Importación de Módulos Koda
+            # ====== MAGIA DE CLEAN ARCHITECTURE (PARTE 3 y 4) ======
+            # Verificamos si los Use Cases fueron inyectados desde main.py
+            # !casi seguro de que funcione
+            if "_use_cases" in memoria and "importar_audio" in memoria["_use_cases"]:
+                # Delegamos al Caso de Uso "ImportAudioUseCase" 
+                # ?(Él se encarga de llamar al SoundfileAdapter) así que no te preocipes por eso
+                p[0] = memoria["_use_cases"]["importar_audio"].execute(file_path=ruta, variable_name="importado")
+            else:
+                # !el por si algo falló ya se en que parte fue XD
+                raise RuntimeError("Error de Arquitectura: No se inyectó el Use Case 'importar_audio'.")
+        # !Ticket #45: Importación de Módulos Koda
         elif ruta.endswith('.koda'):
             import sys
 
