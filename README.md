@@ -5,11 +5,9 @@
 4. (En caso de añadir librerías, usar **pipreqs --encoding utf-8 --force .**)
 
 # Crear ejecutbale
-1. Ejecutar **python -m auto_py_to_exe** en terminal
-2. Seleccionar **Orquest** o **Orquest-GUI**
-3. Seleccionar **onefile**
-4. Seleccionar **Window Based**
-5. Abrir Categoría **Additional Files** y añadir su carpeta de dependencias **Dependencies-GUI** o **Dependencies-CLI** usando **Add Folder**
+1. Ejecutar **auto-py-to-exe** ó **python -m auto_py_to_exe** en terminal
+2. Seleccionar **Settings**
+
 
 
 # Ejecutar CLI (python)

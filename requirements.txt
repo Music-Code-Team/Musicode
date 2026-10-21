@@ -1,7 +1,6 @@
-auto_py_to_exe==2.50.1
-numpy==2.5.4
-pipreqs==0.4.13
-ply==3.11
-pywebview==6.2.1
-sounddevice==0.5.6
-soundfile==0.14.0
+auto_py_to_exe
+numpy
+ply
+pywebview
+sounddevice
+soundfile
