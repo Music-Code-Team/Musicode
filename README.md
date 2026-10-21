@@ -1,11 +1,11 @@
 # Reglas de colaboración
-1. Crear un virtual enviroment: python -m venv venv
-2. Activar venv: **.\venv\Scripts\activate en Windows**
+1. Crear un virtual enviroment: **python -m venv venv**
+2. Activar venv: **.\venv\Scripts\activate** en Windows
 3. instalar dependencias: **pip install -r requirements.txt**
-4. (En caso de añadir librerías, usar **pip freeze > requirements.txt**)
+4. (En caso de añadir librerías, usar **pipreqs --encoding utf-8 --force .**)
 
 # Crear ejecutbale
-1. Ejecutar **auto-py-to-exe** en terminal
+1. Ejecutar **python -m auto_py_to_exe** en terminal
 2. Seleccionar **Orquest** o **Orquest-GUI**
 3. Seleccionar **onefile**
 4. Seleccionar **Window Based**
