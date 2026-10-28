@@ -2,12 +2,20 @@
 <html lang='en'>
 <head>
     <meta charset='utf-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <title>Page Title</title>
-    <link rel='stylesheet' href='main.css'>
-    <script src="scripts/main.js"></script>
+    <title>Musicode IDE</title>
+    <link rel="stylesheet" href="assets/Estilos/main.css">
 </head>
 <body>
-    hola
+    <div class="ide-container">
+    <div class="toolbar">
+        <button onclick="abriArchivo()">📂 Abrir .koda</button>
+        <button onclick="guardarArchivo()">💾 Guardar</button>
+        <button class="btn-play" oneclick="ejecutarCodigo">>▶ Compilar y Reproducir</button>
+        <span id="file-label" class="file-label">Sin archivo abierto</span>
+    </div>
+
+    <div class="editor-arena">
+        <div
+    </div>
 </body>
 </html>
