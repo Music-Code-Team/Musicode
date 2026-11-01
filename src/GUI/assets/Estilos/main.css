@@ -1,3 +1,123 @@
 body {
-    background-color: black;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body, html{
+    width: 100%;
+    height: 100%;
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    font-family: 'Segoe UI', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+}
+
+.ide-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.toolbar {
+    background-color: #2d2d2d;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1x solid #333;
+}
+
+.toolbar button {
+    background-color: #3c3c3c;
+    color:  white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.toolbar button:hover {
+    background-color: #505050;
+}
+
+.toolbar .btn-play {
+    background-color: #0e639c;
+}
+
+.toolbar .btn-play:hover {
+    background-color: #1177bb;
+}
+
+.file-label {
+    margin-left: 15px;
+    font-size: 13px;
+    color: #858585;
+    font-style: italic;
+}
+
+.editor-area {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    background-color: #1e1e1e;
+}
+
+.tabs-bar {
+    background-color: #252525;
+    display: flex;
+    height: 35px;
+    border-bottom: 1px solid #181818;
+}
+
+.tab {
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    background-color: #1e1e1e;
+    border-right: 1px solid #2d2d2d;
+    border-top: 2px solid #0e639c;
+    cursor: pointer;
+}
+
+#code-editor {
+    flex: 1;
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    border: none;
+    padding: 12px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 14px;
+    resize: none;
+    outline: none;
+    line-height: 1.5;
+}
+
+.console-area {
+    flex: 1;
+    background-color: #181818;
+    border-top: 1px solid #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 120px;
+}
+
+.console-header {
+    background-color: #2d2d2d;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #bbbbbb;
+}
+
+.console-output {
+    flex: 1;
+    padding: 8px 12px;
+    font-family: 'Consolas', monospace;
+    font-size: 13px;
+    color: #4ec9b0;
+    overflow-y: auto;
+    white-space: pre-wrap;
 }

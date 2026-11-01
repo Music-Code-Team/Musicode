@@ -7,15 +7,33 @@
 </head>
 <body>
     <div class="ide-container">
+    
+    <!--? Barra de herramientas-->
     <div class="toolbar">
-        <button onclick="abriArchivo()">📂 Abrir .koda</button>
-        <button onclick="guardarArchivo()">💾 Guardar</button>
+        <button onclick="abriArchivo()">&#128193; Abrir .koda</button>
+        <button onclick="guardarArchivo()">&#128190; Guardar</button>
         <button class="btn-play" oneclick="ejecutarCodigo">>▶ Compilar y Reproducir</button>
         <span id="file-label" class="file-label">Sin archivo abierto</span>
     </div>
 
+    <!--? Área principal-->
     <div class="editor-arena">
-        <div
+        <div class="tabs-bar">
+            <div class="tab active">main.koda</div>
+        </div>
+        
+        <!--?Linea de incio y código de ejemplo-->
+        <textarea id="code-editor" placeholder="// Escribe tu código .koda aquí...
+        Time pause = 50ms;
+        Wave do_corta = wave(Do4, 400ms, 15db, 'sin');
+        engine.play([do_corta]);"></textarea>
     </div>
+
+    <div class="console-area">
+        <div class="console-header">Consolsa / Salida del Motor</div>
+        <div id="console-output" class="console-output">> MusiCode IDE iniciado correctamente. Esperando acción...</div>
+    </div>
+
+    <script src="assets/scripts/main.ks"></script>
 </body>
 </html>
